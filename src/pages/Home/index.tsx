@@ -88,6 +88,7 @@ export function HomePage() {
             entries={rankings?.depreciation ?? []}
             loading={loading}
             error={error}
+            emptyLabel="Nenhum veiculo com desvalorizacao no periodo."
           />
         </div>
       </section>

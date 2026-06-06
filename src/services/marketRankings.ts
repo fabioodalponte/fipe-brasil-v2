@@ -46,6 +46,8 @@ type RankingSpec = {
   direction: 'asc' | 'desc'
   format: (value: number) => string
   tone: (value: number) => RankingTone
+  /** Filtro opcional aplicado ao valor (ex.: desvalorizacao exige value < 0). */
+  filter?: (value: number) => boolean
 }
 
 const SPECS: Record<RankingMetric, RankingSpec> = {
@@ -59,7 +61,8 @@ const SPECS: Record<RankingMetric, RankingSpec> = {
     getValue: (v) => v.yearlyChange,
     direction: 'asc',
     format: formatPercent,
-    tone: (value) => (value >= 0 ? 'positive' : 'negative'),
+    tone: () => 'negative',
+    filter: (value) => value < 0, // so veiculos que realmente desvalorizaram
   },
   stable: {
     getValue: (v) => v.volatility,
@@ -92,6 +95,7 @@ function buildRanking(source: Vehicle[], spec: RankingSpec, limit: number): Rank
     // Fallback limpo: descarta quem nao tem o dado, em vez de inventar numero.
     .map((vehicle) => ({ vehicle, value: spec.getValue(vehicle) }))
     .filter((entry): entry is { vehicle: Vehicle; value: number } => isFiniteNumber(entry.value))
+    .filter((entry) => (spec.filter ? spec.filter(entry.value) : true))
     .sort((a, b) => (spec.direction === 'desc' ? b.value - a.value : a.value - b.value))
     .slice(0, limit)
     .map(({ vehicle, value }) => ({
