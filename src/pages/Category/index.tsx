@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
+import { JsonLd } from '../../components/seo/JsonLd'
 import { PageHero } from '../../components/layout/PageHero'
 import { StatGrid } from '../../components/layout/StatGrid'
 import { RankingList } from '../../components/rankings/RankingList'
@@ -8,6 +9,7 @@ import { VehicleGrid } from '../../components/vehicles/VehicleGrid'
 import { useCategoryPage } from '../../hooks/useCategoryPage'
 import { toAppreciationEntry, toPriceEntry } from '../../services/marketRankings'
 import { formatCurrency, formatPercent } from '../../utils/formatters'
+import { breadcrumbList, collectionPage } from '../../utils/structuredData'
 
 export function CategoryPage() {
   const { slug } = useParams()
@@ -38,6 +40,21 @@ export function CategoryPage() {
         title={`${page.name}s: precos FIPE, valorizacao e rankings | FIPE Brasil`}
         description={`Compare ${page.name}s por preco FIPE, valorizacao em 12 meses, preco medio e principais modelos.`}
         canonicalPath={`/categoria/${page.slug}`}
+      />
+      <JsonLd
+        id="category-collection"
+        data={collectionPage({
+          name: `${page.name}s`,
+          path: `/categoria/${page.slug}`,
+          vehicles: page.vehicles,
+        })}
+      />
+      <JsonLd
+        id="category-breadcrumb"
+        data={breadcrumbList([
+          { name: 'Home', path: '/' },
+          { name: page.name, path: `/categoria/${page.slug}` },
+        ])}
       />
       <PageHero
         eyebrow="Categoria"

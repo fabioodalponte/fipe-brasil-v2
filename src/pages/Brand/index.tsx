@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
+import { JsonLd } from '../../components/seo/JsonLd'
 import { PageHero } from '../../components/layout/PageHero'
 import { StatGrid } from '../../components/layout/StatGrid'
 import { RankingList } from '../../components/rankings/RankingList'
@@ -8,6 +9,7 @@ import { VehicleGrid } from '../../components/vehicles/VehicleGrid'
 import { useBrandPage } from '../../hooks/useBrandPage'
 import { toAppreciationEntry } from '../../services/marketRankings'
 import { formatCurrency, formatPercent } from '../../utils/formatters'
+import { breadcrumbList, collectionPage } from '../../utils/structuredData'
 
 export function BrandPage() {
   const { slug } = useParams()
@@ -38,6 +40,21 @@ export function BrandPage() {
         title={`Carros ${page.name}: precos FIPE, valorizacao e rankings | FIPE Brasil`}
         description={`Veja os principais carros ${page.name}, preco medio FIPE, valorizacao em 12 meses e rankings da marca.`}
         canonicalPath={`/marca/${page.slug}`}
+      />
+      <JsonLd
+        id="brand-collection"
+        data={collectionPage({
+          name: `Carros ${page.name}`,
+          path: `/marca/${page.slug}`,
+          vehicles: page.vehicles,
+        })}
+      />
+      <JsonLd
+        id="brand-breadcrumb"
+        data={breadcrumbList([
+          { name: 'Home', path: '/' },
+          { name: page.name, path: `/marca/${page.slug}` },
+        ])}
       />
       <PageHero
         eyebrow="Marca"

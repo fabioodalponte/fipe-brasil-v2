@@ -1,6 +1,7 @@
 import { SlidersHorizontal } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
+import { JsonLd } from '../../components/seo/JsonLd'
 import { SearchAutocomplete } from '../../components/search/SearchAutocomplete'
 import { IFBChart } from '../../components/charts/IFBChart'
 import { MetricCard } from '../../components/cards/MetricCard'
@@ -9,6 +10,7 @@ import { VehicleCard } from '../../components/cards/VehicleCard'
 import { marketHistory, marketStats, vehicles } from '../../data/mock/market'
 import { useMarketRankings } from '../../hooks/useMarketRankings'
 import { slugify } from '../../utils/slug'
+import { breadcrumbList, websiteSearch } from '../../utils/structuredData'
 
 const brands = Array.from(new Set(vehicles.map((vehicle) => vehicle.brand))).sort()
 const categories = Array.from(new Set(vehicles.map((vehicle) => vehicle.segment))).sort()
@@ -23,6 +25,8 @@ export function HomePage() {
         description="Consulte precos FIPE, historico de valorizacao, rankings e tendencias do mercado automotivo brasileiro."
         canonicalPath="/"
       />
+      <JsonLd id="home-website" data={websiteSearch()} />
+      <JsonLd id="home-breadcrumb" data={breadcrumbList([{ name: 'Home', path: '/' }])} />
       <section className="grid min-w-0 gap-5 lg:grid-cols-[1.35fr_0.65fr]">
         <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
           <div className="mb-5 flex flex-wrap items-center gap-2">

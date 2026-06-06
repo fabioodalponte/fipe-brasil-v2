@@ -1,6 +1,7 @@
 import { BarChart3, Car, GitCompareArrows, ShieldCheck } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
+import { JsonLd } from '../../components/seo/JsonLd'
 import { HistoryChart } from '../../components/charts/HistoryChart'
 import { MetricCard } from '../../components/cards/MetricCard'
 import { VehicleCard } from '../../components/cards/VehicleCard'
@@ -8,6 +9,7 @@ import { marketHistory, vehicleInsights, vehicles } from '../../data/mock/market
 import { useRelatedVehicles } from '../../hooks/useRelatedVehicles'
 import { formatCurrency, formatPercent } from '../../utils/formatters'
 import { slugify } from '../../utils/slug'
+import { breadcrumbList, vehicleProduct } from '../../utils/structuredData'
 
 export function VehiclePage() {
   const { slug } = useParams()
@@ -21,6 +23,15 @@ export function VehiclePage() {
         description={`Veja o preco FIPE atual do ${vehicle.name} ${vehicle.year}, historico de precos, variacao em 12 meses e veiculos relacionados.`}
         canonicalPath={`/vehicle/${vehicle.id}`}
         type="article"
+      />
+      <JsonLd id="vehicle-product" data={vehicleProduct(vehicle)} />
+      <JsonLd
+        id="vehicle-breadcrumb"
+        data={breadcrumbList([
+          { name: 'Home', path: '/' },
+          { name: vehicle.brand, path: `/marca/${slugify(vehicle.brand)}` },
+          { name: `${vehicle.name} ${vehicle.year}`, path: `/vehicle/${vehicle.id}` },
+        ])}
       />
       <section className="grid gap-5 lg:grid-cols-[1fr_380px]">
         <div className="rounded border border-slate-200 bg-white p-5">
