@@ -1,3 +1,5 @@
+import corollaStudio from '../../assets/corolla-studio.png'
+
 export type MarketPoint = {
   month: string
   ifb: number
@@ -28,7 +30,7 @@ export type Vehicle = {
 }
 
 export const marketStats = [
-  { label: 'IFB Hoje', value: '104,82', change: '+1,8%', tone: 'positive' },
+  { label: 'IFB Hoje', value: '109,10', change: '+1,2%', tone: 'positive' },
   { label: 'Veiculos monitorados', value: '12.480', change: '+312', tone: 'positive' },
   { label: 'Preco medio', value: 'R$ 83.420', change: '-0,4%', tone: 'negative' },
   { label: 'Liquidez media', value: '71/100', change: '+3 pts', tone: 'positive' },
@@ -65,7 +67,7 @@ export const vehicles: Vehicle[] = [
     liquidity: 86,
     volatility: 4.2,
     marketRank: 14,
-    image: '/src/assets/corolla-studio.png',
+    image: corollaStudio,
   },
   {
     id: 'honda-civic-exl-2020',

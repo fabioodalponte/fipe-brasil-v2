@@ -1,4 +1,5 @@
 import { Car, Gauge } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import type { Vehicle } from '../../data/mock/market'
 import { formatCurrency, formatPercent } from '../../utils/formatters'
 
@@ -8,7 +9,10 @@ type VehicleCardProps = {
 
 export function VehicleCard({ vehicle }: VehicleCardProps) {
   return (
-    <article className="min-w-0 rounded border border-slate-200 bg-white p-4">
+    <Link
+      to={`/vehicle/${vehicle.id}`}
+      className="block min-w-0 rounded border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:shadow-sm"
+    >
       <div className="flex items-start gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-slate-100 text-slate-700">
           <Car size={18} />
@@ -34,6 +38,6 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         <Gauge size={14} />
         Liquidez {vehicle.liquidity}/100 | Rank #{vehicle.marketRank}
       </div>
-    </article>
+    </Link>
   )
 }

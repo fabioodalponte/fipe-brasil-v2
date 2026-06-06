@@ -1,4 +1,5 @@
 import { BarChart3, Car, ShieldCheck } from 'lucide-react'
+import { useParams } from 'react-router-dom'
 import { HistoryChart } from '../../components/charts/HistoryChart'
 import { MetricCard } from '../../components/cards/MetricCard'
 import { VehicleCard } from '../../components/cards/VehicleCard'
@@ -6,8 +7,9 @@ import { marketHistory, vehicleInsights, vehicles } from '../../data/mock/market
 import { formatCurrency, formatPercent } from '../../utils/formatters'
 
 export function VehiclePage() {
-  const vehicle = vehicles[0]
-  const related = vehicles.slice(1)
+  const { slug } = useParams()
+  const vehicle = vehicles.find((item) => item.id === slug) ?? vehicles[0]
+  const related = vehicles.filter((item) => item.id !== vehicle.id)
 
   return (
     <div className="space-y-5">
