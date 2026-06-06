@@ -1,15 +1,16 @@
-import { BarChart3, Car, ShieldCheck } from 'lucide-react'
-import { useParams } from 'react-router-dom'
+import { BarChart3, Car, GitCompareArrows, ShieldCheck } from 'lucide-react'
+import { Link, useParams } from 'react-router-dom'
 import { HistoryChart } from '../../components/charts/HistoryChart'
 import { MetricCard } from '../../components/cards/MetricCard'
 import { VehicleCard } from '../../components/cards/VehicleCard'
 import { marketHistory, vehicleInsights, vehicles } from '../../data/mock/market'
+import { useRelatedVehicles } from '../../hooks/useRelatedVehicles'
 import { formatCurrency, formatPercent } from '../../utils/formatters'
 
 export function VehiclePage() {
   const { slug } = useParams()
   const vehicle = vehicles.find((item) => item.id === slug) ?? vehicles[0]
-  const related = vehicles.filter((item) => item.id !== vehicle.id)
+  const { vehicles: related, loading: relatedLoading, error: relatedError } = useRelatedVehicles(vehicle, 4)
 
   return (
     <div className="space-y-5">
@@ -107,13 +108,56 @@ export function VehiclePage() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-lg font-bold text-slate-950">Comparacoes relacionadas</h2>
-        <div className="grid gap-3 md:grid-cols-3">
-          {related.map((item) => (
-            <VehicleCard key={item.id} vehicle={item} />
-          ))}
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-lg font-bold text-slate-950">Veiculos relacionados</h2>
+          <span className="text-sm text-slate-500">Mesma marca, segmento, faixa de preco e ano</span>
         </div>
+        {relatedLoading ? (
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="h-32 animate-pulse rounded border border-slate-200 bg-slate-100" />
+            ))}
+          </div>
+        ) : relatedError ? (
+          <p className="rounded border border-slate-200 bg-white p-4 text-sm text-slate-500">
+            Nao foi possivel carregar os veiculos relacionados.
+          </p>
+        ) : related.length === 0 ? (
+          <p className="rounded border border-slate-200 bg-white p-4 text-sm text-slate-500">
+            Nenhum veiculo relacionado encontrado.
+          </p>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {related.map((item) => (
+              <VehicleCard key={item.id} vehicle={item} />
+            ))}
+          </div>
+        )}
       </section>
+
+      {related.length > 0 ? (
+        <section className="rounded border border-slate-200 bg-white p-5">
+          <h2 className="text-lg font-bold text-slate-950">Compare com</h2>
+          <p className="mt-1 text-sm text-slate-500">Atalhos de comparacao lado a lado</p>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            {related.slice(0, 3).map((target) => (
+              <Link
+                key={target.id}
+                to={`/compare?base=${vehicle.id}&target=${target.id}`}
+                className="flex items-center justify-between gap-3 rounded border border-slate-200 p-3 transition hover:border-slate-300 hover:shadow-sm"
+              >
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-bold text-slate-950">
+                    {vehicle.model} vs {target.model}
+                  </span>
+                  <span className="block truncate text-xs text-slate-500">{target.name}</span>
+                </span>
+                <GitCompareArrows size={16} className="shrink-0 text-slate-400" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   )
 }

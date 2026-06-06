@@ -83,7 +83,7 @@ export function HomePage() {
           <Link to="/vehicle/toyota-corolla-xei-2020" className="text-sm font-bold text-slate-700">Abrir analise</Link>
         </div>
         <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-4">
-          {vehicles.map((vehicle) => (
+          {vehicles.slice(0, 4).map((vehicle) => (
             <VehicleCard key={vehicle.id} vehicle={vehicle} />
           ))}
         </div>
