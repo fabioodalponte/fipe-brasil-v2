@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
+import { BrandPage } from './pages/Brand'
+import { CategoryPage } from './pages/Category'
 import { ComparePage } from './pages/Compare'
 import { HomePage } from './pages/Home'
 import { IFBIndexPage } from './pages/Index'
@@ -12,6 +14,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'vehicle/:slug', element: <VehiclePage /> },
+      { path: 'marca/:slug', element: <BrandPage /> },
+      { path: 'categoria/:slug', element: <CategoryPage /> },
       { path: 'compare', element: <ComparePage /> },
       { path: 'index', element: <IFBIndexPage /> },
     ],

@@ -129,3 +129,25 @@ export class MockMarketRankingsProvider implements MarketRankingsProvider {
 }
 
 export const marketRankings: MarketRankingsProvider = new MockMarketRankingsProvider()
+
+/** Monta uma entrada de ranking por valorizacao 12 meses (reuso em paginas). */
+export function toAppreciationEntry(vehicle: Vehicle): RankingEntry {
+  const value = isFiniteNumber(vehicle.yearlyChange) ? vehicle.yearlyChange : 0
+  return {
+    vehicle,
+    value,
+    formatted: formatPercent(value),
+    tone: value >= 0 ? 'positive' : 'negative',
+  }
+}
+
+/** Monta uma entrada de ranking por preco FIPE (reuso em paginas). */
+export function toPriceEntry(vehicle: Vehicle): RankingEntry {
+  const value = isFiniteNumber(vehicle.price) ? vehicle.price : 0
+  return {
+    vehicle,
+    value,
+    formatted: formatCurrency(value),
+    tone: 'neutral',
+  }
+}

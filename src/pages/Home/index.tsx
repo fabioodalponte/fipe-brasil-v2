@@ -7,6 +7,10 @@ import { RankingList } from '../../components/rankings/RankingList'
 import { VehicleCard } from '../../components/cards/VehicleCard'
 import { marketHistory, marketStats, vehicles } from '../../data/mock/market'
 import { useMarketRankings } from '../../hooks/useMarketRankings'
+import { slugify } from '../../utils/slug'
+
+const brands = Array.from(new Set(vehicles.map((vehicle) => vehicle.brand))).sort()
+const categories = Array.from(new Set(vehicles.map((vehicle) => vehicle.segment))).sort()
 
 export function HomePage() {
   const { rankings, loading, error } = useMarketRankings(5)
@@ -122,6 +126,37 @@ export function HomePage() {
           loading={loading}
           error={error}
         />
+      </section>
+
+      <section className="grid min-w-0 gap-5 md:grid-cols-2">
+        <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
+          <h2 className="text-lg font-bold text-slate-950">Explore por marca</h2>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {brands.map((brand) => (
+              <Link
+                key={brand}
+                to={`/marca/${slugify(brand)}`}
+                className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+              >
+                {brand}
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
+          <h2 className="text-lg font-bold text-slate-950">Explore por categoria</h2>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <Link
+                key={category}
+                to={`/categoria/${slugify(category)}`}
+                className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+              >
+                {category}
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section>

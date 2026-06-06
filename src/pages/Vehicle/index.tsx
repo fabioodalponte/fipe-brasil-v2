@@ -6,6 +6,7 @@ import { VehicleCard } from '../../components/cards/VehicleCard'
 import { marketHistory, vehicleInsights, vehicles } from '../../data/mock/market'
 import { useRelatedVehicles } from '../../hooks/useRelatedVehicles'
 import { formatCurrency, formatPercent } from '../../utils/formatters'
+import { slugify } from '../../utils/slug'
 
 export function VehiclePage() {
   const { slug } = useParams()
@@ -17,7 +18,18 @@ export function VehiclePage() {
       <section className="grid gap-5 lg:grid-cols-[1fr_380px]">
         <div className="rounded border border-slate-200 bg-white p-5">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-600">{vehicle.segment}</span>
+            <Link
+              to={`/marca/${slugify(vehicle.brand)}`}
+              className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-600 transition hover:bg-slate-200"
+            >
+              {vehicle.brand}
+            </Link>
+            <Link
+              to={`/categoria/${slugify(vehicle.segment)}`}
+              className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-600 transition hover:bg-slate-200"
+            >
+              {vehicle.segment}
+            </Link>
             <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase text-emerald-700">Alta liquidez</span>
           </div>
           <div className="mt-5 grid gap-5 md:grid-cols-[1fr_220px]">
