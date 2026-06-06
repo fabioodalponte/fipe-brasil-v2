@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom'
 import { SearchAutocomplete } from '../../components/search/SearchAutocomplete'
 import { IFBChart } from '../../components/charts/IFBChart'
 import { MetricCard } from '../../components/cards/MetricCard'
-import { RankingCard } from '../../components/cards/RankingCard'
+import { RankingList } from '../../components/rankings/RankingList'
 import { VehicleCard } from '../../components/cards/VehicleCard'
-import { appreciationRanking, depreciationRanking, marketHistory, marketStats, vehicles } from '../../data/mock/market'
+import { marketHistory, marketStats, vehicles } from '../../data/mock/market'
+import { useMarketRankings } from '../../hooks/useMarketRankings'
 
 export function HomePage() {
+  const { rankings, loading, error } = useMarketRankings(5)
+
   return (
     <div className="min-w-0 space-y-5">
       <section className="grid min-w-0 gap-5 lg:grid-cols-[1.35fr_0.65fr]">
@@ -72,9 +75,52 @@ export function HomePage() {
         </div>
 
         <div className="grid min-w-0 gap-5">
-          <RankingCard title="Ranking de valorizacao" items={appreciationRanking} type="up" />
-          <RankingCard title="Ranking de desvalorizacao" items={depreciationRanking} type="down" />
+          <RankingList
+            title="Maior valorizacao"
+            badge={{ label: '12 meses', tone: 'positive' }}
+            entries={rankings?.appreciation ?? []}
+            loading={loading}
+            error={error}
+          />
+          <RankingList
+            title="Maior desvalorizacao"
+            badge={{ label: '12 meses', tone: 'negative' }}
+            entries={rankings?.depreciation ?? []}
+            loading={loading}
+            error={error}
+          />
         </div>
+      </section>
+
+      <section className="grid min-w-0 gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <RankingList
+          title="Mais estaveis"
+          badge={{ label: 'volatilidade' }}
+          entries={rankings?.stable ?? []}
+          loading={loading}
+          error={error}
+        />
+        <RankingList
+          title="Mais volateis"
+          badge={{ label: 'volatilidade' }}
+          entries={rankings?.volatile ?? []}
+          loading={loading}
+          error={error}
+        />
+        <RankingList
+          title="Mais caros"
+          badge={{ label: 'preco FIPE' }}
+          entries={rankings?.expensive ?? []}
+          loading={loading}
+          error={error}
+        />
+        <RankingList
+          title="Mais baratos"
+          badge={{ label: 'preco FIPE' }}
+          entries={rankings?.cheap ?? []}
+          loading={loading}
+          error={error}
+        />
       </section>
 
       <section>

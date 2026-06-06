@@ -263,20 +263,6 @@ export const vehicles: Vehicle[] = [
   },
 ]
 
-export const appreciationRanking = [
-  { name: 'Jeep Compass Longitude 2021', segment: 'SUV', price: 151200, change: 3.7 },
-  { name: 'Toyota Corolla XEi 2020', segment: 'Sedan', price: 128430, change: 2.4 },
-  { name: 'Chevrolet S10 LTZ 2020', segment: 'Pickup', price: 173600, change: 2.1 },
-  { name: 'Honda Civic EXL 2020', segment: 'Sedan', price: 124900, change: 1.8 },
-]
-
-export const depreciationRanking = [
-  { name: 'Hyundai HB20 Comfort 2022', segment: 'Hatch', price: 69780, change: -1.9 },
-  { name: 'Renault Kwid Zen 2021', segment: 'Hatch', price: 43800, change: -1.6 },
-  { name: 'Fiat Argo Drive 2020', segment: 'Hatch', price: 58720, change: -1.2 },
-  { name: 'Nissan Kicks SV 2019', segment: 'SUV', price: 82100, change: -0.8 },
-]
-
 export const vehicleInsights = [
   'Corolla XEi 2020 performa acima da media de sedans em 6 dos ultimos 12 meses.',
   'Liquidez segue alta para faixa de R$ 120 mil a R$ 135 mil, com baixa dispersao regional.',
