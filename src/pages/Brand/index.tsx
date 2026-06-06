@@ -1,5 +1,6 @@
 import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
+import { SEO } from '../../components/seo/SEO'
 import { PageHero } from '../../components/layout/PageHero'
 import { StatGrid } from '../../components/layout/StatGrid'
 import { RankingList } from '../../components/rankings/RankingList'
@@ -33,6 +34,11 @@ export function BrandPage() {
 
   return (
     <div className="min-w-0 space-y-5">
+      <SEO
+        title={`Carros ${page.name}: precos FIPE, valorizacao e rankings | FIPE Brasil`}
+        description={`Veja os principais carros ${page.name}, preco medio FIPE, valorizacao em 12 meses e rankings da marca.`}
+        canonicalPath={`/marca/${page.slug}`}
+      />
       <PageHero
         eyebrow="Marca"
         title={page.name}

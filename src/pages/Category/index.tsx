@@ -1,5 +1,6 @@
 import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
+import { SEO } from '../../components/seo/SEO'
 import { PageHero } from '../../components/layout/PageHero'
 import { StatGrid } from '../../components/layout/StatGrid'
 import { RankingList } from '../../components/rankings/RankingList'
@@ -33,6 +34,11 @@ export function CategoryPage() {
 
   return (
     <div className="min-w-0 space-y-5">
+      <SEO
+        title={`${page.name}s: precos FIPE, valorizacao e rankings | FIPE Brasil`}
+        description={`Compare ${page.name}s por preco FIPE, valorizacao em 12 meses, preco medio e principais modelos.`}
+        canonicalPath={`/categoria/${page.slug}`}
+      />
       <PageHero
         eyebrow="Categoria"
         title={page.name}

@@ -1,5 +1,6 @@
 import { SlidersHorizontal } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { SEO } from '../../components/seo/SEO'
 import { SearchAutocomplete } from '../../components/search/SearchAutocomplete'
 import { IFBChart } from '../../components/charts/IFBChart'
 import { MetricCard } from '../../components/cards/MetricCard'
@@ -17,6 +18,11 @@ export function HomePage() {
 
   return (
     <div className="min-w-0 space-y-5">
+      <SEO
+        title="FIPE Brasil — Inteligencia de mercado automotivo"
+        description="Consulte precos FIPE, historico de valorizacao, rankings e tendencias do mercado automotivo brasileiro."
+        canonicalPath="/"
+      />
       <section className="grid min-w-0 gap-5 lg:grid-cols-[1.35fr_0.65fr]">
         <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
           <div className="mb-5 flex flex-wrap items-center gap-2">

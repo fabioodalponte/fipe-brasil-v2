@@ -1,5 +1,6 @@
 import { BarChart3, Car, GitCompareArrows, ShieldCheck } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
+import { SEO } from '../../components/seo/SEO'
 import { HistoryChart } from '../../components/charts/HistoryChart'
 import { MetricCard } from '../../components/cards/MetricCard'
 import { VehicleCard } from '../../components/cards/VehicleCard'
@@ -15,6 +16,12 @@ export function VehiclePage() {
 
   return (
     <div className="space-y-5">
+      <SEO
+        title={`${vehicle.name} ${vehicle.year}: preco FIPE, historico e valorizacao | FIPE Brasil`}
+        description={`Veja o preco FIPE atual do ${vehicle.name} ${vehicle.year}, historico de precos, variacao em 12 meses e veiculos relacionados.`}
+        canonicalPath={`/vehicle/${vehicle.id}`}
+        type="article"
+      />
       <section className="grid gap-5 lg:grid-cols-[1fr_380px]">
         <div className="rounded border border-slate-200 bg-white p-5">
           <div className="flex flex-wrap items-center gap-2">
