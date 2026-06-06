@@ -1,5 +1,6 @@
-import { ArrowRight, Search, SlidersHorizontal } from 'lucide-react'
+import { SlidersHorizontal } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { SearchAutocomplete } from '../../components/search/SearchAutocomplete'
 import { IFBChart } from '../../components/charts/IFBChart'
 import { MetricCard } from '../../components/cards/MetricCard'
 import { RankingCard } from '../../components/cards/RankingCard'
@@ -22,14 +23,10 @@ export function HomePage() {
             Explore veiculos, compare historico e acompanhe o IFB em uma interface de leitura rapida inspirada em terminais financeiros.
           </p>
           <div className="mt-6 flex min-w-0 flex-col gap-3 rounded border border-slate-200 bg-slate-50 p-2 md:flex-row">
-            <label className="flex min-h-12 min-w-0 flex-1 items-center rounded bg-white px-3 ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-slate-900">
-              <Search size={18} className="mr-2 text-slate-400" />
-              <input className="min-w-0 w-full bg-transparent text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400" placeholder="Digite Corolla, Civic, Compass ou codigo FIPE" />
-            </label>
-            <button className="inline-flex items-center justify-center gap-2 rounded bg-slate-900 px-4 py-3 text-sm font-bold text-white">
-              Buscar
-              <ArrowRight size={16} />
-            </button>
+            <SearchAutocomplete
+              className="flex-1"
+              placeholder="Digite Corolla, Civic, Compass ou codigo FIPE"
+            />
             <button className="inline-flex items-center justify-center gap-2 rounded border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700">
               <SlidersHorizontal size={16} />
               Filtros

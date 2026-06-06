@@ -1,5 +1,6 @@
-import { BarChart3, Car, GitCompareArrows, Home, LineChart, Menu, Search } from 'lucide-react'
+import { BarChart3, Car, GitCompareArrows, Home, LineChart, Menu } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router-dom'
+import { SearchAutocomplete } from '../search/SearchAutocomplete'
 
 const navItems = [
   { to: '/', label: 'Home', icon: Home },
@@ -23,10 +24,7 @@ export function AppShell() {
             </span>
           </NavLink>
 
-          <div className="hidden min-w-0 flex-1 items-center rounded border border-slate-200 bg-slate-50 px-3 py-2 md:flex">
-            <Search size={16} className="mr-2 shrink-0 text-slate-400" />
-            <span className="truncate text-sm text-slate-500">Buscar marca, modelo, versao ou codigo FIPE</span>
-          </div>
+          <SearchAutocomplete className="hidden flex-1 md:block" />
 
           <nav className="ml-auto hidden items-center gap-1 lg:flex">
             {navItems.map((item) => {
