@@ -1,4 +1,4 @@
-import { SlidersHorizontal } from 'lucide-react'
+import { GitCompareArrows, SlidersHorizontal } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
 import { JsonLd } from '../../components/seo/JsonLd'
@@ -8,6 +8,7 @@ import { MetricCard } from '../../components/cards/MetricCard'
 import { RankingList } from '../../components/rankings/RankingList'
 import { VehicleCard } from '../../components/cards/VehicleCard'
 import { marketHistory, marketStats, vehicles } from '../../data/mock/market'
+import { popularComparisons } from '../../services/compareVehicles'
 import { useMarketRankings } from '../../hooks/useMarketRankings'
 import { slugify } from '../../utils/slug'
 import { breadcrumbList, websiteSearch } from '../../utils/structuredData'
@@ -166,6 +167,22 @@ export function HomePage() {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="min-w-0 rounded border border-slate-200 bg-white p-5">
+        <h2 className="text-lg font-bold text-slate-950">Comparacoes populares</h2>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {popularComparisons.map((item) => (
+            <Link
+              key={item.label}
+              to={`/compare?base=${item.base}&target=${item.target}`}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              <GitCompareArrows size={14} />
+              {item.label}
+            </Link>
+          ))}
         </div>
       </section>
 
