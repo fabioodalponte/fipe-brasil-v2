@@ -1,12 +1,7 @@
+import { SITE_NAME, absoluteUrl } from '../config/site'
 import type { Vehicle } from '../data/mock/market'
 
-const SITE_NAME = 'FIPE Brasil'
-
-/** Resolve um caminho para URL absoluta usando a origem atual. */
-export function absoluteUrl(path: string): string {
-  if (typeof window === 'undefined') return path
-  return `${window.location.origin}${path}`
-}
+export { absoluteUrl }
 
 export type Crumb = {
   name: string

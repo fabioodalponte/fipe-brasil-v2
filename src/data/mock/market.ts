@@ -1,4 +1,6 @@
-import corollaStudio from '../../assets/corolla-studio.png'
+// new URL(..., import.meta.url) e resolvido pelo Vite (asset com hash) e nao
+// quebra ao importar este modulo no Node (ex.: geracao do sitemap).
+const corollaStudio = new URL('../../assets/corolla-studio.png', import.meta.url).href
 
 export type MarketPoint = {
   month: string

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { SITE_URL } from '../config/site'
 
 export type SEOInput = {
   title: string
@@ -41,7 +42,7 @@ function upsertLink(rel: string, href: string) {
 export function useSEO({ title, description, canonicalPath, type = 'website', image }: SEOInput) {
   useEffect(() => {
     const path = canonicalPath ?? window.location.pathname
-    const url = `${window.location.origin}${path}`
+    const url = `${SITE_URL}${path}`
 
     document.title = title
     upsertMeta('name', 'description', description)
