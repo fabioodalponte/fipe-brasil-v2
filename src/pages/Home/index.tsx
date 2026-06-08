@@ -18,12 +18,13 @@ const categories = Array.from(new Set(vehicles.map((vehicle) => vehicle.segment)
 
 export function HomePage() {
   const { rankings, loading, error } = useMarketRankings(5)
+  const useMock = import.meta.env.VITE_USE_MOCK === 'true'
 
   return (
     <div className="min-w-0 space-y-5">
       <SEO
         title="FIPE Brasil — Inteligencia de mercado automotivo"
-        description="Consulte precos FIPE, historico de valorizacao, rankings e tendencias do mercado automotivo brasileiro."
+        description="Consulte precos FIPE, historico, rankings de preco e tendencias do mercado automotivo brasileiro."
         canonicalPath="/"
       />
       <JsonLd id="home-website" data={websiteSearch()} />
@@ -32,10 +33,12 @@ export function HomePage() {
         <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
           <div className="mb-5 flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase text-emerald-700">Mercado aberto</span>
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-600">Mock data | UX lab</span>
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-600">
+              {useMock ? 'Mock data | UX lab' : 'Rankings reais FIPE'}
+            </span>
           </div>
           <h1 className="max-w-3xl break-words text-2xl font-bold leading-tight text-slate-950 sm:text-3xl md:text-5xl">
-            Inteligencia de mercado para precos FIPE, liquidez e tendencias.
+            Inteligencia de mercado para precos FIPE e rankings por categoria.
           </h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
             Explore veiculos, compare historico e acompanhe o IFB em uma interface de leitura rapida inspirada em terminais financeiros.
@@ -91,49 +94,48 @@ export function HomePage() {
 
         <div className="grid min-w-0 gap-5">
           <RankingList
-            title="Maior valorizacao"
-            badge={{ label: '12 meses', tone: 'positive' }}
-            entries={rankings?.appreciation ?? []}
+            title="Mais caros"
+            badge={{ label: 'preco FIPE' }}
+            entries={rankings?.topExpensive ?? []}
             loading={loading}
             error={error}
           />
           <RankingList
-            title="Maior desvalorizacao"
-            badge={{ label: '12 meses', tone: 'negative' }}
-            entries={rankings?.depreciation ?? []}
+            title="Mais baratos"
+            badge={{ label: 'preco FIPE' }}
+            entries={rankings?.topAffordable ?? []}
             loading={loading}
             error={error}
-            emptyLabel="Nenhum veiculo com desvalorizacao no periodo."
           />
         </div>
       </section>
 
       <section className="grid min-w-0 gap-5 md:grid-cols-2 xl:grid-cols-4">
         <RankingList
-          title="Mais estaveis"
-          badge={{ label: 'volatilidade' }}
-          entries={rankings?.stable ?? []}
-          loading={loading}
-          error={error}
-        />
-        <RankingList
-          title="Mais volateis"
-          badge={{ label: 'volatilidade' }}
-          entries={rankings?.volatile ?? []}
-          loading={loading}
-          error={error}
-        />
-        <RankingList
-          title="Mais caros"
+          title="SUVs mais caros"
           badge={{ label: 'preco FIPE' }}
-          entries={rankings?.expensive ?? []}
+          entries={rankings?.suvTopExpensive ?? []}
           loading={loading}
           error={error}
         />
         <RankingList
-          title="Mais baratos"
+          title="Sedans mais caros"
           badge={{ label: 'preco FIPE' }}
-          entries={rankings?.cheap ?? []}
+          entries={rankings?.sedanTopExpensive ?? []}
+          loading={loading}
+          error={error}
+        />
+        <RankingList
+          title="Hatchs mais baratos"
+          badge={{ label: 'preco FIPE' }}
+          entries={rankings?.hatchTopAffordable ?? []}
+          loading={loading}
+          error={error}
+        />
+        <RankingList
+          title="Picapes mais caras"
+          badge={{ label: 'preco FIPE' }}
+          entries={rankings?.pickupTopExpensive ?? []}
           loading={loading}
           error={error}
         />

@@ -15,7 +15,7 @@ type State = {
 const INITIAL: State = { rankings: null, error: false }
 
 /**
- * Carrega os rankings de mercado via provider (mock hoje, API amanha),
+ * Carrega os rankings de mercado via provider (API real ou mock),
  * cancelando a requisicao anterior se o limite mudar. Todo setState ocorre no
  * retorno assincrono — nenhum commit sincrono dentro do efeito.
  */

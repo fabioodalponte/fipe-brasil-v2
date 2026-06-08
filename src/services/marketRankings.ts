@@ -1,13 +1,14 @@
 import { vehicles, type Vehicle } from '../data/mock/market'
-import { formatCurrency, formatPercent, numberFormatter } from '../utils/formatters'
+import { formatCurrency } from '../utils/formatters'
+import { slugify } from '../utils/slug'
 
-export type RankingMetric =
-  | 'appreciation'
-  | 'depreciation'
-  | 'stable'
-  | 'volatile'
-  | 'expensive'
-  | 'cheap'
+export type MarketRankingKey =
+  | 'topExpensive'
+  | 'topAffordable'
+  | 'suvTopExpensive'
+  | 'sedanTopExpensive'
+  | 'hatchTopAffordable'
+  | 'pickupTopExpensive'
 
 export type RankingTone = 'positive' | 'negative' | 'neutral'
 
@@ -18,16 +19,15 @@ export type RankingEntry = {
   tone: RankingTone
 }
 
-export type MarketRankings = Record<RankingMetric, RankingEntry[]>
+export type MarketRankings = Record<MarketRankingKey, RankingEntry[]>
 
 export type MarketRankingsQuery = {
   limit?: number
 }
 
 /**
- * Contrato dos rankings de mercado. Hoje calculado em memoria a partir dos
- * mocks; no futuro pode virar `GET /market/rankings` — basta trocar a instancia
- * exportada em `marketRankings`, sem tocar no hook nem na UI.
+ * Contrato dos rankings reais disponíveis hoje: preço FIPE atual.
+ * Valorização/desvalorização fica fora até existir uma view de variação.
  */
 export interface MarketRankingsProvider {
   getRankings(query?: MarketRankingsQuery, signal?: AbortSignal): Promise<MarketRankings>
@@ -38,71 +38,48 @@ const DEFAULT_LIMIT = 5
 const isFiniteNumber = (value: unknown): value is number =>
   typeof value === 'number' && Number.isFinite(value)
 
-const formatVolatility = (value: number) => `${numberFormatter.format(value)}%`
-
-type RankingSpec = {
-  /** Campo numerico usado para ordenar. Veiculos sem esse dado sao ignorados. */
-  getValue: (vehicle: Vehicle) => number | undefined
+type PriceRankingSpec = {
   direction: 'asc' | 'desc'
-  format: (value: number) => string
-  tone: (value: number) => RankingTone
-  /** Filtro opcional aplicado ao valor (ex.: desvalorizacao exige value < 0). */
-  filter?: (value: number) => boolean
+  segment?: string
 }
 
-const SPECS: Record<RankingMetric, RankingSpec> = {
-  appreciation: {
-    getValue: (v) => v.yearlyChange,
+const PRICE_SPECS: Record<MarketRankingKey, PriceRankingSpec> = {
+  topExpensive: {
     direction: 'desc',
-    format: formatPercent,
-    tone: (value) => (value >= 0 ? 'positive' : 'negative'),
   },
-  depreciation: {
-    getValue: (v) => v.yearlyChange,
+  topAffordable: {
     direction: 'asc',
-    format: formatPercent,
-    tone: () => 'negative',
-    filter: (value) => value < 0, // so veiculos que realmente desvalorizaram
   },
-  stable: {
-    getValue: (v) => v.volatility,
-    direction: 'asc',
-    format: formatVolatility,
-    tone: () => 'neutral',
-  },
-  volatile: {
-    getValue: (v) => v.volatility,
+  suvTopExpensive: {
     direction: 'desc',
-    format: formatVolatility,
-    tone: () => 'neutral',
+    segment: 'suv',
   },
-  expensive: {
-    getValue: (v) => v.price,
+  sedanTopExpensive: {
     direction: 'desc',
-    format: formatCurrency,
-    tone: () => 'neutral',
+    segment: 'sedan',
   },
-  cheap: {
-    getValue: (v) => v.price,
+  hatchTopAffordable: {
     direction: 'asc',
-    format: formatCurrency,
-    tone: () => 'neutral',
+    segment: 'hatch',
+  },
+  pickupTopExpensive: {
+    direction: 'desc',
+    segment: 'picape',
   },
 }
 
-function buildRanking(source: Vehicle[], spec: RankingSpec, limit: number): RankingEntry[] {
+function buildPriceRanking(source: Vehicle[], spec: PriceRankingSpec, limit: number): RankingEntry[] {
   return source
-    // Fallback limpo: descarta quem nao tem o dado, em vez de inventar numero.
-    .map((vehicle) => ({ vehicle, value: spec.getValue(vehicle) }))
-    .filter((entry): entry is { vehicle: Vehicle; value: number } => isFiniteNumber(entry.value))
-    .filter((entry) => (spec.filter ? spec.filter(entry.value) : true))
+    .filter((vehicle) => (spec.segment ? slugify(vehicle.segment) === spec.segment : true))
+    .map((vehicle) => ({ vehicle, value: vehicle.price }))
+    .filter((entry) => isFiniteNumber(entry.value))
     .sort((a, b) => (spec.direction === 'desc' ? b.value - a.value : a.value - b.value))
     .slice(0, limit)
     .map(({ vehicle, value }) => ({
       vehicle,
       value,
-      formatted: spec.format(value),
-      tone: spec.tone(value),
+      formatted: formatCurrency(value),
+      tone: 'neutral',
     }))
 }
 
@@ -119,27 +96,84 @@ export class MockMarketRankingsProvider implements MarketRankingsProvider {
     }
 
     const limit = query?.limit ?? DEFAULT_LIMIT
-    const metrics = Object.keys(SPECS) as RankingMetric[]
+    const metrics = Object.keys(PRICE_SPECS) as MarketRankingKey[]
 
     return metrics.reduce((acc, metric) => {
-      acc[metric] = buildRanking(this.source, SPECS[metric], limit)
+      acc[metric] = buildPriceRanking(this.source, PRICE_SPECS[metric], limit)
       return acc
     }, {} as MarketRankings)
   }
 }
 
-export const marketRankings: MarketRankingsProvider = new MockMarketRankingsProvider()
+type MarketRankingApiRow = {
+  vehicle_id: number
+  slug: string
+  fipe_code: string
+  brand: string
+  model: string
+  model_year: number | null
+  fuel: string
+  vehicle_type: string | null
+  segment: string | null
+  latest_price: string | null
+  latest_reference_month: string | null
+}
 
-/** Monta uma entrada de ranking por valorizacao 12 meses (reuso em paginas). */
-export function toAppreciationEntry(vehicle: Vehicle): RankingEntry {
-  const value = isFiniteNumber(vehicle.yearlyChange) ? vehicle.yearlyChange : 0
+type MarketRankingsApiResponse = Record<MarketRankingKey, MarketRankingApiRow[]>
+
+function toVehicle(row: MarketRankingApiRow): Vehicle {
   return {
-    vehicle,
-    value,
-    formatted: formatPercent(value),
-    tone: value >= 0 ? 'positive' : 'negative',
+    id: row.slug,
+    name: `${row.brand} ${row.model}`,
+    brand: row.brand,
+    model: row.model,
+    version: row.fuel,
+    year: row.model_year ?? 0,
+    segment: row.segment ?? '',
+    fipeCode: row.fipe_code,
+    price: row.latest_price != null ? Number(row.latest_price) : 0,
+    monthlyChange: 0,
+    yearlyChange: 0,
+    liquidity: 0,
+    volatility: 0,
+    marketRank: 0,
   }
 }
+
+function toRankingEntry(row: MarketRankingApiRow): RankingEntry {
+  const vehicle = toVehicle(row)
+  return {
+    vehicle,
+    value: vehicle.price,
+    formatted: formatCurrency(vehicle.price),
+    tone: 'neutral',
+  }
+}
+
+export class ApiMarketRankingsProvider implements MarketRankingsProvider {
+  async getRankings(query?: MarketRankingsQuery, signal?: AbortSignal): Promise<MarketRankings> {
+    const limit = query?.limit ?? DEFAULT_LIMIT
+    const response = await fetch(`/api/market/rankings?limit=${encodeURIComponent(limit)}`, { signal })
+    if (!response.ok) {
+      throw new Error(`Rankings falharam (${response.status})`)
+    }
+    const data = (await response.json()) as MarketRankingsApiResponse
+    return {
+      topExpensive: data.topExpensive.map(toRankingEntry),
+      topAffordable: data.topAffordable.map(toRankingEntry),
+      suvTopExpensive: data.suvTopExpensive.map(toRankingEntry),
+      sedanTopExpensive: data.sedanTopExpensive.map(toRankingEntry),
+      hatchTopAffordable: data.hatchTopAffordable.map(toRankingEntry),
+      pickupTopExpensive: data.pickupTopExpensive.map(toRankingEntry),
+    }
+  }
+}
+
+const useMock = import.meta.env.VITE_USE_MOCK === 'true'
+
+export const marketRankings: MarketRankingsProvider = useMock
+  ? new MockMarketRankingsProvider()
+  : new ApiMarketRankingsProvider()
 
 /** Monta uma entrada de ranking por preco FIPE (reuso em paginas). */
 export function toPriceEntry(vehicle: Vehicle): RankingEntry {

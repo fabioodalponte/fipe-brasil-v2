@@ -5,9 +5,15 @@ import { getVehicleBySlug } from './vehicleDetailsRepository.ts'
 import { RELATED_DEFAULT_LIMIT, getRelatedBySlug } from './relatedVehiclesRepository.ts'
 import { getBrandBySlug } from './brandRepository.ts'
 import { getCategoryBySlug } from './categoryRepository.ts'
+import {
+  MARKET_RANKINGS_DEFAULT_LIMIT,
+  MARKET_RANKINGS_MAX_LIMIT,
+  getMarketRankings,
+} from './marketRankingsRepository.ts'
 
 const API_PREFIX = '/api/'
 const SEARCH_ROUTE = '/api/vehicles/search'
+const MARKET_RANKINGS_ROUTE = '/api/market/rankings'
 const VEHICLES_PREFIX = '/api/vehicles/'
 const BRANDS_PREFIX = '/api/brands/'
 const CATEGORIES_PREFIX = '/api/categories/'
@@ -61,11 +67,24 @@ async function handleCategory(slug: string, res: ServerResponse): Promise<void> 
   sendJson(res, 200, category)
 }
 
+async function handleMarketRankings(url: URL, res: ServerResponse): Promise<void> {
+  const limitParam = Number(url.searchParams.get('limit'))
+  const limit = Number.isFinite(limitParam) && limitParam > 0
+    ? limitParam
+    : MARKET_RANKINGS_DEFAULT_LIMIT
+  const rankings = await getMarketRankings(Math.min(limit, MARKET_RANKINGS_MAX_LIMIT))
+  sendJson(res, 200, rankings)
+}
+
 async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void> {
   try {
     const url = new URL(req.url ?? '', 'http://localhost')
     if (url.pathname === SEARCH_ROUTE) {
       await handleSearch(url, res)
+      return
+    }
+    if (url.pathname === MARKET_RANKINGS_ROUTE) {
+      await handleMarketRankings(url, res)
       return
     }
     if (url.pathname.startsWith(BRANDS_PREFIX)) {
