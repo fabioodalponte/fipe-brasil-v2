@@ -64,6 +64,40 @@ export function vehicleProduct(vehicle: Vehicle) {
   }
 }
 
+/**
+ * Product+Vehicle a partir de dados reais (sem depender do tipo mock).
+ * Só inclui a oferta quando há preço; usa o mês de referência como
+ * priceValidUntil quando disponível.
+ */
+export function vehicleProductFromParts(opts: {
+  name: string
+  brand: string
+  segment?: string | null
+  year?: number | null
+  price?: number | null
+  path: string
+  referenceMonth?: string | null
+}) {
+  const data: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': ['Product', 'Vehicle'],
+    name: opts.name,
+    brand: { '@type': 'Brand', name: opts.brand },
+  }
+  if (opts.segment) data.category = opts.segment
+  if (opts.year) data.productionDate = String(opts.year)
+  if (opts.price != null) {
+    data.offers = {
+      '@type': 'Offer',
+      price: opts.price,
+      priceCurrency: 'BRL',
+      url: absoluteUrl(opts.path),
+      ...(opts.referenceMonth ? { priceValidUntil: opts.referenceMonth } : {}),
+    }
+  }
+  return data
+}
+
 /** CollectionPage com uma ItemList dos veiculos (marca ou categoria). */
 export function collectionPage(opts: { name: string; path: string; vehicles: Vehicle[] }) {
   return {
