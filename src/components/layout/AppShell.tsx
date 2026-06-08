@@ -1,10 +1,9 @@
-import { BarChart3, Car, GitCompareArrows, Home, LineChart, Menu } from 'lucide-react'
+import { BarChart3, GitCompareArrows, Home, LineChart, Menu } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { SearchAutocomplete } from '../search/SearchAutocomplete'
 
 const navItems = [
   { to: '/', label: 'Home', icon: Home },
-  { to: '/vehicle/toyota-corolla-xei-2020', label: 'Veiculo', icon: Car },
   { to: '/compare', label: 'Comparar', icon: GitCompareArrows },
   { to: '/index', label: 'IFB Index', icon: LineChart },
 ]

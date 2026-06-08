@@ -3,31 +3,34 @@ import { Link } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
 import { JsonLd } from '../../components/seo/JsonLd'
 import { SearchAutocomplete } from '../../components/search/SearchAutocomplete'
-import { IFBChart } from '../../components/charts/IFBChart'
 import { MetricCard } from '../../components/cards/MetricCard'
 import { RankingList } from '../../components/rankings/RankingList'
 import { VehicleCard } from '../../components/cards/VehicleCard'
-import { marketHistory, marketStats, vehicles } from '../../data/mock/market'
 import { popularComparisons } from '../../services/compareVehicles'
+import { useHomeData } from '../../hooks/useHomeData'
 import { useMarketRankings } from '../../hooks/useMarketRankings'
-import { slugify } from '../../utils/slug'
-import { breadcrumbList, websiteSearch } from '../../utils/structuredData'
+import { formatCurrency, numberFormatter } from '../../utils/formatters'
+import { breadcrumbList } from '../../utils/structuredData'
 
-const brands = Array.from(new Set(vehicles.map((vehicle) => vehicle.brand))).sort()
-const categories = Array.from(new Set(vehicles.map((vehicle) => vehicle.segment))).sort()
+function monthLabel(reference: string | null): string {
+  if (!reference) return 'n/d'
+  const [year, month] = reference.split('-')
+  return `${month}/${year}`
+}
 
 export function HomePage() {
+  const { data: homeData, loading: homeLoading, error: homeError } = useHomeData()
   const { rankings, loading, error } = useMarketRankings(5)
   const useMock = import.meta.env.VITE_USE_MOCK === 'true'
+  const stats = homeData?.marketStats
 
   return (
     <div className="min-w-0 space-y-5">
       <SEO
         title="FIPE Brasil — Inteligencia de mercado automotivo"
-        description="Consulte precos FIPE, historico, rankings de preco e tendencias do mercado automotivo brasileiro."
+        description="Consulte precos FIPE, historico, rankings reais de preco e variacao do mercado automotivo brasileiro."
         canonicalPath="/"
       />
-      <JsonLd id="home-website" data={websiteSearch()} />
       <JsonLd id="home-breadcrumb" data={breadcrumbList([{ name: 'Home', path: '/' }])} />
       <section className="grid min-w-0 gap-5 lg:grid-cols-[1.35fr_0.65fr]">
         <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
@@ -38,7 +41,7 @@ export function HomePage() {
             </span>
           </div>
           <h1 className="max-w-3xl break-words text-2xl font-bold leading-tight text-slate-950 sm:text-3xl md:text-5xl">
-            Inteligencia de mercado para precos FIPE e rankings por categoria.
+            Inteligencia de mercado para precos FIPE, variacao real e rankings por categoria.
           </h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
             Explore veiculos, compare historico e acompanhe o IFB em uma interface de leitura rapida inspirada em terminais financeiros.
@@ -56,61 +59,116 @@ export function HomePage() {
         </div>
 
         <div className="min-w-0 rounded border border-slate-200 bg-slate-950 p-5 text-white">
-          <p className="text-[11px] font-bold uppercase text-slate-400">IFB fechamento</p>
-          <strong className="mt-3 block font-mono text-5xl">109,10</strong>
-          <p className="mt-2 font-mono text-sm font-bold text-emerald-300">+9,3% em 12 meses</p>
+          <p className="text-[11px] font-bold uppercase text-slate-400">Base FIPE atual</p>
+          <strong className="mt-3 block font-mono text-5xl">
+            {stats ? numberFormatter.format(stats.totalVehicles) : '—'}
+          </strong>
+          <p className="mt-2 font-mono text-sm font-bold text-emerald-300">
+            Referencia {monthLabel(stats?.latestReferenceMonth ?? null)}
+          </p>
           <div className="mt-8 grid grid-cols-2 gap-3">
             <div className="rounded border border-white/10 bg-white/5 p-3">
-              <p className="text-xs text-slate-400">Melhor segmento</p>
-              <p className="mt-1 font-bold">SUV</p>
+              <p className="text-xs text-slate-400">Preco medio</p>
+              <p className="mt-1 font-bold">
+                {stats?.averagePrice != null ? formatCurrency(stats.averagePrice) : '—'}
+              </p>
             </div>
             <div className="rounded border border-white/10 bg-white/5 p-3">
-              <p className="text-xs text-slate-400">Maior liquidez</p>
-              <p className="mt-1 font-bold">Sedan</p>
+              <p className="text-xs text-slate-400">Maior preco</p>
+              <p className="mt-1 font-bold">
+                {stats?.highestPrice != null ? formatCurrency(stats.highestPrice) : '—'}
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       <section className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {marketStats.map((stat) => (
-          <MetricCard key={stat.label} label={stat.label} value={stat.value} change={stat.change} tone={stat.tone as 'positive' | 'negative'} />
-        ))}
+        <MetricCard
+          label="Veiculos monitorados"
+          value={stats ? numberFormatter.format(stats.totalVehicles) : '—'}
+          change={monthLabel(stats?.latestReferenceMonth ?? null)}
+        />
+        <MetricCard
+          label="Preco medio"
+          value={stats?.averagePrice != null ? formatCurrency(stats.averagePrice) : '—'}
+        />
+        <MetricCard
+          label="Maior preco"
+          value={stats?.highestPrice != null ? formatCurrency(stats.highestPrice) : '—'}
+        />
+        <MetricCard
+          label="Menor preco"
+          value={stats?.lowestPrice != null ? formatCurrency(stats.lowestPrice) : '—'}
+        />
       </section>
 
       <section className="grid min-w-0 gap-5 xl:grid-cols-[1.3fr_0.7fr]">
         <div className="min-w-0 rounded border border-slate-200 bg-white">
           <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
             <div>
-              <h2 className="text-base font-bold text-slate-950">Grafico do IFB</h2>
-              <p className="text-sm text-slate-500">Indice mockado agregado do mercado nacional</p>
+              <h2 className="text-base font-bold text-slate-950">Cobertura da base FIPE</h2>
+              <p className="text-sm text-slate-500">Resumo real dos veiculos disponiveis no banco</p>
             </div>
             <Link to="/index" className="text-sm font-bold text-slate-700 hover:text-slate-950">Ver indice</Link>
           </div>
-          <div className="p-4">
-            <IFBChart data={marketHistory} />
+          <div className="grid gap-3 p-4 md:grid-cols-3">
+            <div className="rounded border border-slate-100 bg-slate-50 p-4">
+              <p className="text-xs font-bold uppercase text-slate-500">Marcas</p>
+              <p className="mt-2 font-mono text-3xl font-bold text-slate-950">
+                {homeData ? numberFormatter.format(homeData.brands.length) : '—'}
+              </p>
+            </div>
+            <div className="rounded border border-slate-100 bg-slate-50 p-4">
+              <p className="text-xs font-bold uppercase text-slate-500">Categorias</p>
+              <p className="mt-2 font-mono text-3xl font-bold text-slate-950">
+                {homeData ? numberFormatter.format(homeData.categories.length) : '—'}
+              </p>
+            </div>
+            <div className="rounded border border-slate-100 bg-slate-50 p-4">
+              <p className="text-xs font-bold uppercase text-slate-500">Destaques</p>
+              <p className="mt-2 font-mono text-3xl font-bold text-slate-950">
+                {homeData ? numberFormatter.format(homeData.featuredVehicles.length) : '—'}
+              </p>
+            </div>
           </div>
         </div>
 
         <div className="grid min-w-0 gap-5">
           <RankingList
-            title="Mais caros"
-            badge={{ label: 'preco FIPE' }}
-            entries={rankings?.topExpensive ?? []}
+            title="Maior valorizacao"
+            badge={{ label: '12 meses', tone: 'positive' }}
+            entries={rankings?.topAppreciation ?? []}
             loading={loading}
             error={error}
+            emptyLabel="Sem veiculos com valorizacao real em 12 meses."
           />
           <RankingList
-            title="Mais baratos"
-            badge={{ label: 'preco FIPE' }}
-            entries={rankings?.topAffordable ?? []}
+            title="Maior desvalorizacao"
+            badge={{ label: '12 meses', tone: 'negative' }}
+            entries={rankings?.topDepreciation ?? []}
             loading={loading}
             error={error}
+            emptyLabel="Sem veiculos com desvalorizacao real em 12 meses."
           />
         </div>
       </section>
 
-      <section className="grid min-w-0 gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid min-w-0 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <RankingList
+          title="Mais caros"
+          badge={{ label: 'preco FIPE' }}
+          entries={rankings?.topExpensive ?? []}
+          loading={loading}
+          error={error}
+        />
+        <RankingList
+          title="Mais baratos"
+          badge={{ label: 'preco FIPE' }}
+          entries={rankings?.topAffordable ?? []}
+          loading={loading}
+          error={error}
+        />
         <RankingList
           title="SUVs mais caros"
           badge={{ label: 'preco FIPE' }}
@@ -145,13 +203,17 @@ export function HomePage() {
         <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
           <h2 className="text-lg font-bold text-slate-950">Explore por marca</h2>
           <div className="mt-4 flex flex-wrap gap-2">
-            {brands.map((brand) => (
+            {homeLoading ? (
+              <span className="text-sm text-slate-500">Carregando marcas...</span>
+            ) : homeError || !homeData || homeData.brands.length === 0 ? (
+              <span className="text-sm text-slate-500">Marcas indisponiveis.</span>
+            ) : homeData.brands.map((brand) => (
               <Link
-                key={brand}
-                to={`/marca/${slugify(brand)}`}
+                key={brand.slug}
+                to={`/marca/${brand.slug}`}
                 className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
               >
-                {brand}
+                {brand.name}
               </Link>
             ))}
           </div>
@@ -159,13 +221,17 @@ export function HomePage() {
         <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
           <h2 className="text-lg font-bold text-slate-950">Explore por categoria</h2>
           <div className="mt-4 flex flex-wrap gap-2">
-            {categories.map((category) => (
+            {homeLoading ? (
+              <span className="text-sm text-slate-500">Carregando categorias...</span>
+            ) : homeError || !homeData || homeData.categories.length === 0 ? (
+              <span className="text-sm text-slate-500">Categorias indisponiveis.</span>
+            ) : homeData.categories.map((category) => (
               <Link
-                key={category}
-                to={`/categoria/${slugify(category)}`}
+                key={category.slug}
+                to={`/categoria/${category.slug}`}
                 className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
               >
-                {category}
+                {category.name}
               </Link>
             ))}
           </div>
@@ -191,13 +257,24 @@ export function HomePage() {
       <section>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-bold text-slate-950">Veiculos em destaque</h2>
-          <Link to="/vehicle/toyota-corolla-xei-2020" className="text-sm font-bold text-slate-700">Abrir analise</Link>
         </div>
-        <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-4">
-          {vehicles.slice(0, 4).map((vehicle) => (
-            <VehicleCard key={vehicle.id} vehicle={vehicle} />
-          ))}
-        </div>
+        {homeLoading ? (
+          <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="h-32 animate-pulse rounded border border-slate-200 bg-slate-100" />
+            ))}
+          </div>
+        ) : homeError || !homeData || homeData.featuredVehicles.length === 0 ? (
+          <p className="rounded border border-slate-200 bg-white p-4 text-sm text-slate-500">
+            Nao foi possivel carregar os veiculos em destaque.
+          </p>
+        ) : (
+          <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {homeData.featuredVehicles.map((vehicle) => (
+              <VehicleCard key={vehicle.id} vehicle={vehicle} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   )

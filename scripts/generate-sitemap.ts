@@ -1,9 +1,8 @@
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import pg from 'pg'
 import { SITE_URL } from '../src/config/site'
-import { vehicles } from '../src/data/mock/market'
-import { slugify } from '../src/utils/slug'
 
 type SitemapEntry = {
   path: string
@@ -11,34 +10,114 @@ type SitemapEntry = {
   priority: string
 }
 
-const lastmod = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
-
-const uniqueSlugs = (values: string[]) => [...new Set(values)]
-
-const entries: SitemapEntry[] = [
-  { path: '/', changefreq: 'daily', priority: '1.0' },
-  ...vehicles.map((vehicle) => ({
-    path: `/vehicle/${vehicle.id}`,
-    changefreq: 'weekly',
-    priority: '0.8',
-  })),
-  ...uniqueSlugs(vehicles.map((vehicle) => slugify(vehicle.brand))).map((slug) => ({
-    path: `/marca/${slug}`,
-    changefreq: 'weekly',
-    priority: '0.7',
-  })),
-  ...uniqueSlugs(vehicles.map((vehicle) => slugify(vehicle.segment))).map((slug) => ({
-    path: `/categoria/${slug}`,
-    changefreq: 'weekly',
-    priority: '0.7',
-  })),
+const VALID_CATEGORIES = [
+  'suv', 'sedan', 'hatch', 'picape', 'perua',
+  'minivan', 'cupe', 'conversivel', 'furgao', 'buggy',
 ]
+
+const BRAND_SLUG_EXPR = `trim(both '-' from regexp_replace(lower(f_unaccent(brand)), '[^a-z0-9]+', '-', 'g'))`
+const VEHICLE_LIMIT = 1000
+
+function loadLocalEnv(): void {
+  if (!existsSync('.env.local')) return
+
+  const lines = readFileSync('.env.local', 'utf8').split(/\r?\n/)
+  for (const line of lines) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) continue
+    const match = /^([A-Za-z_][A-Za-z0-9_]*)=(.*)$/.exec(trimmed)
+    if (!match) continue
+    const [, key, rawValue] = match
+    if (process.env[key]) continue
+    process.env[key] = rawValue.replace(/^['"]|['"]$/g, '')
+  }
+}
+
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+}
+
+async function buildEntries(): Promise<SitemapEntry[]> {
+  loadLocalEnv()
+  const connectionString = process.env.FIPE_DATABASE_URL
+  if (!connectionString) {
+    throw new Error('FIPE_DATABASE_URL não definido para gerar sitemap real.')
+  }
+
+  const pool = new pg.Pool({
+    connectionString,
+    max: 1,
+    idleTimeoutMillis: 10_000,
+    connectionTimeoutMillis: 8_000,
+  })
+
+  try {
+    const [brands, categories, vehicles] = await Promise.all([
+      pool.query<{ slug: string }>(
+        `WITH base AS (
+           SELECT ${BRAND_SLUG_EXPR} AS slug
+             FROM vehicle_latest_prices
+         )
+         SELECT slug
+           FROM base
+          WHERE slug <> ''
+          GROUP BY slug
+          ORDER BY count(*) DESC, slug`,
+      ),
+      pool.query<{ slug: string }>(
+        `SELECT segment AS slug
+           FROM vehicle_latest_prices
+          WHERE segment = ANY($1)
+          GROUP BY segment
+          ORDER BY count(*) DESC, segment`,
+        [VALID_CATEGORIES],
+      ),
+      pool.query<{ slug: string }>(
+        `SELECT slug
+           FROM vehicle_latest_prices
+          WHERE latest_price IS NOT NULL
+          ORDER BY latest_price DESC, latest_reference_month DESC NULLS LAST, brand, model
+          LIMIT $1`,
+        [VEHICLE_LIMIT],
+      ),
+    ])
+
+    return [
+      { path: '/', changefreq: 'daily', priority: '1.0' },
+      ...brands.rows.map((row) => ({
+        path: `/marca/${row.slug}`,
+        changefreq: 'weekly',
+        priority: '0.7',
+      })),
+      ...categories.rows.map((row) => ({
+        path: `/categoria/${row.slug}`,
+        changefreq: 'weekly',
+        priority: '0.7',
+      })),
+      ...vehicles.rows.map((row) => ({
+        path: `/vehicle/${row.slug}`,
+        changefreq: 'weekly',
+        priority: '0.8',
+      })),
+    ]
+  } finally {
+    await pool.end()
+  }
+}
+
+const lastmod = new Date().toISOString().slice(0, 10)
+const entries = await buildEntries()
 
 const urlsXml = entries
   .map(
     (entry) =>
       `  <url>\n` +
-      `    <loc>${SITE_URL}${entry.path}</loc>\n` +
+      `    <loc>${escapeXml(`${SITE_URL}${entry.path}`)}</loc>\n` +
       `    <lastmod>${lastmod}</lastmod>\n` +
       `    <changefreq>${entry.changefreq}</changefreq>\n` +
       `    <priority>${entry.priority}</priority>\n` +
@@ -52,4 +131,4 @@ const outDir = resolve(dirname(fileURLToPath(import.meta.url)), '../public')
 mkdirSync(outDir, { recursive: true })
 writeFileSync(resolve(outDir, 'sitemap.xml'), xml)
 
-console.log(`sitemap.xml gerado com ${entries.length} URLs (${SITE_URL})`)
+console.log(`sitemap.xml gerado com ${entries.length} URLs reais (${SITE_URL})`)

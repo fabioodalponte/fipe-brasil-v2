@@ -1,4 +1,4 @@
-import { SITE_NAME, absoluteUrl } from '../config/site'
+import { absoluteUrl } from '../config/site'
 import type { Vehicle } from '../data/mock/market'
 
 export { absoluteUrl }
@@ -19,27 +19,6 @@ export function breadcrumbList(crumbs: Crumb[]) {
       name: crumb.name,
       item: absoluteUrl(crumb.path),
     })),
-  }
-}
-
-/**
- * WebSite + SearchAction. O alvo aponta para uma rota de busca futura (/busca);
- * por ser apenas dado estruturado, nao quebra enquanto a rota nao existir.
- */
-export function websiteSearch() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: SITE_NAME,
-    url: absoluteUrl('/'),
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${absoluteUrl('/busca')}?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
   }
 }
 

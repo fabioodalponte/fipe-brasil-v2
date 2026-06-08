@@ -11,8 +11,10 @@ import {
   getMarketRankings,
 } from './marketRankingsRepository.ts'
 import { compareVehiclesBySlug } from './compareRepository.ts'
+import { getHomeData } from './homeRepository.ts'
 
 const API_PREFIX = '/api/'
+const HOME_ROUTE = '/api/home'
 const SEARCH_ROUTE = '/api/vehicles/search'
 const MARKET_RANKINGS_ROUTE = '/api/market/rankings'
 const COMPARE_ROUTE = '/api/compare'
@@ -94,9 +96,18 @@ async function handleCompare(url: URL, res: ServerResponse): Promise<void> {
   sendJson(res, 200, comparison)
 }
 
+async function handleHome(res: ServerResponse): Promise<void> {
+  const home = await getHomeData()
+  sendJson(res, 200, home)
+}
+
 async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void> {
   try {
     const url = new URL(req.url ?? '', 'http://localhost')
+    if (url.pathname === HOME_ROUTE) {
+      await handleHome(res)
+      return
+    }
     if (url.pathname === SEARCH_ROUTE) {
       await handleSearch(url, res)
       return
