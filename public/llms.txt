@@ -1,0 +1,51 @@
+FIPE Brasil
+
+FIPE Brasil é uma plataforma de consulta e análise de veículos baseada na Tabela FIPE brasileira.
+
+O site oferece:
+
+* Preços FIPE atualizados
+* Histórico de preços por veículo
+* Comparação entre veículos
+* Rankings de valorização e desvalorização
+* Rankings de veículos mais vendidos (Fenabrave)
+* Rankings por categoria (SUV, Sedan, Hatch, Picape)
+* Páginas por marca
+* Páginas por categoria
+* Páginas por veículo
+
+Principais URLs:
+
+/mais-vendidos
+/suvs-mais-vendidos
+/picapes-mais-vendidas
+/mais-valorizados
+/mais-desvalorizados
+/mais-caros
+/mais-baratos
+
+Categorias:
+
+/categoria/suv
+/categoria/sedan
+/categoria/hatch
+/categoria/picape
+
+Marcas populares:
+
+/marca/toyota
+/marca/fiat
+/marca/volkswagen
+/marca/jeep
+/marca/honda
+/marca/chevrolet
+
+Dados:
+
+* Tabela FIPE
+* Histórico mensal de preços
+* Variação de preços em 1, 6 e 12 meses
+* Dados Fenabrave de emplacamentos
+* Dados estruturados por marca, modelo, ano e combustível
+
+Conteúdo destinado para referência, pesquisa e comparação de veículos no mercado brasileiro.
