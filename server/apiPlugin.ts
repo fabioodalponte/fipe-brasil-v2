@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Plugin, PreviewServer, ViteDevServer } from 'vite'
 import { DEFAULT_LIMIT, MAX_LIMIT, searchVehicles } from './vehicleSearchRepository.ts'
 import { getVehicleBySlug } from './vehicleDetailsRepository.ts'
+import { RELATED_DEFAULT_LIMIT, getRelatedBySlug } from './relatedVehiclesRepository.ts'
 
 const SEARCH_ROUTE = '/api/vehicles/search'
 const VEHICLES_PREFIX = '/api/vehicles/'
@@ -30,6 +31,13 @@ async function handleDetails(slug: string, res: ServerResponse): Promise<void> {
   sendJson(res, 200, details)
 }
 
+async function handleRelated(slug: string, url: URL, res: ServerResponse): Promise<void> {
+  const limitParam = Number(url.searchParams.get('limit'))
+  const limit = Number.isFinite(limitParam) && limitParam > 0 ? limitParam : RELATED_DEFAULT_LIMIT
+  const rows = await getRelatedBySlug(decodeURIComponent(slug), limit)
+  sendJson(res, 200, rows)
+}
+
 async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void> {
   try {
     const url = new URL(req.url ?? '', 'http://localhost')
@@ -38,8 +46,12 @@ async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void
       return
     }
     if (url.pathname.startsWith(VEHICLES_PREFIX)) {
-      const slug = url.pathname.slice(VEHICLES_PREFIX.length)
-      await handleDetails(slug, res)
+      const rest = url.pathname.slice(VEHICLES_PREFIX.length)
+      if (rest.endsWith('/related')) {
+        await handleRelated(rest.slice(0, -'/related'.length), url, res)
+        return
+      }
+      await handleDetails(rest, res)
       return
     }
     sendJson(res, 404, { error: 'not_found' })

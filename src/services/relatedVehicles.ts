@@ -75,4 +75,67 @@ export class MockRelatedVehiclesProvider implements RelatedVehiclesProvider {
   }
 }
 
-export const relatedVehicles: RelatedVehiclesProvider = new MockRelatedVehiclesProvider()
+/** Linha crua de GET /api/vehicles/:slug/related (espelha vehicle_latest_prices). */
+type RelatedApiRow = {
+  vehicle_id: number
+  slug: string
+  fipe_code: string
+  brand: string
+  model: string
+  model_year: number | null
+  is_zero_km: boolean
+  fuel: string
+  vehicle_type: string | null
+  segment: string | null
+  latest_price: string | null
+  latest_reference_month: string | null
+}
+
+function toVehicle(row: RelatedApiRow): Vehicle {
+  return {
+    id: row.slug, // link do card -> /vehicle/:slug
+    name: `${row.brand} ${row.model}`,
+    brand: row.brand,
+    model: row.model,
+    version: row.fuel,
+    year: row.model_year ?? 0,
+    segment: row.segment ?? '',
+    fipeCode: row.fipe_code,
+    price: row.latest_price != null ? Number(row.latest_price) : 0,
+    monthlyChange: 0,
+    yearlyChange: 0,
+    liquidity: 0,
+    volatility: 0,
+    marketRank: 0,
+  }
+}
+
+/**
+ * Provider real: GET /api/vehicles/:slug/related (servido pelo plugin Vite
+ * contra a materialized view vehicle_latest_prices). vehicleId == slug.
+ */
+export class ApiRelatedVehiclesProvider implements RelatedVehiclesProvider {
+  async getRelated(
+    vehicleId: string,
+    query?: RelatedVehiclesQuery,
+    signal?: AbortSignal,
+  ): Promise<Vehicle[]> {
+    const slug = vehicleId.trim()
+    if (!slug) return []
+    const limit = query?.limit ?? DEFAULT_LIMIT
+    const response = await fetch(
+      `/api/vehicles/${encodeURIComponent(slug)}/related?limit=${limit}`,
+      { signal },
+    )
+    if (!response.ok) throw new Error(`Relacionados falharam (${response.status})`)
+    const rows = (await response.json()) as RelatedApiRow[]
+    return rows.map(toVehicle)
+  }
+}
+
+// Default: API real. Fallback para mock quando VITE_USE_MOCK === 'true'.
+const useMock = import.meta.env.VITE_USE_MOCK === 'true'
+
+export const relatedVehicles: RelatedVehiclesProvider = useMock
+  ? new MockRelatedVehiclesProvider()
+  : new ApiRelatedVehiclesProvider()
