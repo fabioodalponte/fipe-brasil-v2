@@ -3,9 +3,12 @@ import type { Plugin, PreviewServer, ViteDevServer } from 'vite'
 import { DEFAULT_LIMIT, MAX_LIMIT, searchVehicles } from './vehicleSearchRepository.ts'
 import { getVehicleBySlug } from './vehicleDetailsRepository.ts'
 import { RELATED_DEFAULT_LIMIT, getRelatedBySlug } from './relatedVehiclesRepository.ts'
+import { getBrandBySlug } from './brandRepository.ts'
 
+const API_PREFIX = '/api/'
 const SEARCH_ROUTE = '/api/vehicles/search'
 const VEHICLES_PREFIX = '/api/vehicles/'
+const BRANDS_PREFIX = '/api/brands/'
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
   res.statusCode = status
@@ -38,11 +41,24 @@ async function handleRelated(slug: string, url: URL, res: ServerResponse): Promi
   sendJson(res, 200, rows)
 }
 
+async function handleBrand(slug: string, res: ServerResponse): Promise<void> {
+  const brand = await getBrandBySlug(decodeURIComponent(slug))
+  if (!brand) {
+    sendJson(res, 404, { error: 'not_found' })
+    return
+  }
+  sendJson(res, 200, brand)
+}
+
 async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void> {
   try {
     const url = new URL(req.url ?? '', 'http://localhost')
     if (url.pathname === SEARCH_ROUTE) {
       await handleSearch(url, res)
+      return
+    }
+    if (url.pathname.startsWith(BRANDS_PREFIX)) {
+      await handleBrand(url.pathname.slice(BRANDS_PREFIX.length), res)
       return
     }
     if (url.pathname.startsWith(VEHICLES_PREFIX)) {
@@ -63,7 +79,7 @@ async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void
 
 function attach(server: ViteDevServer | PreviewServer): void {
   server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: () => void) => {
-    if (!req.url || !req.url.startsWith(VEHICLES_PREFIX.slice(0, -1))) {
+    if (!req.url || !req.url.startsWith(API_PREFIX)) {
       next()
       return
     }
