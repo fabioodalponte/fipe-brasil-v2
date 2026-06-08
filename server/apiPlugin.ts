@@ -10,10 +10,12 @@ import {
   MARKET_RANKINGS_MAX_LIMIT,
   getMarketRankings,
 } from './marketRankingsRepository.ts'
+import { compareVehiclesBySlug } from './compareRepository.ts'
 
 const API_PREFIX = '/api/'
 const SEARCH_ROUTE = '/api/vehicles/search'
 const MARKET_RANKINGS_ROUTE = '/api/market/rankings'
+const COMPARE_ROUTE = '/api/compare'
 const VEHICLES_PREFIX = '/api/vehicles/'
 const BRANDS_PREFIX = '/api/brands/'
 const CATEGORIES_PREFIX = '/api/categories/'
@@ -76,6 +78,22 @@ async function handleMarketRankings(url: URL, res: ServerResponse): Promise<void
   sendJson(res, 200, rankings)
 }
 
+async function handleCompare(url: URL, res: ServerResponse): Promise<void> {
+  const base = url.searchParams.get('base') ?? ''
+  const target = url.searchParams.get('target') ?? ''
+  if (!base.trim() || !target.trim()) {
+    sendJson(res, 400, { error: 'missing_compare_slugs' })
+    return
+  }
+
+  const comparison = await compareVehiclesBySlug(base, target)
+  if (!comparison) {
+    sendJson(res, 404, { error: 'not_found' })
+    return
+  }
+  sendJson(res, 200, comparison)
+}
+
 async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void> {
   try {
     const url = new URL(req.url ?? '', 'http://localhost')
@@ -85,6 +103,10 @@ async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void
     }
     if (url.pathname === MARKET_RANKINGS_ROUTE) {
       await handleMarketRankings(url, res)
+      return
+    }
+    if (url.pathname === COMPARE_ROUTE) {
+      await handleCompare(url, res)
       return
     }
     if (url.pathname.startsWith(BRANDS_PREFIX)) {

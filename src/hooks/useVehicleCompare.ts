@@ -5,6 +5,7 @@ type UseVehicleCompareResult = {
   comparison: VehicleComparison | null
   loading: boolean
   error: boolean
+  notFound: boolean
 }
 
 type ResolvedState = {
@@ -16,10 +17,9 @@ type ResolvedState = {
 const EMPTY: ResolvedState = { key: null, comparison: null, error: false }
 
 /**
- * Resolve a comparacao entre dois veiculos via provider (mock hoje, API amanha),
+ * Resolve a comparacao entre dois veiculos via provider (API real ou mock),
  * cancelando a requisicao anterior quando os slugs mudam. Estados derivados —
- * sem setState sincrono no efeito. `comparison === null` com loading/error
- * falsos significa que um dos slugs nao foi encontrado.
+ * sem setState sincrono no efeito.
  */
 export function useVehicleCompare(
   baseSlug: string | null,
@@ -53,5 +53,6 @@ export function useVehicleCompare(
     comparison: settled ? resolved.comparison : null,
     loading: !!key && !settled,
     error: settled && resolved.error,
+    notFound: settled && !resolved.error && resolved.comparison === null,
   }
 }
