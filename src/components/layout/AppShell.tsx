@@ -1,9 +1,10 @@
-import { BarChart3, GitCompareArrows, Home, LineChart, Menu } from 'lucide-react'
+import { BarChart3, GitCompareArrows, Home, LineChart, Menu, Trophy } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { SearchAutocomplete } from '../search/SearchAutocomplete'
 
 const navItems = [
   { to: '/', label: 'Home', icon: Home },
+  { to: '/mais-vendidos', label: 'Mais vendidos', icon: Trophy },
   { to: '/compare', label: 'Comparar', icon: GitCompareArrows },
   { to: '/index', label: 'IFB Index', icon: LineChart },
 ]

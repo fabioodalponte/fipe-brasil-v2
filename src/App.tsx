@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
+import { BestSellingPage } from './pages/BestSelling'
 import { BrandPage } from './pages/Brand'
 import { CategoryPage } from './pages/Category'
 import { ComparePage } from './pages/Compare'
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: 'categoria/:slug', element: <CategoryPage /> },
       { path: 'compare', element: <ComparePage /> },
       { path: 'index', element: <IFBIndexPage /> },
+      { path: 'mais-vendidos', element: <BestSellingPage /> },
       { path: 'mais-valorizados', element: <RankingLandingPage /> },
       { path: 'mais-desvalorizados', element: <RankingLandingPage /> },
       { path: 'mais-caros', element: <RankingLandingPage /> },

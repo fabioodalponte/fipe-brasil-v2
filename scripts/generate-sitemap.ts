@@ -18,6 +18,7 @@ const VALID_CATEGORIES = [
 const BRAND_SLUG_EXPR = `trim(both '-' from regexp_replace(lower(f_unaccent(brand)), '[^a-z0-9]+', '-', 'g'))`
 const VEHICLE_LIMIT = 1000
 const RANKING_PATHS = [
+  '/mais-vendidos',
   '/mais-valorizados',
   '/mais-desvalorizados',
   '/mais-caros',

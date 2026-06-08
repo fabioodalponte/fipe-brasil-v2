@@ -16,6 +16,7 @@ import { formatCurrency, numberFormatter } from '../../utils/formatters'
 import { breadcrumbList } from '../../utils/structuredData'
 
 const rankingLandingLinks = [
+  { to: '/mais-vendidos', label: 'Mais vendidos' },
   { to: '/mais-valorizados', label: 'Mais valorizados' },
   { to: '/mais-desvalorizados', label: 'Mais desvalorizados' },
   { to: '/mais-caros', label: 'Mais caros' },
@@ -332,9 +333,9 @@ export function HomePage() {
       </section>
 
       <section className="min-w-0 rounded border border-slate-200 bg-white p-5">
-        <h2 className="text-lg font-bold text-slate-950">Rankings FIPE</h2>
+        <h2 className="text-lg font-bold text-slate-950">Rankings de mercado</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Paginas com rankings reais por preco atual e variacao historica disponivel.
+          Paginas com ranking Fenabrave, preco FIPE atual e variacao historica disponivel.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {rankingLandingLinks.map((item) => (

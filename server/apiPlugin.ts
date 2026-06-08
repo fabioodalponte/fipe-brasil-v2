@@ -11,6 +11,11 @@ import {
   getMarketRankings,
 } from './marketRankingsRepository.ts'
 import { compareVehiclesBySlug } from './compareRepository.ts'
+import {
+  FENABRAVE_BEST_SELLING_DEFAULT_LIMIT,
+  FENABRAVE_BEST_SELLING_MAX_LIMIT,
+  getFenabraveBestSellingVehicles,
+} from './fenabraveRankingsRepository.ts'
 import { getHomeData, getHomeVehicles } from './homeRepository.ts'
 
 const API_PREFIX = '/api/'
@@ -18,6 +23,7 @@ const HOME_ROUTE = '/api/home'
 const HOME_VEHICLES_ROUTE = '/api/home/vehicles'
 const SEARCH_ROUTE = '/api/vehicles/search'
 const MARKET_RANKINGS_ROUTE = '/api/market/rankings'
+const FENABRAVE_BEST_SELLING_ROUTE = '/api/fenabrave/rankings/mais-vendidos'
 const COMPARE_ROUTE = '/api/compare'
 const VEHICLES_PREFIX = '/api/vehicles/'
 const BRANDS_PREFIX = '/api/brands/'
@@ -81,6 +87,17 @@ async function handleMarketRankings(url: URL, res: ServerResponse): Promise<void
   sendJson(res, 200, rankings)
 }
 
+async function handleFenabraveBestSelling(url: URL, res: ServerResponse): Promise<void> {
+  const limitParam = Number(url.searchParams.get('limit'))
+  const limit = Number.isFinite(limitParam) && limitParam > 0
+    ? limitParam
+    : FENABRAVE_BEST_SELLING_DEFAULT_LIMIT
+  const rankings = await getFenabraveBestSellingVehicles(
+    Math.min(limit, FENABRAVE_BEST_SELLING_MAX_LIMIT),
+  )
+  sendJson(res, 200, rankings)
+}
+
 async function handleCompare(url: URL, res: ServerResponse): Promise<void> {
   const base = url.searchParams.get('base') ?? ''
   const target = url.searchParams.get('target') ?? ''
@@ -137,6 +154,10 @@ async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void
     }
     if (url.pathname === MARKET_RANKINGS_ROUTE) {
       await handleMarketRankings(url, res)
+      return
+    }
+    if (url.pathname === FENABRAVE_BEST_SELLING_ROUTE) {
+      await handleFenabraveBestSelling(url, res)
       return
     }
     if (url.pathname === COMPARE_ROUTE) {
