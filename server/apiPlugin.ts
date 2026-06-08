@@ -31,12 +31,110 @@ const COMPARE_ROUTE = '/api/compare'
 const VEHICLES_PREFIX = '/api/vehicles/'
 const BRANDS_PREFIX = '/api/brands/'
 const CATEGORIES_PREFIX = '/api/categories/'
+const FENABRAVE_PREFIX = '/api/fenabrave/'
+const RATE_LIMIT_WINDOW_MS = 60_000
+const DEFAULT_RATE_LIMIT = 120
+const SEARCH_RATE_LIMIT = 30
+const COMPARE_RATE_LIMIT = 30
+const FENABRAVE_RATE_LIMIT = 60
+
+type RateLimitPolicy = {
+  key: string
+  limit: number
+}
+
+type RateLimitBucket = {
+  count: number
+  resetAt: number
+}
+
+type RateLimitResult = {
+  allowed: boolean
+  limit: number
+  remaining: number
+  retryAfterSeconds: number
+}
+
+const rateLimitBuckets = new Map<string, RateLimitBucket>()
+let lastRateLimitCleanup = Date.now()
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
   res.statusCode = status
   res.setHeader('Content-Type', 'application/json; charset=utf-8')
   res.setHeader('Cache-Control', 'no-store')
   res.end(JSON.stringify(body))
+}
+
+function headerValue(value: string | string[] | undefined): string | undefined {
+  if (Array.isArray(value)) return value[0]
+  return value
+}
+
+function getClientIp(req: IncomingMessage): string {
+  const cfIp = headerValue(req.headers['cf-connecting-ip'])?.trim()
+  if (cfIp) return cfIp
+
+  const forwardedFor = headerValue(req.headers['x-forwarded-for'])
+    ?.split(',')[0]
+    ?.trim()
+  if (forwardedFor) return forwardedFor
+
+  return req.socket.remoteAddress ?? 'unknown'
+}
+
+function rateLimitPolicy(pathname: string): RateLimitPolicy {
+  if (pathname === SEARCH_ROUTE) return { key: 'search', limit: SEARCH_RATE_LIMIT }
+  if (pathname === COMPARE_ROUTE) return { key: 'compare', limit: COMPARE_RATE_LIMIT }
+  if (pathname.startsWith(FENABRAVE_PREFIX)) {
+    return { key: 'fenabrave', limit: FENABRAVE_RATE_LIMIT }
+  }
+  return { key: 'default', limit: DEFAULT_RATE_LIMIT }
+}
+
+function cleanupRateLimitBuckets(now: number): void {
+  if (now - lastRateLimitCleanup < RATE_LIMIT_WINDOW_MS) return
+  for (const [key, bucket] of rateLimitBuckets) {
+    if (bucket.resetAt <= now) rateLimitBuckets.delete(key)
+  }
+  lastRateLimitCleanup = now
+}
+
+function checkRateLimit(req: IncomingMessage, pathname: string): RateLimitResult {
+  const now = Date.now()
+  cleanupRateLimitBuckets(now)
+
+  const policy = rateLimitPolicy(pathname)
+  const bucketKey = `${policy.key}:${getClientIp(req)}`
+  const current = rateLimitBuckets.get(bucketKey)
+  const bucket = current && current.resetAt > now
+    ? current
+    : { count: 0, resetAt: now + RATE_LIMIT_WINDOW_MS }
+
+  if (bucket.count >= policy.limit) {
+    rateLimitBuckets.set(bucketKey, bucket)
+    return {
+      allowed: false,
+      limit: policy.limit,
+      remaining: 0,
+      retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
+    }
+  }
+
+  bucket.count += 1
+  rateLimitBuckets.set(bucketKey, bucket)
+
+  return {
+    allowed: true,
+    limit: policy.limit,
+    remaining: Math.max(0, policy.limit - bucket.count),
+    retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
+  }
+}
+
+function setRateLimitHeaders(res: ServerResponse, result: RateLimitResult): void {
+  res.setHeader('X-RateLimit-Limit', String(result.limit))
+  res.setHeader('X-RateLimit-Remaining', String(result.remaining))
+  res.setHeader('Retry-After', String(result.retryAfterSeconds))
 }
 
 async function handleSearch(url: URL, res: ServerResponse): Promise<void> {
@@ -222,6 +320,15 @@ function attach(server: ViteDevServer | PreviewServer): void {
       next()
       return
     }
+
+    const url = new URL(req.url, 'http://localhost')
+    const rateLimit = checkRateLimit(req, url.pathname)
+    setRateLimitHeaders(res, rateLimit)
+    if (!rateLimit.allowed) {
+      sendJson(res, 429, { error: 'rate_limited' })
+      return
+    }
+
     void dispatch(req, res)
   })
 }
