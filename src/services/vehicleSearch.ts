@@ -50,4 +50,62 @@ export class MockVehicleSearchProvider implements VehicleSearchProvider {
   }
 }
 
-export const vehicleSearch: VehicleSearchProvider = new MockVehicleSearchProvider()
+/** Linha crua vinda de GET /api/vehicles/search (espelha vehicle_latest_prices). */
+type VehicleSearchApiRow = {
+  vehicle_id: number
+  slug: string
+  fipe_code: string
+  brand: string
+  model: string
+  model_year: number | null
+  is_zero_km: boolean
+  fuel: string
+  vehicle_type: string | null
+  segment: string | null
+  latest_price: string | null
+  latest_reference_month: string | null
+}
+
+/** Mapeia a linha da API para o formato Vehicle usado pela UI (id = slug). */
+function toVehicle(row: VehicleSearchApiRow): VehicleSearchResult {
+  return {
+    id: row.slug, // navega para /vehicle/:slug
+    name: `${row.brand} ${row.model}`,
+    brand: row.brand,
+    model: row.model,
+    version: '',
+    year: row.model_year ?? 0,
+    segment: row.segment ?? '',
+    fipeCode: row.fipe_code,
+    price: row.latest_price != null ? Number(row.latest_price) : 0,
+    monthlyChange: 0,
+    yearlyChange: 0,
+    liquidity: 0,
+    volatility: 0,
+    marketRank: 0,
+  }
+}
+
+/**
+ * Provider real: consome GET /api/vehicles/search (servido pelo plugin Vite
+ * contra a materialized view vehicle_latest_prices do banco fipe-v2).
+ */
+export class ApiVehicleSearchProvider implements VehicleSearchProvider {
+  async search(query: string, signal?: AbortSignal): Promise<VehicleSearchResult[]> {
+    const q = query.trim()
+    if (!q) return []
+    const response = await fetch(`/api/vehicles/search?q=${encodeURIComponent(q)}`, { signal })
+    if (!response.ok) {
+      throw new Error(`Busca falhou (${response.status})`)
+    }
+    const rows = (await response.json()) as VehicleSearchApiRow[]
+    return rows.map(toVehicle)
+  }
+}
+
+// Default: API real. Fallback para mock quando VITE_USE_MOCK === 'true'.
+const useMock = import.meta.env.VITE_USE_MOCK === 'true'
+
+export const vehicleSearch: VehicleSearchProvider = useMock
+  ? new MockVehicleSearchProvider()
+  : new ApiVehicleSearchProvider()
