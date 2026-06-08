@@ -12,6 +12,13 @@ import { useMarketRankings } from '../../hooks/useMarketRankings'
 import { formatCurrency, numberFormatter } from '../../utils/formatters'
 import { breadcrumbList } from '../../utils/structuredData'
 
+const rankingLandingLinks = [
+  { to: '/mais-valorizados', label: 'Mais valorizados' },
+  { to: '/mais-desvalorizados', label: 'Mais desvalorizados' },
+  { to: '/mais-caros', label: 'Mais caros' },
+  { to: '/mais-baratos', label: 'Mais baratos' },
+]
+
 function monthLabel(reference: string | null): string {
   if (!reference) return 'n/d'
   const [year, month] = reference.split('-')
@@ -197,6 +204,24 @@ export function HomePage() {
           loading={loading}
           error={error}
         />
+      </section>
+
+      <section className="min-w-0 rounded border border-slate-200 bg-white p-5">
+        <h2 className="text-lg font-bold text-slate-950">Rankings FIPE</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Paginas com rankings reais por preco atual e variacao historica disponivel.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {rankingLandingLinks.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section className="grid min-w-0 gap-5 md:grid-cols-2">

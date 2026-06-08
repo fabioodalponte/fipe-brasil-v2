@@ -17,6 +17,12 @@ const VALID_CATEGORIES = [
 
 const BRAND_SLUG_EXPR = `trim(both '-' from regexp_replace(lower(f_unaccent(brand)), '[^a-z0-9]+', '-', 'g'))`
 const VEHICLE_LIMIT = 1000
+const RANKING_PATHS = [
+  '/mais-valorizados',
+  '/mais-desvalorizados',
+  '/mais-caros',
+  '/mais-baratos',
+]
 
 function loadLocalEnv(): void {
   if (!existsSync('.env.local')) return
@@ -89,6 +95,11 @@ async function buildEntries(): Promise<SitemapEntry[]> {
 
     return [
       { path: '/', changefreq: 'daily', priority: '1.0' },
+      ...RANKING_PATHS.map((path) => ({
+        path,
+        changefreq: 'daily',
+        priority: '0.8',
+      })),
       ...brands.rows.map((row) => ({
         path: `/marca/${row.slug}`,
         changefreq: 'weekly',
