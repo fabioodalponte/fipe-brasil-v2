@@ -1,0 +1,443 @@
+[
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 1,
+    "brand": "VW",
+    "registrations_month": 39505,
+    "market_share_pct": 18.43
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 1,
+    "brand": "FIAT",
+    "registrations_month": 24021,
+    "market_share_pct": 48.29
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 2,
+    "brand": "FIAT",
+    "registrations_month": 25625,
+    "market_share_pct": 11.96
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 2,
+    "brand": "GM",
+    "registrations_month": 4581,
+    "market_share_pct": 9.21
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 3,
+    "brand": "GM",
+    "registrations_month": 23172,
+    "market_share_pct": 10.81
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 3,
+    "brand": "FORD",
+    "registrations_month": 4301,
+    "market_share_pct": 8.65
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 4,
+    "brand": "BYD",
+    "registrations_month": 21674,
+    "market_share_pct": 10.11
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 4,
+    "brand": "TOYOTA",
+    "registrations_month": 4165,
+    "market_share_pct": 8.37
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 5,
+    "brand": "HYUNDAI",
+    "registrations_month": 20234,
+    "market_share_pct": 9.44
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 5,
+    "brand": "VW",
+    "registrations_month": 3479,
+    "market_share_pct": 6.99
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 6,
+    "brand": "TOYOTA",
+    "registrations_month": 10654,
+    "market_share_pct": 4.97
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 6,
+    "brand": "RAM",
+    "registrations_month": 2514,
+    "market_share_pct": 5.05
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 7,
+    "brand": "JEEP",
+    "registrations_month": 10395,
+    "market_share_pct": 4.85
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 7,
+    "brand": "RENAULT",
+    "registrations_month": 2037,
+    "market_share_pct": 4.1
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 8,
+    "brand": "HONDA",
+    "registrations_month": 10288,
+    "market_share_pct": 4.8
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 8,
+    "brand": "MITSUBISHI",
+    "registrations_month": 971,
+    "market_share_pct": 1.95
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 9,
+    "brand": "RENAULT",
+    "registrations_month": 9023,
+    "market_share_pct": 4.21
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 9,
+    "brand": "IVECO",
+    "registrations_month": 772,
+    "market_share_pct": 1.55
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 10,
+    "brand": "NISSAN",
+    "registrations_month": 6935,
+    "market_share_pct": 3.24
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 10,
+    "brand": "GWM",
+    "registrations_month": 753,
+    "market_share_pct": 1.51
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 11,
+    "brand": "GWM",
+    "registrations_month": 6685,
+    "market_share_pct": 3.12
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 11,
+    "brand": "KIA",
+    "registrations_month": 370,
+    "market_share_pct": 0.74
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 12,
+    "brand": "CAOA CHERY",
+    "registrations_month": 6660,
+    "market_share_pct": 3.11
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 12,
+    "brand": "VW TRUCK E BUS",
+    "registrations_month": 337,
+    "market_share_pct": 0.68
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 13,
+    "brand": "GEELY",
+    "registrations_month": 5173,
+    "market_share_pct": 2.41
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 13,
+    "brand": "EFFA",
+    "registrations_month": 291,
+    "market_share_pct": 0.59
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 14,
+    "brand": "CITROEN",
+    "registrations_month": 4308,
+    "market_share_pct": 2.01
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 14,
+    "brand": "CITROEN",
+    "registrations_month": 267,
+    "market_share_pct": 0.54
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 15,
+    "brand": "OMODA JAECOO",
+    "registrations_month": 3176,
+    "market_share_pct": 1.48
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 15,
+    "brand": "PEUGEOT",
+    "registrations_month": 265,
+    "market_share_pct": 0.53
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 16,
+    "brand": "PEUGEOT",
+    "registrations_month": 1463,
+    "market_share_pct": 0.68
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 16,
+    "brand": "NISSAN",
+    "registrations_month": 186,
+    "market_share_pct": 0.37
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 17,
+    "brand": "BMW",
+    "registrations_month": 1244,
+    "market_share_pct": 0.58
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 17,
+    "brand": "M.BENZ",
+    "registrations_month": 157,
+    "market_share_pct": 0.32
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 18,
+    "brand": "CAOA CHANGAN",
+    "registrations_month": 1164,
+    "market_share_pct": 0.54
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 18,
+    "brand": "FOTON",
+    "registrations_month": 127,
+    "market_share_pct": 0.26
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 19,
+    "brand": "FORD",
+    "registrations_month": 927,
+    "market_share_pct": 0.43
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 19,
+    "brand": "RIDDARA",
+    "registrations_month": 42,
+    "market_share_pct": 0.08
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 20,
+    "brand": "LEAPMOTOR",
+    "registrations_month": 893,
+    "market_share_pct": 0.42
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 20,
+    "brand": "JAC",
+    "registrations_month": 35,
+    "market_share_pct": 0.07
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 21,
+    "brand": "JETOUR",
+    "registrations_month": 691,
+    "market_share_pct": 0.32
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 21,
+    "brand": "BYD",
+    "registrations_month": 30,
+    "market_share_pct": 0.06
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 1,
+    "brand": "FIAT",
+    "registrations_month": 49646,
+    "market_share_pct": 18.8
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 2,
+    "brand": "VW",
+    "registrations_month": 42984,
+    "market_share_pct": 16.28
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 3,
+    "brand": "GM",
+    "registrations_month": 27753,
+    "market_share_pct": 10.51
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 4,
+    "brand": "BYD",
+    "registrations_month": 21704,
+    "market_share_pct": 8.22
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 5,
+    "brand": "HYUNDAI",
+    "registrations_month": 20239,
+    "market_share_pct": 7.67
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 6,
+    "brand": "TOYOTA",
+    "registrations_month": 14819,
+    "market_share_pct": 5.61
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 7,
+    "brand": "RENAULT",
+    "registrations_month": 11060,
+    "market_share_pct": 4.19
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 8,
+    "brand": "JEEP",
+    "registrations_month": 10395,
+    "market_share_pct": 3.94
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 9,
+    "brand": "HONDA",
+    "registrations_month": 10288,
+    "market_share_pct": 3.9
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 10,
+    "brand": "GWM",
+    "registrations_month": 7438,
+    "market_share_pct": 2.82
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 11,
+    "brand": "NISSAN",
+    "registrations_month": 7121,
+    "market_share_pct": 2.7
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 12,
+    "brand": "CAOA CHERY",
+    "registrations_month": 6660,
+    "market_share_pct": 2.52
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 13,
+    "brand": "FORD",
+    "registrations_month": 5228,
+    "market_share_pct": 1.98
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 14,
+    "brand": "GEELY",
+    "registrations_month": 5173,
+    "market_share_pct": 1.96
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 15,
+    "brand": "CITROEN",
+    "registrations_month": 4575,
+    "market_share_pct": 1.73
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 16,
+    "brand": "OMODA JAECOO",
+    "registrations_month": 3176,
+    "market_share_pct": 1.2
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 17,
+    "brand": "RAM",
+    "registrations_month": 2514,
+    "market_share_pct": 0.95
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 18,
+    "brand": "PEUGEOT",
+    "registrations_month": 1728,
+    "market_share_pct": 0.65
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 19,
+    "brand": "MITSUBISHI",
+    "registrations_month": 1562,
+    "market_share_pct": 0.59
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 20,
+    "brand": "BMW",
+    "registrations_month": 1244,
+    "market_share_pct": 0.47
+  },
+  {
+    "category": "AUTOMÓVEIS + COMERCIAIS LEVES",
+    "rank": 21,
+    "brand": "CAOA CHANGAN",
+    "registrations_month": 1164,
+    "market_share_pct": 0.44
+  }
+]

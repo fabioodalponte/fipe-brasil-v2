@@ -1,0 +1,1622 @@
+[
+  {
+    "segment": "Veículos de Entrada",
+    "rank": 1,
+    "brand": "FIAT",
+    "model": "MOBI",
+    "registrations_april_2026": 5361,
+    "registrations_may_2026": 5728,
+    "registrations_accumulated_2026": 28420,
+    "market_share_pct": 52.04
+  },
+  {
+    "segment": "Veículos de Entrada",
+    "rank": 2,
+    "brand": "RENAULT",
+    "model": "KWID",
+    "registrations_april_2026": 6451,
+    "registrations_may_2026": 5237,
+    "registrations_accumulated_2026": 25948,
+    "market_share_pct": 47.51
+  },
+  {
+    "segment": "Veículos de Entrada",
+    "rank": 3,
+    "brand": "RENAULT",
+    "model": "E-KWID",
+    "registrations_april_2026": 14,
+    "registrations_may_2026": 2,
+    "registrations_accumulated_2026": 217,
+    "market_share_pct": 0.4
+  },
+  {
+    "segment": "Veículos de Entrada",
+    "rank": 4,
+    "brand": "FIAT",
+    "model": "UNO",
+    "registrations_april_2026": 3,
+    "registrations_may_2026": 2,
+    "registrations_accumulated_2026": 10,
+    "market_share_pct": 0.02
+  },
+  {
+    "segment": "Veículos de Entrada",
+    "rank": 5,
+    "brand": "VW",
+    "model": "GOL",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 7,
+    "market_share_pct": 0.01
+  },
+  {
+    "segment": "Veículos de Entrada",
+    "rank": 6,
+    "brand": "GM",
+    "model": "CHEVETTE",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 1,
+    "registrations_accumulated_2026": 3,
+    "market_share_pct": 0.01
+  },
+  {
+    "segment": "Veículos de Entrada",
+    "rank": 7,
+    "brand": "FIAT",
+    "model": "PALIO",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 2,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Veículos de Entrada",
+    "rank": 8,
+    "brand": "FORD",
+    "model": "KA",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 2,
+    "registrations_accumulated_2026": 2,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Veículos de Entrada",
+    "rank": 9,
+    "brand": "GM",
+    "model": "CELTA",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 2,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 1,
+    "brand": "VW",
+    "model": "POLO",
+    "registrations_april_2026": 8366,
+    "registrations_may_2026": 10523,
+    "registrations_accumulated_2026": 43153,
+    "market_share_pct": 19.93
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 2,
+    "brand": "GM",
+    "model": "ONIX",
+    "registrations_april_2026": 7847,
+    "registrations_may_2026": 7713,
+    "registrations_accumulated_2026": 37137,
+    "market_share_pct": 17.15
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 3,
+    "brand": "FIAT",
+    "model": "ARGO",
+    "registrations_april_2026": 7990,
+    "registrations_may_2026": 8274,
+    "registrations_accumulated_2026": 36199,
+    "market_share_pct": 16.72
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 4,
+    "brand": "HYUNDAI",
+    "model": "HB20",
+    "registrations_april_2026": 6764,
+    "registrations_may_2026": 8357,
+    "registrations_accumulated_2026": 32021,
+    "market_share_pct": 14.79
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 5,
+    "brand": "BYD",
+    "model": "DOLPHIN MINI",
+    "registrations_april_2026": 6877,
+    "registrations_may_2026": 7577,
+    "registrations_accumulated_2026": 29215,
+    "market_share_pct": 13.49
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 6,
+    "brand": "BYD",
+    "model": "DOLPHIN",
+    "registrations_april_2026": 3021,
+    "registrations_may_2026": 4963,
+    "registrations_accumulated_2026": 12536,
+    "market_share_pct": 5.79
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 7,
+    "brand": "GEELY",
+    "model": "EX2",
+    "registrations_april_2026": 3602,
+    "registrations_may_2026": 4321,
+    "registrations_accumulated_2026": 10397,
+    "market_share_pct": 4.8
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 8,
+    "brand": "CITROEN",
+    "model": "C3",
+    "registrations_april_2026": 1227,
+    "registrations_may_2026": 1267,
+    "registrations_accumulated_2026": 5634,
+    "market_share_pct": 2.6
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 9,
+    "brand": "HONDA",
+    "model": "CITY HATCH",
+    "registrations_april_2026": 826,
+    "registrations_may_2026": 964,
+    "registrations_accumulated_2026": 4894,
+    "market_share_pct": 2.26
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 10,
+    "brand": "PEUGEOT",
+    "model": "208",
+    "registrations_april_2026": 467,
+    "registrations_may_2026": 508,
+    "registrations_accumulated_2026": 2618,
+    "market_share_pct": 1.21
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 11,
+    "brand": "GWM",
+    "model": "ORA 03",
+    "registrations_april_2026": 365,
+    "registrations_may_2026": 490,
+    "registrations_accumulated_2026": 1587,
+    "market_share_pct": 0.73
+  },
+  {
+    "segment": "Hatch Pequenos",
+    "rank": 12,
+    "brand": "MG",
+    "model": "MG4",
+    "registrations_april_2026": 143,
+    "registrations_may_2026": 157,
+    "registrations_accumulated_2026": 561,
+    "market_share_pct": 0.26
+  },
+  {
+    "segment": "Hatch Médios",
+    "rank": 1,
+    "brand": "VW",
+    "model": "GOLF",
+    "registrations_april_2026": 19,
+    "registrations_may_2026": 195,
+    "registrations_accumulated_2026": 220,
+    "market_share_pct": 47.21
+  },
+  {
+    "segment": "Hatch Médios",
+    "rank": 2,
+    "brand": "TOYOTA",
+    "model": "GR YARIS",
+    "registrations_april_2026": 14,
+    "registrations_may_2026": 71,
+    "registrations_accumulated_2026": 85,
+    "market_share_pct": 18.24
+  },
+  {
+    "segment": "Hatch Médios",
+    "rank": 3,
+    "brand": "AUDI",
+    "model": "A3",
+    "registrations_april_2026": 14,
+    "registrations_may_2026": 9,
+    "registrations_accumulated_2026": 75,
+    "market_share_pct": 16.09
+  },
+  {
+    "segment": "Hatch Médios",
+    "rank": 4,
+    "brand": "BMW",
+    "model": "M135I",
+    "registrations_april_2026": 15,
+    "registrations_may_2026": 11,
+    "registrations_accumulated_2026": 61,
+    "market_share_pct": 13.09
+  },
+  {
+    "segment": "Hatch Médios",
+    "rank": 5,
+    "brand": "HONDA",
+    "model": "CIVIC TYPE-R",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 1,
+    "registrations_accumulated_2026": 10,
+    "market_share_pct": 2.15
+  },
+  {
+    "segment": "Hatch Médios",
+    "rank": 6,
+    "brand": "M.BENZ",
+    "model": "A45 AMG",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 5,
+    "market_share_pct": 1.07
+  },
+  {
+    "segment": "Sedans Pequenos",
+    "rank": 1,
+    "brand": "HYUNDAI",
+    "model": "HB20S",
+    "registrations_april_2026": 4054,
+    "registrations_may_2026": 5205,
+    "registrations_accumulated_2026": 17349,
+    "market_share_pct": 64.19
+  },
+  {
+    "segment": "Sedans Pequenos",
+    "rank": 2,
+    "brand": "FIAT",
+    "model": "CRONOS",
+    "registrations_april_2026": 1589,
+    "registrations_may_2026": 2734,
+    "registrations_accumulated_2026": 9665,
+    "market_share_pct": 35.76
+  },
+  {
+    "segment": "Sedans Pequenos",
+    "rank": 3,
+    "brand": "FORD",
+    "model": "KA SEDAN",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 5,
+    "market_share_pct": 0.02
+  },
+  {
+    "segment": "Sedans Pequenos",
+    "rank": 4,
+    "brand": "FIAT",
+    "model": "SIENA",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 2,
+    "market_share_pct": 0.01
+  },
+  {
+    "segment": "Sedans Pequenos",
+    "rank": 5,
+    "brand": "FORD",
+    "model": "FIESTA SEDAN",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Sedans Pequenos",
+    "rank": 6,
+    "brand": "GM",
+    "model": "PRISMA",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Sedans Pequenos",
+    "rank": 7,
+    "brand": "NISSAN",
+    "model": "VERSA",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Sedans Pequenos",
+    "rank": 8,
+    "brand": "RENAULT",
+    "model": "LOGAN",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Sedans Pequenos",
+    "rank": 9,
+    "brand": "TOYOTA",
+    "model": "ETIOS SEDAN",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Sedans Compactos",
+    "rank": 1,
+    "brand": "GM",
+    "model": "ONIX PLUS",
+    "registrations_april_2026": 3856,
+    "registrations_may_2026": 3806,
+    "registrations_accumulated_2026": 16446,
+    "market_share_pct": 42.46
+  },
+  {
+    "segment": "Sedans Compactos",
+    "rank": 2,
+    "brand": "VW",
+    "model": "VIRTUS",
+    "registrations_april_2026": 2768,
+    "registrations_may_2026": 2931,
+    "registrations_accumulated_2026": 13243,
+    "market_share_pct": 34.19
+  },
+  {
+    "segment": "Sedans Compactos",
+    "rank": 3,
+    "brand": "HONDA",
+    "model": "CITY",
+    "registrations_april_2026": 1226,
+    "registrations_may_2026": 1502,
+    "registrations_accumulated_2026": 5932,
+    "market_share_pct": 15.31
+  },
+  {
+    "segment": "Sedans Compactos",
+    "rank": 4,
+    "brand": "NISSAN",
+    "model": "VERSA",
+    "registrations_april_2026": 552,
+    "registrations_may_2026": 357,
+    "registrations_accumulated_2026": 3110,
+    "market_share_pct": 8.03
+  },
+  {
+    "segment": "Sedans Compactos",
+    "rank": 5,
+    "brand": "TOYOTA",
+    "model": "YARIS SEDAN",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 2,
+    "market_share_pct": 0.01
+  },
+  {
+    "segment": "Sedans Compactos",
+    "rank": 6,
+    "brand": "FORD",
+    "model": "CORCEL",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 1,
+    "brand": "TOYOTA",
+    "model": "COROLLA",
+    "registrations_april_2026": 2410,
+    "registrations_may_2026": 2217,
+    "registrations_accumulated_2026": 11074,
+    "market_share_pct": 54.66
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 2,
+    "brand": "BYD",
+    "model": "KING",
+    "registrations_april_2026": 1645,
+    "registrations_may_2026": 1896,
+    "registrations_accumulated_2026": 6555,
+    "market_share_pct": 32.36
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 3,
+    "brand": "VW",
+    "model": "JETTA",
+    "registrations_april_2026": 126,
+    "registrations_may_2026": 148,
+    "registrations_accumulated_2026": 716,
+    "market_share_pct": 3.53
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 4,
+    "brand": "BYD",
+    "model": "SEAL",
+    "registrations_april_2026": 74,
+    "registrations_may_2026": 121,
+    "registrations_accumulated_2026": 634,
+    "market_share_pct": 3.13
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 5,
+    "brand": "AUDI",
+    "model": "A5",
+    "registrations_april_2026": 64,
+    "registrations_may_2026": 51,
+    "registrations_accumulated_2026": 354,
+    "market_share_pct": 1.75
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 6,
+    "brand": "NISSAN",
+    "model": "SENTRA",
+    "registrations_april_2026": 54,
+    "registrations_may_2026": 28,
+    "registrations_accumulated_2026": 332,
+    "market_share_pct": 1.64
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 7,
+    "brand": "BMW",
+    "model": "M235I",
+    "registrations_april_2026": 15,
+    "registrations_may_2026": 14,
+    "registrations_accumulated_2026": 103,
+    "market_share_pct": 0.51
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 8,
+    "brand": "AUDI",
+    "model": "A3 SEDAN",
+    "registrations_april_2026": 16,
+    "registrations_may_2026": 23,
+    "registrations_accumulated_2026": 94,
+    "market_share_pct": 0.46
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 9,
+    "brand": "CAOA CHERY",
+    "model": "ARRIZO 6",
+    "registrations_april_2026": 4,
+    "registrations_may_2026": 5,
+    "registrations_accumulated_2026": 67,
+    "market_share_pct": 0.33
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 10,
+    "brand": "AUDI",
+    "model": "RS3",
+    "registrations_april_2026": 10,
+    "registrations_may_2026": 23,
+    "registrations_accumulated_2026": 65,
+    "market_share_pct": 0.32
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 11,
+    "brand": "GAC",
+    "model": "AION ES",
+    "registrations_april_2026": 9,
+    "registrations_may_2026": 4,
+    "registrations_accumulated_2026": 58,
+    "market_share_pct": 0.29
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 12,
+    "brand": "BMW",
+    "model": "420I",
+    "registrations_april_2026": 16,
+    "registrations_may_2026": 10,
+    "registrations_accumulated_2026": 54,
+    "market_share_pct": 0.27
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 13,
+    "brand": "M.BENZ",
+    "model": "CLA200",
+    "registrations_april_2026": 9,
+    "registrations_may_2026": 2,
+    "registrations_accumulated_2026": 53,
+    "market_share_pct": 0.26
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 14,
+    "brand": "BMW",
+    "model": "220",
+    "registrations_april_2026": 9,
+    "registrations_may_2026": 5,
+    "registrations_accumulated_2026": 46,
+    "market_share_pct": 0.23
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 15,
+    "brand": "M.BENZ",
+    "model": "CLA45",
+    "registrations_april_2026": 3,
+    "registrations_may_2026": 2,
+    "registrations_accumulated_2026": 20,
+    "market_share_pct": 0.1
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 16,
+    "brand": "M.BENZ",
+    "model": "CLA35",
+    "registrations_april_2026": 5,
+    "registrations_may_2026": 1,
+    "registrations_accumulated_2026": 17,
+    "market_share_pct": 0.08
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 17,
+    "brand": "HONDA",
+    "model": "CIVIC",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 7,
+    "market_share_pct": 0.03
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 18,
+    "brand": "GM",
+    "model": "CRUZE SEDAN",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 1,
+    "registrations_accumulated_2026": 4,
+    "market_share_pct": 0.02
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 19,
+    "brand": "M.BENZ",
+    "model": "AMG C63S",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 2,
+    "market_share_pct": 0.01
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 20,
+    "brand": "FORD",
+    "model": "DEL REY",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 1,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Sedans médios",
+    "rank": 21,
+    "brand": "VW",
+    "model": "SANTANA",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 1,
+    "brand": "BMW",
+    "model": "320I",
+    "registrations_april_2026": 276,
+    "registrations_may_2026": 290,
+    "registrations_accumulated_2026": 1446,
+    "market_share_pct": 61.12
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 2,
+    "brand": "M.BENZ",
+    "model": "CLASSE C",
+    "registrations_april_2026": 122,
+    "registrations_may_2026": 84,
+    "registrations_accumulated_2026": 479,
+    "market_share_pct": 20.25
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 3,
+    "brand": "PORSCHE",
+    "model": "PANAMERA",
+    "registrations_april_2026": 29,
+    "registrations_may_2026": 24,
+    "registrations_accumulated_2026": 128,
+    "market_share_pct": 5.41
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 4,
+    "brand": "BMW",
+    "model": "330E",
+    "registrations_april_2026": 20,
+    "registrations_may_2026": 18,
+    "registrations_accumulated_2026": 75,
+    "market_share_pct": 3.17
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 5,
+    "brand": "M.BENZ",
+    "model": "CLASSE E",
+    "registrations_april_2026": 12,
+    "registrations_may_2026": 6,
+    "registrations_accumulated_2026": 50,
+    "market_share_pct": 2.11
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 6,
+    "brand": "BMW",
+    "model": "530E",
+    "registrations_april_2026": 12,
+    "registrations_may_2026": 2,
+    "registrations_accumulated_2026": 26,
+    "market_share_pct": 1.1
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 7,
+    "brand": "BMW",
+    "model": "I4",
+    "registrations_april_2026": 8,
+    "registrations_may_2026": 2,
+    "registrations_accumulated_2026": 23,
+    "market_share_pct": 0.97
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 8,
+    "brand": "BMW",
+    "model": "I7",
+    "registrations_april_2026": 5,
+    "registrations_may_2026": 4,
+    "registrations_accumulated_2026": 23,
+    "market_share_pct": 0.97
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 9,
+    "brand": "ZEEKR",
+    "model": "001",
+    "registrations_april_2026": 5,
+    "registrations_may_2026": 3,
+    "registrations_accumulated_2026": 23,
+    "market_share_pct": 0.97
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 10,
+    "brand": "M.BENZ",
+    "model": "AMG GT63S",
+    "registrations_april_2026": 6,
+    "registrations_may_2026": 1,
+    "registrations_accumulated_2026": 21,
+    "market_share_pct": 0.89
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 11,
+    "brand": "HONDA",
+    "model": "ACCORD",
+    "registrations_april_2026": 2,
+    "registrations_may_2026": 2,
+    "registrations_accumulated_2026": 19,
+    "market_share_pct": 0.8
+  },
+  {
+    "segment": "Sedans Grandes",
+    "rank": 12,
+    "brand": "M.BENZ",
+    "model": "S63",
+    "registrations_april_2026": 3,
+    "registrations_may_2026": 2,
+    "registrations_accumulated_2026": 9,
+    "market_share_pct": 0.38
+  },
+  {
+    "segment": "Sw Médios",
+    "rank": 1,
+    "brand": "VW",
+    "model": "PARATI",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 2,
+    "market_share_pct": 50.0
+  },
+  {
+    "segment": "Sw Médios",
+    "rank": 2,
+    "brand": "FIAT",
+    "model": "PALIO WEEKEND",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 25.0
+  },
+  {
+    "segment": "Sw Médios",
+    "rank": 3,
+    "brand": "GM",
+    "model": "KADETT",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 25.0
+  },
+  {
+    "segment": "Sw Grandes",
+    "rank": 1,
+    "brand": "AUDI",
+    "model": "RS6 AVANT",
+    "registrations_april_2026": 7,
+    "registrations_may_2026": 5,
+    "registrations_accumulated_2026": 25,
+    "market_share_pct": 100.0
+  },
+  {
+    "segment": "Monocab",
+    "rank": 1,
+    "brand": "FIAT",
+    "model": "DOBLO",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 3,
+    "market_share_pct": 42.86
+  },
+  {
+    "segment": "Monocab",
+    "rank": 2,
+    "brand": "HONDA",
+    "model": "FIT",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 1,
+    "registrations_accumulated_2026": 3,
+    "market_share_pct": 42.86
+  },
+  {
+    "segment": "Monocab",
+    "rank": 3,
+    "brand": "FIAT",
+    "model": "IDEA",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 1,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 14.29
+  },
+  {
+    "segment": "Grandcab",
+    "rank": 1,
+    "brand": "GM",
+    "model": "SPIN",
+    "registrations_april_2026": 1851,
+    "registrations_may_2026": 2254,
+    "registrations_accumulated_2026": 8022,
+    "market_share_pct": 98.42
+  },
+  {
+    "segment": "Grandcab",
+    "rank": 2,
+    "brand": "KIA",
+    "model": "CARNIVAL",
+    "registrations_april_2026": 19,
+    "registrations_may_2026": 34,
+    "registrations_accumulated_2026": 109,
+    "market_share_pct": 1.34
+  },
+  {
+    "segment": "Grandcab",
+    "rank": 3,
+    "brand": "VW",
+    "model": "ID.BUZZ",
+    "registrations_april_2026": 3,
+    "registrations_may_2026": 7,
+    "registrations_accumulated_2026": 12,
+    "market_share_pct": 0.15
+  },
+  {
+    "segment": "Grandcab",
+    "rank": 4,
+    "brand": "TOYOTA",
+    "model": "SIENNA",
+    "registrations_april_2026": 2,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 3,
+    "market_share_pct": 0.04
+  },
+  {
+    "segment": "Sports",
+    "rank": 1,
+    "brand": "PORSCHE",
+    "model": "911",
+    "registrations_april_2026": 78,
+    "registrations_may_2026": 111,
+    "registrations_accumulated_2026": 576,
+    "market_share_pct": 42.89
+  },
+  {
+    "segment": "Sports",
+    "rank": 2,
+    "brand": "FORD",
+    "model": "MUSTANG",
+    "registrations_april_2026": 51,
+    "registrations_may_2026": 45,
+    "registrations_accumulated_2026": 195,
+    "market_share_pct": 14.52
+  },
+  {
+    "segment": "Sports",
+    "rank": 3,
+    "brand": "BMW",
+    "model": "M3",
+    "registrations_april_2026": 29,
+    "registrations_may_2026": 17,
+    "registrations_accumulated_2026": 116,
+    "market_share_pct": 8.64
+  },
+  {
+    "segment": "Sports",
+    "rank": 4,
+    "brand": "BMW",
+    "model": "M2",
+    "registrations_april_2026": 17,
+    "registrations_may_2026": 13,
+    "registrations_accumulated_2026": 92,
+    "market_share_pct": 6.85
+  },
+  {
+    "segment": "Sports",
+    "rank": 5,
+    "brand": "GM",
+    "model": "CORVETTE",
+    "registrations_april_2026": 18,
+    "registrations_may_2026": 26,
+    "registrations_accumulated_2026": 92,
+    "market_share_pct": 6.85
+  },
+  {
+    "segment": "Sports",
+    "rank": 6,
+    "brand": "MG",
+    "model": "CYBERSTER",
+    "registrations_april_2026": 18,
+    "registrations_may_2026": 18,
+    "registrations_accumulated_2026": 54,
+    "market_share_pct": 4.02
+  },
+  {
+    "segment": "Sports",
+    "rank": 7,
+    "brand": "PORSCHE",
+    "model": "BOXSTER",
+    "registrations_april_2026": 14,
+    "registrations_may_2026": 12,
+    "registrations_accumulated_2026": 49,
+    "market_share_pct": 3.65
+  },
+  {
+    "segment": "Sports",
+    "rank": 8,
+    "brand": "DODGE",
+    "model": "CHALLENGER",
+    "registrations_april_2026": 5,
+    "registrations_may_2026": 14,
+    "registrations_accumulated_2026": 37,
+    "market_share_pct": 2.76
+  },
+  {
+    "segment": "Sports",
+    "rank": 9,
+    "brand": "PORSCHE",
+    "model": "CAYMAN",
+    "registrations_april_2026": 12,
+    "registrations_may_2026": 6,
+    "registrations_accumulated_2026": 27,
+    "market_share_pct": 2.01
+  },
+  {
+    "segment": "Suv's",
+    "rank": 1,
+    "brand": "VW",
+    "model": "T CROSS",
+    "registrations_april_2026": 7810,
+    "registrations_may_2026": 9455,
+    "registrations_accumulated_2026": 36295,
+    "market_share_pct": 7.21
+  },
+  {
+    "segment": "Suv's",
+    "rank": 2,
+    "brand": "VW",
+    "model": "TERA",
+    "registrations_april_2026": 6231,
+    "registrations_may_2026": 7574,
+    "registrations_accumulated_2026": 32131,
+    "market_share_pct": 6.38
+  },
+  {
+    "segment": "Suv's",
+    "rank": 3,
+    "brand": "HYUNDAI",
+    "model": "CRETA",
+    "registrations_april_2026": 7649,
+    "registrations_may_2026": 6599,
+    "registrations_accumulated_2026": 30392,
+    "market_share_pct": 6.03
+  },
+  {
+    "segment": "Suv's",
+    "rank": 4,
+    "brand": "BYD",
+    "model": "SONG",
+    "registrations_april_2026": 6039,
+    "registrations_may_2026": 6307,
+    "registrations_accumulated_2026": 24895,
+    "market_share_pct": 4.94
+  },
+  {
+    "segment": "Suv's",
+    "rank": 5,
+    "brand": "GM",
+    "model": "TRACKER",
+    "registrations_april_2026": 5305,
+    "registrations_may_2026": 5099,
+    "registrations_accumulated_2026": 24733,
+    "market_share_pct": 4.91
+  },
+  {
+    "segment": "Suv's",
+    "rank": 6,
+    "brand": "VW",
+    "model": "NIVUS",
+    "registrations_april_2026": 5346,
+    "registrations_may_2026": 5806,
+    "registrations_accumulated_2026": 23963,
+    "market_share_pct": 4.76
+  },
+  {
+    "segment": "Suv's",
+    "rank": 7,
+    "brand": "JEEP",
+    "model": "COMPASS",
+    "registrations_april_2026": 4219,
+    "registrations_may_2026": 4584,
+    "registrations_accumulated_2026": 22907,
+    "market_share_pct": 4.55
+  },
+  {
+    "segment": "Suv's",
+    "rank": 8,
+    "brand": "FIAT",
+    "model": "FASTBACK",
+    "registrations_april_2026": 4305,
+    "registrations_may_2026": 4121,
+    "registrations_accumulated_2026": 20628,
+    "market_share_pct": 4.09
+  },
+  {
+    "segment": "Suv's",
+    "rank": 9,
+    "brand": "FIAT",
+    "model": "PULSE",
+    "registrations_april_2026": 4387,
+    "registrations_may_2026": 4763,
+    "registrations_accumulated_2026": 20566,
+    "market_share_pct": 4.08
+  },
+  {
+    "segment": "Suv's",
+    "rank": 10,
+    "brand": "HONDA",
+    "model": "HR-V",
+    "registrations_april_2026": 4078,
+    "registrations_may_2026": 4549,
+    "registrations_accumulated_2026": 18342,
+    "market_share_pct": 3.64
+  },
+  {
+    "segment": "Suv's",
+    "rank": 11,
+    "brand": "JEEP",
+    "model": "RENEGADE",
+    "registrations_april_2026": 3143,
+    "registrations_may_2026": 4323,
+    "registrations_accumulated_2026": 16522,
+    "market_share_pct": 3.28
+  },
+  {
+    "segment": "Suv's",
+    "rank": 12,
+    "brand": "GWM",
+    "model": "HAVAL H6",
+    "registrations_april_2026": 2688,
+    "registrations_may_2026": 4328,
+    "registrations_accumulated_2026": 16196,
+    "market_share_pct": 3.22
+  },
+  {
+    "segment": "Suv's",
+    "rank": 13,
+    "brand": "TOYOTA",
+    "model": "COROLLA CROSS",
+    "registrations_april_2026": 3175,
+    "registrations_may_2026": 3495,
+    "registrations_accumulated_2026": 15492,
+    "market_share_pct": 3.08
+  },
+  {
+    "segment": "Suv's",
+    "rank": 14,
+    "brand": "NISSAN",
+    "model": "KICKS",
+    "registrations_april_2026": 2170,
+    "registrations_may_2026": 3197,
+    "registrations_accumulated_2026": 14328,
+    "market_share_pct": 2.84
+  },
+  {
+    "segment": "Suv's",
+    "rank": 15,
+    "brand": "HONDA",
+    "model": "WR-V",
+    "registrations_april_2026": 2857,
+    "registrations_may_2026": 3254,
+    "registrations_accumulated_2026": 14092,
+    "market_share_pct": 2.8
+  },
+  {
+    "segment": "Suv's",
+    "rank": 16,
+    "brand": "NISSAN",
+    "model": "KAIT",
+    "registrations_april_2026": 2503,
+    "registrations_may_2026": 3352,
+    "registrations_accumulated_2026": 12255,
+    "market_share_pct": 2.43
+  },
+  {
+    "segment": "Suv's",
+    "rank": 17,
+    "brand": "CAOA CHERY",
+    "model": "TIGGO 7",
+    "registrations_april_2026": 2402,
+    "registrations_may_2026": 2883,
+    "registrations_accumulated_2026": 12092,
+    "market_share_pct": 2.4
+  },
+  {
+    "segment": "Suv's",
+    "rank": 18,
+    "brand": "CAOA CHERY",
+    "model": "TIGGO 5X",
+    "registrations_april_2026": 3924,
+    "registrations_may_2026": 2482,
+    "registrations_accumulated_2026": 11924,
+    "market_share_pct": 2.37
+  },
+  {
+    "segment": "Suv's",
+    "rank": 19,
+    "brand": "TOYOTA",
+    "model": "YARIS CROSS",
+    "registrations_april_2026": 3628,
+    "registrations_may_2026": 3641,
+    "registrations_accumulated_2026": 11738,
+    "market_share_pct": 2.33
+  },
+  {
+    "segment": "Suv's",
+    "rank": 20,
+    "brand": "OMODA JAECOO",
+    "model": "OMODA 5",
+    "registrations_april_2026": 1872,
+    "registrations_may_2026": 1562,
+    "registrations_accumulated_2026": 7258,
+    "market_share_pct": 1.44
+  },
+  {
+    "segment": "Suv's",
+    "rank": 21,
+    "brand": "CITROEN",
+    "model": "BASALT",
+    "registrations_april_2026": 930,
+    "registrations_may_2026": 2744,
+    "registrations_accumulated_2026": 6687,
+    "market_share_pct": 1.33
+  },
+  {
+    "segment": "Suv's",
+    "rank": 22,
+    "brand": "JEEP",
+    "model": "COMMANDER",
+    "registrations_april_2026": 1159,
+    "registrations_may_2026": 1456,
+    "registrations_accumulated_2026": 6670,
+    "market_share_pct": 1.32
+  },
+  {
+    "segment": "Suv's",
+    "rank": 23,
+    "brand": "RENAULT",
+    "model": "KARDIAN",
+    "registrations_april_2026": 1285,
+    "registrations_may_2026": 1266,
+    "registrations_accumulated_2026": 6270,
+    "market_share_pct": 1.24
+  },
+  {
+    "segment": "Suv's",
+    "rank": 24,
+    "brand": "VW",
+    "model": "TAOS",
+    "registrations_april_2026": 1131,
+    "registrations_may_2026": 1670,
+    "registrations_accumulated_2026": 6191,
+    "market_share_pct": 1.23
+  },
+  {
+    "segment": "Suv's",
+    "rank": 25,
+    "brand": "CAOA CHERY",
+    "model": "TIGGO 8",
+    "registrations_april_2026": 1150,
+    "registrations_may_2026": 1289,
+    "registrations_accumulated_2026": 5773,
+    "market_share_pct": 1.15
+  },
+  {
+    "segment": "Suv's",
+    "rank": 26,
+    "brand": "TOYOTA",
+    "model": "HILUX SW4",
+    "registrations_april_2026": 1091,
+    "registrations_may_2026": 1187,
+    "registrations_accumulated_2026": 5656,
+    "market_share_pct": 1.12
+  },
+  {
+    "segment": "Suv's",
+    "rank": 27,
+    "brand": "RENAULT",
+    "model": "DUSTER",
+    "registrations_april_2026": 1004,
+    "registrations_may_2026": 1225,
+    "registrations_accumulated_2026": 5240,
+    "market_share_pct": 1.04
+  },
+  {
+    "segment": "Suv's",
+    "rank": 28,
+    "brand": "GWM",
+    "model": "HAVAL H9",
+    "registrations_april_2026": 922,
+    "registrations_may_2026": 1220,
+    "registrations_accumulated_2026": 4866,
+    "market_share_pct": 0.97
+  },
+  {
+    "segment": "Suv's",
+    "rank": 29,
+    "brand": "RENAULT",
+    "model": "BOREAL",
+    "registrations_april_2026": 1008,
+    "registrations_may_2026": 1244,
+    "registrations_accumulated_2026": 4775,
+    "market_share_pct": 0.95
+  },
+  {
+    "segment": "Suv's",
+    "rank": 30,
+    "brand": "FORD",
+    "model": "TERRITORY",
+    "registrations_april_2026": 868,
+    "registrations_may_2026": 700,
+    "registrations_accumulated_2026": 4096,
+    "market_share_pct": 0.81
+  },
+  {
+    "segment": "Suv's",
+    "rank": 31,
+    "brand": "PEUGEOT",
+    "model": "2008",
+    "registrations_april_2026": 528,
+    "registrations_may_2026": 948,
+    "registrations_accumulated_2026": 3773,
+    "market_share_pct": 0.75
+  },
+  {
+    "segment": "Suv's",
+    "rank": 32,
+    "brand": "OMODA JAECOO",
+    "model": "JAECOO 7",
+    "registrations_april_2026": 710,
+    "registrations_may_2026": 1391,
+    "registrations_accumulated_2026": 3693,
+    "market_share_pct": 0.73
+  },
+  {
+    "segment": "Suv's",
+    "rank": 33,
+    "brand": "GM",
+    "model": "SPARK",
+    "registrations_april_2026": 1046,
+    "registrations_may_2026": 1054,
+    "registrations_accumulated_2026": 3082,
+    "market_share_pct": 0.61
+  },
+  {
+    "segment": "Suv's",
+    "rank": 34,
+    "brand": "BYD",
+    "model": "YUAN",
+    "registrations_april_2026": 438,
+    "registrations_may_2026": 573,
+    "registrations_accumulated_2026": 2960,
+    "market_share_pct": 0.59
+  },
+  {
+    "segment": "Suv's",
+    "rank": 35,
+    "brand": "MITSUBISHI",
+    "model": "ECLIPSE CROSS",
+    "registrations_april_2026": 581,
+    "registrations_may_2026": 526,
+    "registrations_accumulated_2026": 2855,
+    "market_share_pct": 0.57
+  },
+  {
+    "segment": "Suv's",
+    "rank": 36,
+    "brand": "GM",
+    "model": "SONIC",
+    "registrations_april_2026": 0,
+    "registrations_may_2026": 2778,
+    "registrations_accumulated_2026": 2778,
+    "market_share_pct": 0.55
+  },
+  {
+    "segment": "Suv's",
+    "rank": 37,
+    "brand": "GWM",
+    "model": "TANK 300",
+    "registrations_april_2026": 358,
+    "registrations_may_2026": 365,
+    "registrations_accumulated_2026": 2415,
+    "market_share_pct": 0.48
+  },
+  {
+    "segment": "Suv's",
+    "rank": 38,
+    "brand": "LEAPMOTOR",
+    "model": "C10",
+    "registrations_april_2026": 486,
+    "registrations_may_2026": 630,
+    "registrations_accumulated_2026": 2332,
+    "market_share_pct": 0.46
+  },
+  {
+    "segment": "Suv's",
+    "rank": 39,
+    "brand": "GAC",
+    "model": "GS4",
+    "registrations_april_2026": 369,
+    "registrations_may_2026": 370,
+    "registrations_accumulated_2026": 1980,
+    "market_share_pct": 0.39
+  },
+  {
+    "segment": "Suv's",
+    "rank": 40,
+    "brand": "GEELY",
+    "model": "EX5",
+    "registrations_april_2026": 401,
+    "registrations_may_2026": 852,
+    "registrations_accumulated_2026": 1913,
+    "market_share_pct": 0.38
+  },
+  {
+    "segment": "Pick-up's Pequenas",
+    "rank": 1,
+    "brand": "FIAT",
+    "model": "STRADA",
+    "registrations_april_2026": 14901,
+    "registrations_may_2026": 15395,
+    "registrations_accumulated_2026": 68730,
+    "market_share_pct": 77.35
+  },
+  {
+    "segment": "Pick-up's Pequenas",
+    "rank": 2,
+    "brand": "VW",
+    "model": "SAVEIRO",
+    "registrations_april_2026": 6456,
+    "registrations_may_2026": 3098,
+    "registrations_accumulated_2026": 20117,
+    "market_share_pct": 22.64
+  },
+  {
+    "segment": "Pick-up's Pequenas",
+    "rank": 3,
+    "brand": "GM",
+    "model": "MONTANA",
+    "registrations_april_2026": 5,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 7,
+    "market_share_pct": 0.01
+  },
+  {
+    "segment": "Pick-up's Pequenas",
+    "rank": 4,
+    "brand": "FORD",
+    "model": "RANCHERO",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Pick-up's Pequenas",
+    "rank": 5,
+    "brand": "GM",
+    "model": "CHEVY",
+    "registrations_april_2026": 1,
+    "registrations_may_2026": 0,
+    "registrations_accumulated_2026": 1,
+    "market_share_pct": 0.0
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 1,
+    "brand": "FIAT",
+    "model": "TORO",
+    "registrations_april_2026": 4169,
+    "registrations_may_2026": 4405,
+    "registrations_accumulated_2026": 21699,
+    "market_share_pct": 20.66
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 2,
+    "brand": "TOYOTA",
+    "model": "HILUX",
+    "registrations_april_2026": 4078,
+    "registrations_may_2026": 3982,
+    "registrations_accumulated_2026": 19479,
+    "market_share_pct": 18.55
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 3,
+    "brand": "FORD",
+    "model": "RANGER",
+    "registrations_april_2026": 3103,
+    "registrations_may_2026": 3530,
+    "registrations_accumulated_2026": 14022,
+    "market_share_pct": 13.35
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 4,
+    "brand": "GM",
+    "model": "S10",
+    "registrations_april_2026": 2731,
+    "registrations_may_2026": 3008,
+    "registrations_accumulated_2026": 11796,
+    "market_share_pct": 11.23
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 5,
+    "brand": "RAM",
+    "model": "RAMPAGE",
+    "registrations_april_2026": 1928,
+    "registrations_may_2026": 1858,
+    "registrations_accumulated_2026": 10016,
+    "market_share_pct": 9.54
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 6,
+    "brand": "GM",
+    "model": "MONTANA",
+    "registrations_april_2026": 1622,
+    "registrations_may_2026": 1542,
+    "registrations_accumulated_2026": 6759,
+    "market_share_pct": 6.44
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 7,
+    "brand": "RENAULT",
+    "model": "OROCH",
+    "registrations_april_2026": 986,
+    "registrations_may_2026": 825,
+    "registrations_accumulated_2026": 4599,
+    "market_share_pct": 4.38
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 8,
+    "brand": "MITSUBISHI",
+    "model": "TRITON",
+    "registrations_april_2026": 929,
+    "registrations_may_2026": 971,
+    "registrations_accumulated_2026": 4217,
+    "market_share_pct": 4.02
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 9,
+    "brand": "GWM",
+    "model": "POER",
+    "registrations_april_2026": 564,
+    "registrations_may_2026": 753,
+    "registrations_accumulated_2026": 2497,
+    "market_share_pct": 2.38
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 10,
+    "brand": "FIAT",
+    "model": "TITANO",
+    "registrations_april_2026": 421,
+    "registrations_may_2026": 467,
+    "registrations_accumulated_2026": 2336,
+    "market_share_pct": 2.22
+  },
+  {
+    "segment": "Pick-up's Grandes",
+    "rank": 11,
+    "brand": "FORD",
+    "model": "MAVERICK",
+    "registrations_april_2026": 285,
+    "registrations_may_2026": 438,
+    "registrations_accumulated_2026": 1798,
+    "market_share_pct": 1.71
+  },
+  {
+    "segment": "Furgões",
+    "rank": 1,
+    "brand": "RENAULT",
+    "model": "MASTER",
+    "registrations_april_2026": 910,
+    "registrations_may_2026": 839,
+    "registrations_accumulated_2026": 4475,
+    "market_share_pct": 23.77
+  },
+  {
+    "segment": "Furgões",
+    "rank": 2,
+    "brand": "KIA",
+    "model": "K2500",
+    "registrations_april_2026": 333,
+    "registrations_may_2026": 368,
+    "registrations_accumulated_2026": 1711,
+    "market_share_pct": 9.09
+  },
+  {
+    "segment": "Furgões",
+    "rank": 3,
+    "brand": "FIAT",
+    "model": "SCUDO",
+    "registrations_april_2026": 195,
+    "registrations_may_2026": 275,
+    "registrations_accumulated_2026": 1450,
+    "market_share_pct": 7.7
+  },
+  {
+    "segment": "Furgões",
+    "rank": 4,
+    "brand": "FIAT",
+    "model": "DUCATO",
+    "registrations_april_2026": 203,
+    "registrations_may_2026": 374,
+    "registrations_accumulated_2026": 1358,
+    "market_share_pct": 7.21
+  },
+  {
+    "segment": "Furgões",
+    "rank": 5,
+    "brand": "VW TRUCK E BUS",
+    "model": "EXPRESS",
+    "registrations_april_2026": 210,
+    "registrations_may_2026": 337,
+    "registrations_accumulated_2026": 1111,
+    "market_share_pct": 5.9
+  },
+  {
+    "segment": "Furgões",
+    "rank": 6,
+    "brand": "EFFA",
+    "model": "V21",
+    "registrations_april_2026": 232,
+    "registrations_may_2026": 241,
+    "registrations_accumulated_2026": 1110,
+    "market_share_pct": 5.9
+  },
+  {
+    "segment": "Furgões",
+    "rank": 7,
+    "brand": "IVECO",
+    "model": "DAILY",
+    "registrations_april_2026": 214,
+    "registrations_may_2026": 400,
+    "registrations_accumulated_2026": 1094,
+    "market_share_pct": 5.81
+  },
+  {
+    "segment": "Furgões Pequenos",
+    "rank": 1,
+    "brand": "FIAT",
+    "model": "FIORINO",
+    "registrations_april_2026": 2096,
+    "registrations_may_2026": 3105,
+    "registrations_accumulated_2026": 10793,
+    "market_share_pct": 87.36
+  },
+  {
+    "segment": "Furgões Pequenos",
+    "rank": 2,
+    "brand": "RENAULT",
+    "model": "KANGOO",
+    "registrations_april_2026": 371,
+    "registrations_may_2026": 371,
+    "registrations_accumulated_2026": 1328,
+    "market_share_pct": 10.75
+  },
+  {
+    "segment": "Furgões Pequenos",
+    "rank": 3,
+    "brand": "PEUGEOT",
+    "model": "PARTNER",
+    "registrations_april_2026": 56,
+    "registrations_may_2026": 44,
+    "registrations_accumulated_2026": 222,
+    "market_share_pct": 1.8
+  },
+  {
+    "segment": "Furgões Pequenos",
+    "rank": 4,
+    "brand": "RENAULT",
+    "model": "KWID",
+    "registrations_april_2026": 2,
+    "registrations_may_2026": 1,
+    "registrations_accumulated_2026": 8,
+    "market_share_pct": 0.06
+  }
+]

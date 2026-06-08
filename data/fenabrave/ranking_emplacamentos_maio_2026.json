@@ -1,0 +1,702 @@
+[
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 1,
+    "brand": "VW",
+    "model": "POLO",
+    "registrations_month": 10523
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 1,
+    "brand": "FIAT",
+    "model": "STRADA",
+    "registrations_month": 15395
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 2,
+    "brand": "VW",
+    "model": "T CROSS",
+    "registrations_month": 9455
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 2,
+    "brand": "FIAT",
+    "model": "TORO",
+    "registrations_month": 4405
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 3,
+    "brand": "HYUNDAI",
+    "model": "HB20",
+    "registrations_month": 8357
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 3,
+    "brand": "TOYOTA",
+    "model": "HILUX",
+    "registrations_month": 3982
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 4,
+    "brand": "FIAT",
+    "model": "ARGO",
+    "registrations_month": 8274
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 4,
+    "brand": "FORD",
+    "model": "RANGER",
+    "registrations_month": 3530
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 5,
+    "brand": "GM",
+    "model": "ONIX",
+    "registrations_month": 7713
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 5,
+    "brand": "FIAT",
+    "model": "FIORINO",
+    "registrations_month": 3105
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 6,
+    "brand": "BYD",
+    "model": "DOLPHIN MINI",
+    "registrations_month": 7577
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 6,
+    "brand": "VW",
+    "model": "SAVEIRO",
+    "registrations_month": 3099
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 7,
+    "brand": "VW",
+    "model": "TERA",
+    "registrations_month": 7574
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 7,
+    "brand": "GM",
+    "model": "S10",
+    "registrations_month": 3008
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 8,
+    "brand": "HYUNDAI",
+    "model": "CRETA",
+    "registrations_month": 6599
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 8,
+    "brand": "RAM",
+    "model": "RAMPAGE",
+    "registrations_month": 1858
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 9,
+    "brand": "BYD",
+    "model": "SONG",
+    "registrations_month": 6307
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 9,
+    "brand": "GM",
+    "model": "MONTANA",
+    "registrations_month": 1542
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 10,
+    "brand": "VW",
+    "model": "NIVUS",
+    "registrations_month": 5806
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 10,
+    "brand": "MITSUBISHI",
+    "model": "TRITON",
+    "registrations_month": 971
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 11,
+    "brand": "FIAT",
+    "model": "MOBI",
+    "registrations_month": 5728
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 11,
+    "brand": "RENAULT",
+    "model": "MASTER",
+    "registrations_month": 839
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 12,
+    "brand": "RENAULT",
+    "model": "KWID",
+    "registrations_month": 5237
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 12,
+    "brand": "RENAULT",
+    "model": "OROCH",
+    "registrations_month": 825
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 13,
+    "brand": "HYUNDAI",
+    "model": "HB20S",
+    "registrations_month": 5205
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 13,
+    "brand": "GWM",
+    "model": "POER",
+    "registrations_month": 753
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 14,
+    "brand": "GM",
+    "model": "TRACKER",
+    "registrations_month": 5099
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 14,
+    "brand": "RAM",
+    "model": "DAKOTA",
+    "registrations_month": 477
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 15,
+    "brand": "BYD",
+    "model": "DOLPHIN",
+    "registrations_month": 4963
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 15,
+    "brand": "FIAT",
+    "model": "TITANO",
+    "registrations_month": 467
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 16,
+    "brand": "FIAT",
+    "model": "PULSE",
+    "registrations_month": 4763
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 16,
+    "brand": "FORD",
+    "model": "MAVERICK",
+    "registrations_month": 438
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 17,
+    "brand": "JEEP",
+    "model": "COMPASS",
+    "registrations_month": 4584
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 17,
+    "brand": "IVECO",
+    "model": "DAILY",
+    "registrations_month": 400
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 18,
+    "brand": "HONDA",
+    "model": "HR-V",
+    "registrations_month": 4549
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 18,
+    "brand": "VW",
+    "model": "AMAROK",
+    "registrations_month": 380
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 19,
+    "brand": "GWM",
+    "model": "HAVAL H6",
+    "registrations_month": 4328
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 19,
+    "brand": "FIAT",
+    "model": "DUCATO",
+    "registrations_month": 374
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 20,
+    "brand": "JEEP",
+    "model": "RENEGADE",
+    "registrations_month": 4323
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 20,
+    "brand": "RENAULT",
+    "model": "KANGOO",
+    "registrations_month": 371
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 21,
+    "brand": "GEELY",
+    "model": "EX2",
+    "registrations_month": 4321
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 21,
+    "brand": "KIA",
+    "model": "K2500",
+    "registrations_month": 368
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 22,
+    "brand": "FIAT",
+    "model": "FASTBACK",
+    "registrations_month": 4121
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 22,
+    "brand": "IVECO",
+    "model": "DAILY 30-130",
+    "registrations_month": 358
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 23,
+    "brand": "GM",
+    "model": "ONIX PLUS",
+    "registrations_month": 3806
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 23,
+    "brand": "VW TRUCK E BUS",
+    "model": "EXPRESS",
+    "registrations_month": 337
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 24,
+    "brand": "TOYOTA",
+    "model": "YARIS CROSS",
+    "registrations_month": 3641
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 24,
+    "brand": "FIAT",
+    "model": "SCUDO",
+    "registrations_month": 275
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 25,
+    "brand": "TOYOTA",
+    "model": "COROLLA CROSS",
+    "registrations_month": 3495
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 25,
+    "brand": "EFFA",
+    "model": "V21",
+    "registrations_month": 241
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 26,
+    "brand": "NISSAN",
+    "model": "KAIT",
+    "registrations_month": 3352
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 26,
+    "brand": "CITROEN",
+    "model": "JUMPY",
+    "registrations_month": 215
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 27,
+    "brand": "HONDA",
+    "model": "WR-V",
+    "registrations_month": 3254
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 27,
+    "brand": "FORD",
+    "model": "TRANSIT",
+    "registrations_month": 203
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 28,
+    "brand": "NISSAN",
+    "model": "KICKS",
+    "registrations_month": 3197
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 28,
+    "brand": "NISSAN",
+    "model": "FRONTIER",
+    "registrations_month": 186
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 29,
+    "brand": "VW",
+    "model": "VIRTUS",
+    "registrations_month": 2931
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 29,
+    "brand": "TOYOTA",
+    "model": "HIACE",
+    "registrations_month": 183
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 30,
+    "brand": "CAOA CHERY",
+    "model": "TIGGO 7",
+    "registrations_month": 2883
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 30,
+    "brand": "PEUGEOT",
+    "model": "EXPERT",
+    "registrations_month": 170
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 31,
+    "brand": "GM",
+    "model": "SONIC",
+    "registrations_month": 2778
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 31,
+    "brand": "FORD",
+    "model": "F150",
+    "registrations_month": 129
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 32,
+    "brand": "CITROEN",
+    "model": "BASALT",
+    "registrations_month": 2744
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 32,
+    "brand": "RAM",
+    "model": "3500",
+    "registrations_month": 112
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 33,
+    "brand": "FIAT",
+    "model": "CRONOS",
+    "registrations_month": 2734
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 33,
+    "brand": "M.BENZ",
+    "model": "SPRINTER 317",
+    "registrations_month": 89
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 34,
+    "brand": "CAOA CHERY",
+    "model": "TIGGO 5X",
+    "registrations_month": 2482
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 34,
+    "brand": "FOTON",
+    "model": "AUMARK S 315",
+    "registrations_month": 78
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 35,
+    "brand": "GM",
+    "model": "SPIN",
+    "registrations_month": 2254
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 35,
+    "brand": "RAM",
+    "model": "2500",
+    "registrations_month": 66
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 36,
+    "brand": "TOYOTA",
+    "model": "COROLLA",
+    "registrations_month": 2217
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 36,
+    "brand": "M.BENZ",
+    "model": "SPRINTER 417",
+    "registrations_month": 60
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 37,
+    "brand": "BYD",
+    "model": "KING",
+    "registrations_month": 1896
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 37,
+    "brand": "CITROEN",
+    "model": "JUMPER",
+    "registrations_month": 52
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 38,
+    "brand": "VW",
+    "model": "TAOS",
+    "registrations_month": 1670
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 38,
+    "brand": "PEUGEOT",
+    "model": "BOXER",
+    "registrations_month": 50
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 39,
+    "brand": "OMODA JAECOO",
+    "model": "OMODA 5",
+    "registrations_month": 1562
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 39,
+    "brand": "PEUGEOT",
+    "model": "PARTNER",
+    "registrations_month": 44
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 40,
+    "brand": "HONDA",
+    "model": "CITY",
+    "registrations_month": 1502
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 40,
+    "brand": "RIDDARA",
+    "model": "RD6",
+    "registrations_month": 42
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 41,
+    "brand": "JEEP",
+    "model": "COMMANDER",
+    "registrations_month": 1456
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 41,
+    "brand": "EFFA",
+    "model": "V22",
+    "registrations_month": 40
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 42,
+    "brand": "OMODA JAECOO",
+    "model": "JAECOO 7",
+    "registrations_month": 1391
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 42,
+    "brand": "FOTON",
+    "model": "TUNLAND",
+    "registrations_month": 38
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 43,
+    "brand": "CAOA CHERY",
+    "model": "TIGGO 8",
+    "registrations_month": 1289
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 43,
+    "brand": "GM",
+    "model": "SILVERADO",
+    "registrations_month": 31
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 44,
+    "brand": "CITROEN",
+    "model": "C3",
+    "registrations_month": 1267
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 44,
+    "brand": "BYD",
+    "model": "SHARK",
+    "registrations_month": 30
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 45,
+    "brand": "RENAULT",
+    "model": "KARDIAN",
+    "registrations_month": 1266
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 45,
+    "brand": "SHINERAY",
+    "model": "TLUX",
+    "registrations_month": 29
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 46,
+    "brand": "RENAULT",
+    "model": "BOREAL",
+    "registrations_month": 1244
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 46,
+    "brand": "JAC",
+    "model": "HUNTER",
+    "registrations_month": 19
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 47,
+    "brand": "RENAULT",
+    "model": "DUSTER",
+    "registrations_month": 1225
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 47,
+    "brand": "JAC",
+    "model": "EJV5.5",
+    "registrations_month": 15
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 48,
+    "brand": "GWM",
+    "model": "HAVAL H9",
+    "registrations_month": 1220
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 48,
+    "brand": "IVECO",
+    "model": "DAILY 35-180",
+    "registrations_month": 14
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 49,
+    "brand": "TOYOTA",
+    "model": "HILUX SW4",
+    "registrations_month": 1187
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 49,
+    "brand": "EFFA",
+    "model": "V25",
+    "registrations_month": 10
+  },
+  {
+    "category": "AUTOMÓVEIS",
+    "rank": 50,
+    "brand": "VW",
+    "model": "TIGUAN",
+    "registrations_month": 1187
+  },
+  {
+    "category": "COMERCIAIS LEVES",
+    "rank": 50,
+    "brand": "FOTON",
+    "model": "EWONDER",
+    "registrations_month": 6
+  }
+]
