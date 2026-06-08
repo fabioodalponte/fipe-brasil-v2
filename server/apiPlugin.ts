@@ -4,11 +4,13 @@ import { DEFAULT_LIMIT, MAX_LIMIT, searchVehicles } from './vehicleSearchReposit
 import { getVehicleBySlug } from './vehicleDetailsRepository.ts'
 import { RELATED_DEFAULT_LIMIT, getRelatedBySlug } from './relatedVehiclesRepository.ts'
 import { getBrandBySlug } from './brandRepository.ts'
+import { getCategoryBySlug } from './categoryRepository.ts'
 
 const API_PREFIX = '/api/'
 const SEARCH_ROUTE = '/api/vehicles/search'
 const VEHICLES_PREFIX = '/api/vehicles/'
 const BRANDS_PREFIX = '/api/brands/'
+const CATEGORIES_PREFIX = '/api/categories/'
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
   res.statusCode = status
@@ -50,6 +52,15 @@ async function handleBrand(slug: string, res: ServerResponse): Promise<void> {
   sendJson(res, 200, brand)
 }
 
+async function handleCategory(slug: string, res: ServerResponse): Promise<void> {
+  const category = await getCategoryBySlug(decodeURIComponent(slug))
+  if (!category) {
+    sendJson(res, 404, { error: 'not_found' })
+    return
+  }
+  sendJson(res, 200, category)
+}
+
 async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void> {
   try {
     const url = new URL(req.url ?? '', 'http://localhost')
@@ -59,6 +70,10 @@ async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void
     }
     if (url.pathname.startsWith(BRANDS_PREFIX)) {
       await handleBrand(url.pathname.slice(BRANDS_PREFIX.length), res)
+      return
+    }
+    if (url.pathname.startsWith(CATEGORIES_PREFIX)) {
+      await handleCategory(url.pathname.slice(CATEGORIES_PREFIX.length), res)
       return
     }
     if (url.pathname.startsWith(VEHICLES_PREFIX)) {

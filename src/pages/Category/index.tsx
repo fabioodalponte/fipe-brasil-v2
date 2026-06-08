@@ -7,8 +7,9 @@ import { StatGrid } from '../../components/layout/StatGrid'
 import { RankingList } from '../../components/rankings/RankingList'
 import { VehicleGrid } from '../../components/vehicles/VehicleGrid'
 import { useCategoryPage } from '../../hooks/useCategoryPage'
-import { toAppreciationEntry, toPriceEntry } from '../../services/marketRankings'
-import { formatCurrency, formatPercent } from '../../utils/formatters'
+import { toPriceEntry } from '../../services/marketRankings'
+import { formatCurrency } from '../../utils/formatters'
+import { slugify } from '../../utils/slug'
 import { breadcrumbList, collectionPage } from '../../utils/structuredData'
 
 export function CategoryPage() {
@@ -22,9 +23,9 @@ export function CategoryPage() {
   if (error || !page) {
     return (
       <div className="rounded border border-slate-200 bg-white p-6">
-        <h1 className="text-xl font-bold text-slate-950">Categoria nao encontrada</h1>
+        <h1 className="text-xl font-bold text-slate-950">Categoria não encontrada</h1>
         <p className="mt-2 text-sm text-slate-600">
-          Nao encontramos veiculos para esta categoria nos dados disponiveis.
+          Não encontramos veículos para esta categoria nos dados disponíveis.
         </p>
         <Link to="/" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-slate-700">
           <ArrowLeft size={16} />
@@ -37,8 +38,12 @@ export function CategoryPage() {
   return (
     <div className="min-w-0 space-y-5">
       <SEO
-        title={`${page.name}s: precos FIPE, valorizacao e rankings | FIPE Brasil`}
-        description={`Compare ${page.name}s por preco FIPE, valorizacao em 12 meses, preco medio e principais modelos.`}
+        title={`${page.name}s - Preços FIPE, modelos e análise | FIPE Brasil`}
+        description={`${page.totalVehicles} ${page.name}s na tabela FIPE. Preço médio ${formatCurrency(
+          page.averagePrice,
+        )}, do mais caro (${formatCurrency(page.highestPrice)}) ao mais barato (${formatCurrency(
+          page.lowestPrice,
+        )}), marcas e modelos.`}
         canonicalPath={`/categoria/${page.slug}`}
       />
       <JsonLd
@@ -59,7 +64,7 @@ export function CategoryPage() {
       <PageHero
         eyebrow="Categoria"
         title={page.name}
-        subtitle={`${page.vehicleCount} veiculos monitorados | preco medio ${formatCurrency(page.averagePrice)}`}
+        subtitle={`${page.totalVehicles} veículos monitorados | preço médio ${formatCurrency(page.averagePrice)}`}
       >
         <Link to="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-700 hover:text-slate-950">
           <ArrowLeft size={16} />
@@ -69,34 +74,53 @@ export function CategoryPage() {
 
       <StatGrid
         stats={[
-          { label: 'Veiculos', value: String(page.vehicleCount) },
-          { label: 'Preco medio', value: formatCurrency(page.averagePrice) },
-          {
-            label: 'Valorizacao media 12m',
-            value: formatPercent(page.averageYearlyChange),
-            tone: page.averageYearlyChange >= 0 ? 'positive' : 'negative',
-          },
+          { label: 'Veículos', value: String(page.totalVehicles) },
+          { label: 'Preço médio', value: formatCurrency(page.averagePrice) },
+          { label: 'Maior preço', value: formatCurrency(page.highestPrice) },
+          { label: 'Menor preço', value: formatCurrency(page.lowestPrice) },
         ]}
       />
 
+      <section className="rounded border border-slate-200 bg-white p-4">
+        <h2 className="text-base font-bold text-slate-950">Marcas na categoria</h2>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {page.brands.slice(0, 16).map((b) => (
+            <Link
+              key={b.brand}
+              to={`/marca/${slugify(b.brand)}`}
+              className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700 transition hover:bg-slate-200"
+            >
+              {b.brand}
+              <span className="rounded-full bg-white px-2 py-0.5 font-mono text-[11px] text-slate-500">
+                {b.count}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <section className="grid min-w-0 gap-5 xl:grid-cols-2">
         <RankingList
-          title="Mais valorizados da categoria"
-          badge={{ label: '12 meses', tone: 'positive' }}
-          entries={page.mostAppreciated.map(toAppreciationEntry)}
-          emptyLabel="Sem dados de variacao nesta categoria."
+          title={`${page.name}s: mais caros`}
+          badge={{ label: 'Preço FIPE', tone: 'neutral' }}
+          entries={page.topExpensive.map(toPriceEntry)}
+          emptyLabel="Sem dados de preço nesta categoria."
         />
         <RankingList
-          title="Mais baratos da categoria"
-          badge={{ label: 'preco FIPE' }}
-          entries={page.cheapest.map(toPriceEntry)}
-          emptyLabel="Sem dados de preco nesta categoria."
+          title={`${page.name}s: mais baratos`}
+          badge={{ label: 'Preço FIPE', tone: 'neutral' }}
+          entries={page.topAffordable.map(toPriceEntry)}
+          emptyLabel="Sem dados de preço nesta categoria."
         />
       </section>
 
+      <section className="rounded border border-dashed border-slate-300 bg-white px-4 py-3 text-sm text-slate-500">
+        Valorização média (12 meses): <span className="font-bold text-slate-700">em breve</span> — depende da série histórica de variação.
+      </section>
+
       <section>
-        <h2 className="mb-3 text-lg font-bold text-slate-950">Veiculos {page.name}</h2>
-        <VehicleGrid vehicles={page.vehicles} emptyLabel="Nenhum veiculo nesta categoria." />
+        <h2 className="mb-3 text-lg font-bold text-slate-950">Veículos {page.name}</h2>
+        <VehicleGrid vehicles={page.vehicles} emptyLabel="Nenhum veículo nesta categoria." />
       </section>
     </div>
   )
