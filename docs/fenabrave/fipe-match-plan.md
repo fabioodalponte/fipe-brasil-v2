@@ -39,6 +39,22 @@ O script `scripts/load_fenabrave_staging.ts`:
 - é idempotente por `report_month`, `source_file` e `ranking_type`;
 - não toca em tabelas principais.
 
+Comando de carga real para staging Fenabrave:
+
+```bash
+npx tsx scripts/load_fenabrave_staging.ts
+```
+
+Resultado validado em 2026-06-08:
+
+| Arquivo | Tabela | Linhas |
+| --- | --- | ---: |
+| `ranking_emplacamentos_maio_2026.csv` | `fenabrave_model_rankings` | 100 |
+| `ranking_emplacamentos_acumulado_2026.csv` | `fenabrave_model_rankings` | 100 |
+| `ranking_marca_maio_2026.csv` | `fenabrave_brand_rankings` | 63 |
+| `ranking_marca_acumulado_2026.csv` | `fenabrave_brand_rankings` | 63 |
+| `ranking_segmentos_modelos_2026.csv` | `fenabrave_segment_model_rankings` | 162 |
+
 ## Estratégia de normalização
 
 Normalização textual:
@@ -91,6 +107,100 @@ Status:
 - `fuzzy`: candidato possível, exige revisão;
 - `ambiguous`: mais de um candidato próximo;
 - `no_match`: nenhum candidato mínimo encontrado.
+
+## Top 50 candidatos
+
+O arquivo `data/fenabrave/fipe_match_candidates_top50.csv` foi gerado a partir da materialized view, usando apenas o melhor candidato (`candidate_rank = 1`) por linha Fenabrave e ordenando por maior volume.
+
+Consulta equivalente:
+
+```sql
+SELECT source_table,
+       source_file,
+       ranking_type,
+       category,
+       fenabrave_segment,
+       rank,
+       fenabrave_brand,
+       fenabrave_model,
+       registrations_month,
+       registrations_accumulated,
+       fipe_vehicle_id,
+       fipe_brand,
+       fipe_model,
+       slug,
+       segment,
+       latest_price,
+       similarity_score,
+       match_status,
+       candidate_rank,
+       candidate_count
+  FROM fenabrave_fipe_match_candidates
+ WHERE candidate_rank = 1
+ ORDER BY coalesce(registrations_month, registrations_accumulated) DESC NULLS LAST,
+          similarity_score DESC,
+          fenabrave_brand,
+          fenabrave_model
+ LIMIT 50;
+```
+
+Resumo validado da view:
+
+- `fenabrave_fipe_match_candidates`: 2.996 linhas
+- linhas Fenabrave consultáveis via `candidate_rank = 1`: 362
+- candidatos encontrados: 2.956
+- linhas sem candidato mínimo: 40
+
+## Validações obrigatórias
+
+Consultas de controle:
+
+```sql
+SELECT registrations_month
+  FROM fenabrave_model_rankings
+ WHERE report_month = '2026-05-01'
+   AND ranking_type = 'model_month'
+   AND brand_original = 'VW'
+   AND model_original = 'POLO';
+```
+
+Resultado: `10523`.
+
+```sql
+SELECT registrations_month
+  FROM fenabrave_model_rankings
+ WHERE report_month = '2026-05-01'
+   AND ranking_type = 'model_month'
+   AND brand_original = 'FIAT'
+   AND model_original = 'STRADA';
+```
+
+Resultado: `15395`.
+
+```sql
+SELECT registrations_accumulated
+  FROM fenabrave_brand_rankings
+ WHERE report_month = '2026-05-01'
+   AND ranking_type = 'brand_accumulated'
+   AND category = 'AUTOMÓVEIS + COMERCIAIS LEVES'
+   AND brand_original = 'FIAT';
+```
+
+Resultado: `221872`.
+
+Observação: não somar todas as linhas de `FIAT` em `ranking_marca_acumulado_2026.csv`, porque o arquivo inclui as categorias separadas e a linha agregada `AUTOMÓVEIS + COMERCIAIS LEVES`.
+
+## Integridade das tabelas principais
+
+Controle antes/depois da carga real:
+
+| Tabela | Linhas antes | Fingerprint antes | Linhas depois | Fingerprint depois |
+| --- | ---: | --- | ---: | --- |
+| `vehicles` | 30556 | `5d2cd7f1e526d86754e7d9b58ea941c3` | 30556 | `5d2cd7f1e526d86754e7d9b58ea941c3` |
+| `vehicle_latest_prices` | 30556 | `544d539d5640acecb52d12036ee1efaa` | 30556 | `544d539d5640acecb52d12036ee1efaa` |
+| `vehicle_price_snapshots` | 638194 | `32667321b365f93eab285701e8f99fcf` | 638194 | `32667321b365f93eab285701e8f99fcf` |
+
+Conclusão: as tabelas principais permaneceram intactas.
 
 ## Exemplos de match fácil
 
