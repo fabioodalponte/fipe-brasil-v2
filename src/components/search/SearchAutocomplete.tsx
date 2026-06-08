@@ -2,18 +2,23 @@ import { Car, Search } from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useVehicleSearch } from '../../hooks/useVehicleSearch'
+import type { VehicleSearchResult } from '../../services/vehicleSearch'
 import { formatCurrency } from '../../utils/formatters'
 
 type SearchAutocompleteProps = {
   placeholder?: string
   autoFocus?: boolean
   className?: string
+  selectedLabel?: string
+  onSelect?: (vehicle: VehicleSearchResult) => void
 }
 
 export function SearchAutocomplete({
   placeholder = 'Buscar marca, modelo ou codigo FIPE',
   autoFocus = false,
   className = '',
+  selectedLabel,
+  onSelect,
 }: SearchAutocompleteProps) {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
@@ -45,6 +50,10 @@ export function SearchAutocomplete({
     setQuery('')
     setOpen(false)
     setActiveIndex(-1)
+    if (onSelect) {
+      onSelect(vehicle)
+      return
+    }
     navigate(`/vehicle/${vehicle.id}`)
   }
 
@@ -80,14 +89,17 @@ export function SearchAutocomplete({
           aria-controls={listboxId}
           aria-autocomplete="list"
           autoFocus={autoFocus}
-          value={query}
+          value={query || selectedLabel || ''}
           placeholder={placeholder}
           onChange={(event) => {
             setQuery(event.target.value)
             setActiveIndex(-1)
             setOpen(true)
           }}
-          onFocus={() => setOpen(true)}
+          onFocus={(event) => {
+            setOpen(true)
+            if (selectedLabel && !query) event.currentTarget.select()
+          }}
           onKeyDown={onKeyDown}
           className="min-w-0 w-full bg-transparent text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400"
         />

@@ -1,9 +1,11 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { GitCompareArrows } from 'lucide-react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
 import { JsonLd } from '../../components/seo/JsonLd'
 import { MetricCard } from '../../components/cards/MetricCard'
+import { SearchAutocomplete } from '../../components/search/SearchAutocomplete'
 import { useVehicleCompare } from '../../hooks/useVehicleCompare'
 import {
   buildComparisonSummary,
@@ -13,6 +15,7 @@ import {
   type ComparePricePoint,
   type VehicleComparison,
 } from '../../services/compareVehicles'
+import type { VehicleSearchResult } from '../../services/vehicleSearch'
 import { formatCurrency, formatPercent } from '../../utils/formatters'
 import { slugify } from '../../utils/slug'
 import { breadcrumbList } from '../../utils/structuredData'
@@ -27,6 +30,15 @@ function monthLabel(reference: string): string {
 
 function yearLabel(vehicle: ComparedVehicle): string {
   return vehicle.vehicle.year === 0 ? '0 km' : String(vehicle.vehicle.year)
+}
+
+function searchLabel(vehicle: VehicleSearchResult): string {
+  const year = vehicle.year === 0 ? '0 km' : String(vehicle.year)
+  return `${vehicle.name} | ${year}`
+}
+
+function comparedSearchLabel(entry: ComparedVehicle): string {
+  return `${entry.vehicle.name} | ${yearLabel(entry)}`
 }
 
 function changeTone(value: number | null): 'positive' | 'negative' | 'neutral' {
@@ -176,6 +188,124 @@ function PopularComparisons() {
   )
 }
 
+function CompareSelector({
+  baseSlug,
+  targetSlug,
+  comparison,
+}: {
+  baseSlug: string | null
+  targetSlug: string | null
+  comparison: VehicleComparison | null
+}) {
+  const navigate = useNavigate()
+  const [selectedBase, setSelectedBase] = useState<VehicleSearchResult | null>(null)
+  const [selectedTarget, setSelectedTarget] = useState<VehicleSearchResult | null>(null)
+
+  const baseValue = selectedBase?.id ?? baseSlug ?? ''
+  const targetValue = selectedTarget?.id ?? targetSlug ?? ''
+  const canCompare = !!baseValue && !!targetValue
+
+  const baseLabel =
+    selectedBase
+      ? searchLabel(selectedBase)
+      : comparison
+        ? comparedSearchLabel(comparison.base)
+        : baseSlug
+          ? `Selecionado: ${baseSlug}`
+          : undefined
+  const targetLabel =
+    selectedTarget
+      ? searchLabel(selectedTarget)
+      : comparison
+        ? comparedSearchLabel(comparison.target)
+        : targetSlug
+          ? `Selecionado: ${targetSlug}`
+          : undefined
+
+  function compare() {
+    if (!canCompare) return
+    navigate(`/compare?base=${encodeURIComponent(baseValue)}&target=${encodeURIComponent(targetValue)}`)
+  }
+
+  function swap() {
+    if (!canCompare) return
+    setSelectedBase(selectedTarget)
+    setSelectedTarget(selectedBase)
+    navigate(`/compare?base=${encodeURIComponent(targetValue)}&target=${encodeURIComponent(baseValue)}`)
+  }
+
+  function clear() {
+    setSelectedBase(null)
+    setSelectedTarget(null)
+    navigate('/compare')
+  }
+
+  return (
+    <section className="rounded border border-slate-200 bg-white p-5">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="text-[11px] font-bold uppercase text-slate-500">Selecionar comparação</p>
+          <h1 className="mt-2 text-2xl font-bold text-slate-950">Comparar veículos</h1>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={swap}
+            disabled={!canCompare}
+            className="inline-flex items-center justify-center gap-2 rounded border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Trocar veículos
+          </button>
+          <button
+            type="button"
+            onClick={clear}
+            className="inline-flex items-center justify-center gap-2 rounded border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700"
+          >
+            Limpar comparação
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-3 lg:grid-cols-[1fr_1fr_auto]">
+        <div className="min-w-0">
+          <label className="mb-2 block text-[11px] font-bold uppercase text-slate-500">Veículo A</label>
+          <SearchAutocomplete
+            placeholder="Buscar primeiro veículo"
+            selectedLabel={baseLabel}
+            onSelect={setSelectedBase}
+          />
+        </div>
+        <div className="min-w-0">
+          <label className="mb-2 block text-[11px] font-bold uppercase text-slate-500">Veículo B</label>
+          <SearchAutocomplete
+            placeholder={baseValue ? 'Buscar segundo veículo' : 'Escolha o veículo A primeiro'}
+            selectedLabel={targetLabel}
+            onSelect={setSelectedTarget}
+          />
+        </div>
+        <div className="flex items-end">
+          <button
+            type="button"
+            onClick={compare}
+            disabled={!canCompare}
+            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded bg-slate-900 px-4 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:bg-slate-300 lg:w-auto"
+          >
+            <GitCompareArrows size={16} />
+            Comparar
+          </button>
+        </div>
+      </div>
+
+      {baseValue && !targetValue ? (
+        <p className="mt-3 text-sm text-slate-500">Escolha o segundo veículo para iniciar a comparação.</p>
+      ) : null}
+      {baseValue && targetValue && baseValue === targetValue ? (
+        <p className="mt-3 text-sm text-amber-700">Você selecionou o mesmo veículo nos dois campos.</p>
+      ) : null}
+    </section>
+  )
+}
+
 function CompareCard({ entry }: { entry: ComparedVehicle }) {
   const { vehicle } = entry
   return (
@@ -222,45 +352,61 @@ export function ComparePage() {
   const baseSlug = searchParams.get('base')
   const targetSlug = searchParams.get('target')
   const { comparison, loading, error, notFound } = useVehicleCompare(baseSlug, targetSlug)
+  const selector = (
+    <CompareSelector baseSlug={baseSlug} targetSlug={targetSlug} comparison={comparison} />
+  )
 
   // Sem parametros: convida a escolher uma comparacao.
   if (!baseSlug || !targetSlug) {
     return (
-      <div className="rounded border border-slate-200 bg-white p-6">
-        <h1 className="text-2xl font-bold text-slate-950">Comparar veiculos</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Escolha dois veiculos para comparar preco FIPE, historico e variacao real.
-        </p>
-        <div className="mt-5">
-          <p className="mb-2 text-[11px] font-bold uppercase text-slate-500">Comparacoes populares</p>
-          <PopularComparisons />
+      <div className="space-y-5">
+        {selector}
+        <div className="rounded border border-slate-200 bg-white p-6">
+          <h2 className="text-lg font-bold text-slate-950">Comparações populares</h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Escolha dois veículos acima ou use um atalho pronto.
+          </p>
+          <div className="mt-5">
+            <PopularComparisons />
+          </div>
         </div>
       </div>
     )
   }
 
   if (loading) {
-    return <div className="h-64 animate-pulse rounded border border-slate-200 bg-slate-100" />
+    return (
+      <div className="space-y-5">
+        {selector}
+        <div className="h-64 animate-pulse rounded border border-slate-200 bg-slate-100" />
+      </div>
+    )
   }
 
   if (error) {
     return (
-      <div className="rounded border border-slate-200 bg-white p-6">
-        <h1 className="text-xl font-bold text-slate-950">Comparacao indisponivel</h1>
-        <p className="mt-2 text-sm text-slate-600">Tente novamente em instantes.</p>
+      <div className="space-y-5">
+        {selector}
+        <div className="rounded border border-slate-200 bg-white p-6">
+          <h1 className="text-xl font-bold text-slate-950">Comparacao indisponivel</h1>
+          <p className="mt-2 text-sm text-slate-600">Tente novamente em instantes.</p>
+        </div>
       </div>
     )
   }
 
   if (notFound || !comparison) {
     return (
-      <div className="rounded border border-slate-200 bg-white p-6">
-        <h1 className="text-xl font-bold text-slate-950">Comparacao nao encontrada</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Nao encontramos um dos veiculos selecionados. Tente uma comparacao sugerida:
-        </p>
-        <div className="mt-4">
-          <PopularComparisons />
+      <div className="space-y-5">
+        {selector}
+        <div className="rounded border border-slate-200 bg-white p-6">
+          <h1 className="text-xl font-bold text-slate-950">Comparacao nao encontrada</h1>
+          <p className="mt-2 text-sm text-slate-600">
+            Nao encontramos um dos veiculos selecionados. Tente buscar novamente ou use uma comparação sugerida.
+          </p>
+          <div className="mt-4">
+            <PopularComparisons />
+          </div>
         </div>
       </div>
     )
@@ -305,6 +451,7 @@ export function ComparePage() {
 
   return (
     <div className="space-y-5">
+      {selector}
       <SEO
         title={`${title}: comparacao FIPE e valorizacao | FIPE Brasil`}
         description={`Compare precos FIPE reais, historico e variacao entre ${base.vehicle.model} e ${target.vehicle.model}.`}
