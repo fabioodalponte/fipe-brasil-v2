@@ -17,6 +17,8 @@ import { breadcrumbList } from '../../utils/structuredData'
 
 const rankingLandingLinks = [
   { to: '/mais-vendidos', label: 'Mais vendidos' },
+  { to: '/suvs-mais-vendidos', label: 'SUVs mais vendidos' },
+  { to: '/picapes-mais-vendidas', label: 'Picapes mais vendidas' },
   { to: '/mais-valorizados', label: 'Mais valorizados' },
   { to: '/mais-desvalorizados', label: 'Mais desvalorizados' },
   { to: '/mais-caros', label: 'Mais caros' },

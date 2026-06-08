@@ -15,6 +15,8 @@ import {
   FENABRAVE_BEST_SELLING_DEFAULT_LIMIT,
   FENABRAVE_BEST_SELLING_MAX_LIMIT,
   getFenabraveBestSellingVehicles,
+  getFenabraveSegmentRanking,
+  isSupportedFenabraveSegment,
 } from './fenabraveRankingsRepository.ts'
 import { getHomeData, getHomeVehicles } from './homeRepository.ts'
 
@@ -24,6 +26,7 @@ const HOME_VEHICLES_ROUTE = '/api/home/vehicles'
 const SEARCH_ROUTE = '/api/vehicles/search'
 const MARKET_RANKINGS_ROUTE = '/api/market/rankings'
 const FENABRAVE_BEST_SELLING_ROUTE = '/api/fenabrave/rankings/mais-vendidos'
+const FENABRAVE_SEGMENT_RANKINGS_PREFIX = '/api/fenabrave/rankings/segment/'
 const COMPARE_ROUTE = '/api/compare'
 const VEHICLES_PREFIX = '/api/vehicles/'
 const BRANDS_PREFIX = '/api/brands/'
@@ -98,6 +101,23 @@ async function handleFenabraveBestSelling(url: URL, res: ServerResponse): Promis
   sendJson(res, 200, rankings)
 }
 
+async function handleFenabraveSegmentRanking(segment: string, url: URL, res: ServerResponse): Promise<void> {
+  if (!isSupportedFenabraveSegment(segment)) {
+    sendJson(res, 404, { error: 'unsupported_fenabrave_segment' })
+    return
+  }
+
+  const limitParam = Number(url.searchParams.get('limit'))
+  const limit = Number.isFinite(limitParam) && limitParam > 0
+    ? limitParam
+    : FENABRAVE_BEST_SELLING_DEFAULT_LIMIT
+  const rankings = await getFenabraveSegmentRanking(
+    segment,
+    Math.min(limit, FENABRAVE_BEST_SELLING_MAX_LIMIT),
+  )
+  sendJson(res, 200, rankings)
+}
+
 async function handleCompare(url: URL, res: ServerResponse): Promise<void> {
   const base = url.searchParams.get('base') ?? ''
   const target = url.searchParams.get('target') ?? ''
@@ -158,6 +178,14 @@ async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void
     }
     if (url.pathname === FENABRAVE_BEST_SELLING_ROUTE) {
       await handleFenabraveBestSelling(url, res)
+      return
+    }
+    if (url.pathname.startsWith(FENABRAVE_SEGMENT_RANKINGS_PREFIX)) {
+      await handleFenabraveSegmentRanking(
+        decodeURIComponent(url.pathname.slice(FENABRAVE_SEGMENT_RANKINGS_PREFIX.length)),
+        url,
+        res,
+      )
       return
     }
     if (url.pathname === COMPARE_ROUTE) {

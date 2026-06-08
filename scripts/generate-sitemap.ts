@@ -19,6 +19,8 @@ const BRAND_SLUG_EXPR = `trim(both '-' from regexp_replace(lower(f_unaccent(bran
 const VEHICLE_LIMIT = 1000
 const RANKING_PATHS = [
   '/mais-vendidos',
+  '/suvs-mais-vendidos',
+  '/picapes-mais-vendidas',
   '/mais-valorizados',
   '/mais-desvalorizados',
   '/mais-caros',

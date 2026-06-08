@@ -7,6 +7,7 @@ import { ComparePage } from './pages/Compare'
 import { HomePage } from './pages/Home'
 import { IFBIndexPage } from './pages/Index'
 import { RankingLandingPage } from './pages/RankingLanding'
+import { SegmentBestSellingPage } from './pages/SegmentBestSelling'
 import { VehiclePage } from './pages/Vehicle'
 
 const router = createBrowserRouter([
@@ -21,6 +22,8 @@ const router = createBrowserRouter([
       { path: 'compare', element: <ComparePage /> },
       { path: 'index', element: <IFBIndexPage /> },
       { path: 'mais-vendidos', element: <BestSellingPage /> },
+      { path: 'suvs-mais-vendidos', element: <SegmentBestSellingPage /> },
+      { path: 'picapes-mais-vendidas', element: <SegmentBestSellingPage /> },
       { path: 'mais-valorizados', element: <RankingLandingPage /> },
       { path: 'mais-desvalorizados', element: <RankingLandingPage /> },
       { path: 'mais-caros', element: <RankingLandingPage /> },
