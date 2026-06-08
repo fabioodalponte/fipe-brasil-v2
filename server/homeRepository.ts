@@ -36,6 +36,14 @@ export type HomeRow = {
   marketStats: HomeMarketStatsRow
 }
 
+export type HomeVehicleFilters = {
+  brand?: string
+  segment?: string
+  minPrice?: number
+  maxPrice?: number
+  limit?: number
+}
+
 const VALID_CATEGORIES = [
   'suv', 'sedan', 'hatch', 'picape', 'perua',
   'minivan', 'cupe', 'conversivel', 'furgao', 'buggy',
@@ -46,6 +54,14 @@ const VEHICLE_COLS = `
   vehicle_type, segment, latest_price, latest_reference_month::text AS latest_reference_month`
 
 const BRAND_SLUG_EXPR = `trim(both '-' from regexp_replace(lower(f_unaccent(brand)), '[^a-z0-9]+', '-', 'g'))`
+const HOME_VEHICLES_DEFAULT_LIMIT = 12
+const HOME_VEHICLES_MAX_LIMIT = 24
+
+const safeVehicleLimit = (limit?: number): number =>
+  Math.min(
+    Math.max(1, Math.floor(limit ?? HOME_VEHICLES_DEFAULT_LIMIT) || HOME_VEHICLES_DEFAULT_LIMIT),
+    HOME_VEHICLES_MAX_LIMIT,
+  )
 
 /** Dados reais mínimos para a Home, sem depender dos mocks. */
 export async function getHomeData(): Promise<HomeRow> {
@@ -117,4 +133,47 @@ export async function getHomeData(): Promise<HomeRow> {
       latestReferenceMonth: s.latest_month,
     },
   }
+}
+
+/** Veiculos reais para a area filtravel da Home. */
+export async function getHomeVehicles(filters: HomeVehicleFilters = {}): Promise<HomeVehicleRow[]> {
+  const params: Array<string | number> = []
+  const conditions = ['latest_price IS NOT NULL']
+
+  if (filters.brand) {
+    params.push(filters.brand)
+    conditions.push(`${BRAND_SLUG_EXPR} = $${params.length}`)
+  }
+
+  if (filters.segment) {
+    params.push(filters.segment)
+    conditions.push(`segment = $${params.length}`)
+  }
+
+  if (filters.minPrice != null && Number.isFinite(filters.minPrice)) {
+    params.push(filters.minPrice)
+    conditions.push(`latest_price >= $${params.length}`)
+  }
+
+  if (filters.maxPrice != null && Number.isFinite(filters.maxPrice)) {
+    params.push(filters.maxPrice)
+    conditions.push(`latest_price <= $${params.length}`)
+  }
+
+  params.push(safeVehicleLimit(filters.limit))
+
+  const { rows } = await getPool().query<HomeVehicleRow>(
+    `SELECT ${VEHICLE_COLS}
+       FROM vehicle_latest_prices
+      WHERE ${conditions.join(' AND ')}
+      ORDER BY latest_price DESC,
+               latest_reference_month DESC NULLS LAST,
+               brand,
+               model,
+               model_year DESC NULLS LAST
+      LIMIT $${params.length}`,
+    params,
+  )
+
+  return rows
 }

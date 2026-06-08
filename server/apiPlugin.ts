@@ -11,10 +11,11 @@ import {
   getMarketRankings,
 } from './marketRankingsRepository.ts'
 import { compareVehiclesBySlug } from './compareRepository.ts'
-import { getHomeData } from './homeRepository.ts'
+import { getHomeData, getHomeVehicles } from './homeRepository.ts'
 
 const API_PREFIX = '/api/'
 const HOME_ROUTE = '/api/home'
+const HOME_VEHICLES_ROUTE = '/api/home/vehicles'
 const SEARCH_ROUTE = '/api/vehicles/search'
 const MARKET_RANKINGS_ROUTE = '/api/market/rankings'
 const COMPARE_ROUTE = '/api/compare'
@@ -101,9 +102,31 @@ async function handleHome(res: ServerResponse): Promise<void> {
   sendJson(res, 200, home)
 }
 
+function numberParam(url: URL, key: string): number | undefined {
+  const rawValue = url.searchParams.get(key)
+  if (!rawValue) return undefined
+  const value = Number(rawValue)
+  return Number.isFinite(value) ? value : undefined
+}
+
+async function handleHomeVehicles(url: URL, res: ServerResponse): Promise<void> {
+  const vehicles = await getHomeVehicles({
+    brand: url.searchParams.get('brand') || undefined,
+    segment: url.searchParams.get('segment') || undefined,
+    minPrice: numberParam(url, 'minPrice'),
+    maxPrice: numberParam(url, 'maxPrice'),
+    limit: numberParam(url, 'limit'),
+  })
+  sendJson(res, 200, vehicles)
+}
+
 async function dispatch(req: IncomingMessage, res: ServerResponse): Promise<void> {
   try {
     const url = new URL(req.url ?? '', 'http://localhost')
+    if (url.pathname === HOME_VEHICLES_ROUTE) {
+      await handleHomeVehicles(url, res)
+      return
+    }
     if (url.pathname === HOME_ROUTE) {
       await handleHome(res)
       return

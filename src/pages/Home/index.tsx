@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react'
 import { GitCompareArrows, SlidersHorizontal } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
@@ -6,8 +7,10 @@ import { SearchAutocomplete } from '../../components/search/SearchAutocomplete'
 import { MetricCard } from '../../components/cards/MetricCard'
 import { RankingList } from '../../components/rankings/RankingList'
 import { VehicleCard } from '../../components/cards/VehicleCard'
+import { VehicleGrid } from '../../components/vehicles/VehicleGrid'
 import { popularComparisons } from '../../services/compareVehicles'
 import { useHomeData } from '../../hooks/useHomeData'
+import { useHomeVehicles } from '../../hooks/useHomeVehicles'
 import { useMarketRankings } from '../../hooks/useMarketRankings'
 import { formatCurrency, numberFormatter } from '../../utils/formatters'
 import { breadcrumbList } from '../../utils/structuredData'
@@ -19,6 +22,14 @@ const rankingLandingLinks = [
   { to: '/mais-baratos', label: 'Mais baratos' },
 ]
 
+const priceBands = [
+  { value: '', label: 'Todos os precos' },
+  { value: '0-50000', label: 'Ate R$ 50 mil', maxPrice: 50_000 },
+  { value: '50000-100000', label: 'R$ 50 mil a R$ 100 mil', minPrice: 50_000, maxPrice: 100_000 },
+  { value: '100000-200000', label: 'R$ 100 mil a R$ 200 mil', minPrice: 100_000, maxPrice: 200_000 },
+  { value: '200000-', label: 'Acima de R$ 200 mil', minPrice: 200_000 },
+]
+
 function monthLabel(reference: string | null): string {
   if (!reference) return 'n/d'
   const [year, month] = reference.split('-')
@@ -26,10 +37,35 @@ function monthLabel(reference: string | null): string {
 }
 
 export function HomePage() {
+  const [selectedBrand, setSelectedBrand] = useState('')
+  const [selectedSegment, setSelectedSegment] = useState('')
+  const [selectedPriceBand, setSelectedPriceBand] = useState('')
   const { data: homeData, loading: homeLoading, error: homeError } = useHomeData()
   const { rankings, loading, error } = useMarketRankings(5)
   const useMock = import.meta.env.VITE_USE_MOCK === 'true'
   const stats = homeData?.marketStats
+  const activePriceBand = priceBands.find((band) => band.value === selectedPriceBand) ?? priceBands[0]
+  const homeVehicleFilters = useMemo(
+    () => ({
+      brand: selectedBrand || undefined,
+      segment: selectedSegment || undefined,
+      minPrice: activePriceBand.minPrice,
+      maxPrice: activePriceBand.maxPrice,
+    }),
+    [selectedBrand, selectedSegment, activePriceBand.minPrice, activePriceBand.maxPrice],
+  )
+  const {
+    vehicles: exploreVehicles,
+    loading: exploreLoading,
+    error: exploreError,
+  } = useHomeVehicles(homeVehicleFilters)
+  const hasHomeVehicleFilters = Boolean(selectedBrand || selectedSegment || selectedPriceBand)
+
+  function clearHomeVehicleFilters() {
+    setSelectedBrand('')
+    setSelectedSegment('')
+    setSelectedPriceBand('')
+  }
 
   return (
     <div className="min-w-0 space-y-5">
@@ -58,7 +94,11 @@ export function HomePage() {
               className="flex-1"
               placeholder="Digite Corolla, Civic, Compass ou codigo FIPE"
             />
-            <button className="inline-flex items-center justify-center gap-2 rounded border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700">
+            <button
+              type="button"
+              onClick={() => document.getElementById('explorar-veiculos')?.scrollIntoView({ behavior: 'smooth' })}
+              className="inline-flex items-center justify-center gap-2 rounded border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700"
+            >
               <SlidersHorizontal size={16} />
               Filtros
             </button>
@@ -108,6 +148,91 @@ export function HomePage() {
           label="Menor preco"
           value={stats?.lowestPrice != null ? formatCurrency(stats.lowestPrice) : '—'}
         />
+      </section>
+
+      <section id="explorar-veiculos" className="min-w-0 rounded border border-slate-200 bg-white p-5">
+        <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <h2 className="text-lg font-bold text-slate-950">Explorar veiculos</h2>
+            <p className="mt-1 text-sm text-slate-500">
+              Filtros reais por marca, categoria e faixa de preco.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={clearHomeVehicleFilters}
+            disabled={!hasHomeVehicleFilters}
+            className="inline-flex items-center justify-center rounded border border-slate-200 px-3 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Limpar filtros
+          </button>
+        </div>
+
+        <div className="grid min-w-0 gap-3 py-4 md:grid-cols-3">
+          <label className="min-w-0">
+            <span className="mb-1 block text-xs font-bold uppercase text-slate-500">Marca</span>
+            <select
+              value={selectedBrand}
+              onChange={(event) => setSelectedBrand(event.target.value)}
+              className="h-11 w-full rounded border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 outline-none transition focus:border-slate-400"
+            >
+              <option value="">Todas as marcas</option>
+              {homeData?.brands.map((brand) => (
+                <option key={brand.slug} value={brand.slug}>
+                  {brand.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="min-w-0">
+            <span className="mb-1 block text-xs font-bold uppercase text-slate-500">Categoria</span>
+            <select
+              value={selectedSegment}
+              onChange={(event) => setSelectedSegment(event.target.value)}
+              className="h-11 w-full rounded border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 outline-none transition focus:border-slate-400"
+            >
+              <option value="">Todas as categorias</option>
+              {homeData?.categories.map((category) => (
+                <option key={category.slug} value={category.slug}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="min-w-0">
+            <span className="mb-1 block text-xs font-bold uppercase text-slate-500">Faixa de preco</span>
+            <select
+              value={selectedPriceBand}
+              onChange={(event) => setSelectedPriceBand(event.target.value)}
+              className="h-11 w-full rounded border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 outline-none transition focus:border-slate-400"
+            >
+              {priceBands.map((band) => (
+                <option key={band.value || 'all'} value={band.value}>
+                  {band.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        {exploreLoading ? (
+          <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <div key={index} className="h-36 animate-pulse rounded border border-slate-200 bg-slate-100" />
+            ))}
+          </div>
+        ) : exploreError ? (
+          <p className="rounded border border-slate-200 bg-white p-4 text-sm text-slate-500">
+            Nao foi possivel carregar os veiculos filtrados.
+          </p>
+        ) : (
+          <VehicleGrid
+            vehicles={exploreVehicles}
+            emptyLabel="Nenhum veiculo encontrado para os filtros selecionados."
+          />
+        )}
       </section>
 
       <section className="grid min-w-0 gap-5 xl:grid-cols-[1.3fr_0.7fr]">
