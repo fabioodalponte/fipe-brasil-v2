@@ -52,5 +52,11 @@ export function useSEO({ title, description, canonicalPath, type = 'website', im
     upsertMeta('property', 'og:type', type)
     upsertMeta('property', 'og:url', url)
     if (image) upsertMeta('property', 'og:image', image)
+
+    // Twitter Card: espelha os metadados de Open Graph para os crawlers do X.
+    upsertMeta('name', 'twitter:card', image ? 'summary_large_image' : 'summary')
+    upsertMeta('name', 'twitter:title', title)
+    upsertMeta('name', 'twitter:description', description)
+    if (image) upsertMeta('name', 'twitter:image', image)
   }, [title, description, canonicalPath, type, image])
 }

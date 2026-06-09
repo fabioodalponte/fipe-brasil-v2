@@ -15,7 +15,9 @@ export function getPool(): pg.Pool {
   }
   pool = new pg.Pool({
     connectionString,
-    max: 4,
+    // Configuravel para o prerender (crawl concorrente exige mais conexoes que o
+    // trafego normal de preview). Default 4 mantem o comportamento de producao.
+    max: Number(process.env.FIPE_DB_POOL_MAX ?? 4),
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: 8_000,
   })

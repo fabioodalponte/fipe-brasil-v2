@@ -8,6 +8,8 @@ type SitemapEntry = {
   path: string
   changefreq: string
   priority: string
+  /** Data da referencia FIPE mais recente associada a URL (YYYY-MM-DD). */
+  lastmod?: string
 }
 
 const VALID_CATEGORIES = [
@@ -17,6 +19,8 @@ const VALID_CATEGORIES = [
 
 const BRAND_SLUG_EXPR = `trim(both '-' from regexp_replace(lower(f_unaccent(brand)), '[^a-z0-9]+', '-', 'g'))`
 const VEHICLE_LIMIT = 1000
+/** Fallback de lastmod quando uma URL nao tem referencia FIPE associada. */
+const TODAY = new Date().toISOString().slice(0, 10)
 const RANKING_PATHS = [
   '/mais-vendidos',
   '/suvs-mais-vendidos',
@@ -67,27 +71,30 @@ async function buildEntries(): Promise<SitemapEntry[]> {
 
   try {
     const [brands, categories, vehicles] = await Promise.all([
-      pool.query<{ slug: string }>(
+      pool.query<{ slug: string; lastmod: string | null }>(
         `WITH base AS (
-           SELECT ${BRAND_SLUG_EXPR} AS slug
+           SELECT ${BRAND_SLUG_EXPR} AS slug, latest_reference_month
              FROM vehicle_latest_prices
          )
-         SELECT slug
+         SELECT slug,
+                to_char(max(latest_reference_month), 'YYYY-MM-DD') AS lastmod
            FROM base
           WHERE slug <> ''
           GROUP BY slug
           ORDER BY count(*) DESC, slug`,
       ),
-      pool.query<{ slug: string }>(
-        `SELECT segment AS slug
+      pool.query<{ slug: string; lastmod: string | null }>(
+        `SELECT segment AS slug,
+                to_char(max(latest_reference_month), 'YYYY-MM-DD') AS lastmod
            FROM vehicle_latest_prices
           WHERE segment = ANY($1)
           GROUP BY segment
           ORDER BY count(*) DESC, segment`,
         [VALID_CATEGORIES],
       ),
-      pool.query<{ slug: string }>(
-        `SELECT slug
+      pool.query<{ slug: string; lastmod: string | null }>(
+        `SELECT slug,
+                to_char(latest_reference_month, 'YYYY-MM-DD') AS lastmod
            FROM vehicle_latest_prices
           WHERE latest_price IS NOT NULL
           ORDER BY latest_price DESC, latest_reference_month DESC NULLS LAST, brand, model
@@ -96,27 +103,39 @@ async function buildEntries(): Promise<SitemapEntry[]> {
       ),
     ])
 
+    // Referencia FIPE mais recente do dataset, usada como lastmod das paginas
+    // agregadas (home e rankings), que dependem de todo o conjunto de dados.
+    const siteLastmod =
+      vehicles.rows.reduce<string | null>(
+        (acc, row) => (row.lastmod && (!acc || row.lastmod > acc) ? row.lastmod : acc),
+        null,
+      ) ?? TODAY
+
     return [
-      { path: '/', changefreq: 'daily', priority: '1.0' },
+      { path: '/', changefreq: 'daily', priority: '1.0', lastmod: siteLastmod },
       ...RANKING_PATHS.map((path) => ({
         path,
         changefreq: 'daily',
         priority: '0.8',
+        lastmod: siteLastmod,
       })),
       ...brands.rows.map((row) => ({
         path: `/marca/${row.slug}`,
         changefreq: 'weekly',
         priority: '0.7',
+        lastmod: row.lastmod ?? siteLastmod,
       })),
       ...categories.rows.map((row) => ({
         path: `/categoria/${row.slug}`,
         changefreq: 'weekly',
         priority: '0.7',
+        lastmod: row.lastmod ?? siteLastmod,
       })),
       ...vehicles.rows.map((row) => ({
         path: `/vehicle/${row.slug}`,
         changefreq: 'weekly',
         priority: '0.8',
+        lastmod: row.lastmod ?? siteLastmod,
       })),
     ]
   } finally {
@@ -124,7 +143,6 @@ async function buildEntries(): Promise<SitemapEntry[]> {
   }
 }
 
-const lastmod = new Date().toISOString().slice(0, 10)
 const entries = await buildEntries()
 
 const urlsXml = entries
@@ -132,7 +150,7 @@ const urlsXml = entries
     (entry) =>
       `  <url>\n` +
       `    <loc>${escapeXml(`${SITE_URL}${entry.path}`)}</loc>\n` +
-      `    <lastmod>${lastmod}</lastmod>\n` +
+      `    <lastmod>${entry.lastmod ?? TODAY}</lastmod>\n` +
       `    <changefreq>${entry.changefreq}</changefreq>\n` +
       `    <priority>${entry.priority}</priority>\n` +
       `  </url>`,

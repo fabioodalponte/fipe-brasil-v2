@@ -1,4 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
+import { existsSync, readFileSync } from 'node:fs'
+import { extname, resolve } from 'node:path'
 import type { Plugin, PreviewServer, ViteDevServer } from 'vite'
 import { DEFAULT_LIMIT, MAX_LIMIT, searchVehicles } from './vehicleSearchRepository.ts'
 import { getVehicleBySlug } from './vehicleDetailsRepository.ts'
@@ -333,6 +335,55 @@ function attach(server: ViteDevServer | PreviewServer): void {
   })
 }
 
+const DIST_DIR = resolve(process.cwd(), 'dist')
+
+/**
+ * Serve o HTML prerenderizado (snapshot estatico gerado por scripts/prerender.ts)
+ * para requisicoes de pagina: `GET /vehicle/<slug>` -> `dist/vehicle/<slug>/index.html`.
+ * Roda apenas no preview/producao, antes do fallback SPA do Vite. Requisicoes de
+ * API, assets (qualquer path com extensao) e rotas sem snapshot caem no `next()`,
+ * preservando o comportamento estatico/SPA padrao.
+ */
+function attachPrerender(server: PreviewServer): void {
+  server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: () => void) => {
+    if (!req.url || (req.method !== 'GET' && req.method !== 'HEAD')) {
+      next()
+      return
+    }
+
+    const { pathname } = new URL(req.url, 'http://localhost')
+    if (pathname.startsWith(API_PREFIX) || extname(pathname) !== '') {
+      next()
+      return
+    }
+
+    let decoded: string
+    try {
+      decoded = decodeURIComponent(pathname)
+    } catch {
+      next()
+      return
+    }
+    // Defesa contra path traversal: nenhum segmento '..'.
+    if (decoded.split('/').includes('..')) {
+      next()
+      return
+    }
+
+    const relative = decoded.replace(/^\/+/, '').replace(/\/+$/, '')
+    const filePath = resolve(DIST_DIR, relative, 'index.html')
+    if (!filePath.startsWith(DIST_DIR) || !existsSync(filePath)) {
+      next()
+      return
+    }
+
+    const html = readFileSync(filePath)
+    res.statusCode = 200
+    res.setHeader('Content-Type', 'text/html; charset=utf-8')
+    res.end(req.method === 'HEAD' ? undefined : html)
+  })
+}
+
 /** Plugin Vite que serve a API de veículos em dev e preview. */
 export function vehicleApiPlugin(): Plugin {
   return {
@@ -342,6 +393,7 @@ export function vehicleApiPlugin(): Plugin {
     },
     configurePreviewServer(server) {
       attach(server)
+      attachPrerender(server)
     },
   }
 }
