@@ -339,7 +339,7 @@ const DIST_DIR = resolve(process.cwd(), 'dist')
 
 /**
  * Serve o HTML prerenderizado (snapshot estatico gerado por scripts/prerender.ts)
- * para requisicoes de pagina: `GET /vehicle/<slug>` -> `dist/vehicle/<slug>/index.html`.
+ * para requisicoes de pagina: `GET /carro/<slug>` -> `dist/carro/<slug>/index.html`.
  * Roda apenas no preview/producao, antes do fallback SPA do Vite. Requisicoes de
  * API, assets (qualquer path com extensao) e rotas sem snapshot caem no `next()`,
  * preservando o comportamento estatico/SPA padrao.
@@ -354,6 +354,15 @@ function attachPrerender(server: PreviewServer): void {
     const { pathname } = new URL(req.url, 'http://localhost')
     if (pathname.startsWith(API_PREFIX) || extname(pathname) !== '') {
       next()
+      return
+    }
+
+    // Rota legada: /vehicle/<slug> -> /carro/<slug> com 301 permanente, para
+    // crawlers e links externos que ainda apontem para o prefixo antigo.
+    if (pathname.startsWith('/vehicle/')) {
+      res.statusCode = 301
+      res.setHeader('Location', pathname.replace(/^\/vehicle\//, '/carro/'))
+      res.end()
       return
     }
 

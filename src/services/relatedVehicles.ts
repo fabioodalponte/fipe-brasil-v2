@@ -93,7 +93,7 @@ type RelatedApiRow = {
 
 function toVehicle(row: RelatedApiRow): Vehicle {
   return {
-    id: row.slug, // link do card -> /vehicle/:slug
+    id: row.slug, // link do card -> /carro/:slug
     name: `${row.brand} ${row.model}`,
     brand: row.brand,
     model: row.model,

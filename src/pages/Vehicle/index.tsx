@@ -128,7 +128,7 @@ export function VehiclePage() {
         }: ${details.latestPrice != null ? formatCurrency(details.latestPrice) : 'indisponível'} em ${refLabel}. Histórico de ${
           details.priceHistory.length
         } meses e variação.`}
-        canonicalPath={`/vehicle/${details.slug}`}
+        canonicalPath={`/carro/${details.slug}`}
         type="article"
       />
       <JsonLd
@@ -139,7 +139,7 @@ export function VehiclePage() {
           segment: details.segment,
           year: details.modelYear,
           price: details.latestPrice,
-          path: `/vehicle/${details.slug}`,
+          path: `/carro/${details.slug}`,
           referenceMonth: details.latestReferenceMonth,
         })}
       />
@@ -148,7 +148,7 @@ export function VehiclePage() {
         data={breadcrumbList([
           { name: 'Home', path: '/' },
           { name: details.brand, path: `/marca/${slugify(details.brand)}` },
-          { name: `${details.model} ${year}`, path: `/vehicle/${details.slug}` },
+          { name: `${details.model} ${year}`, path: `/carro/${details.slug}` },
         ])}
       />
 

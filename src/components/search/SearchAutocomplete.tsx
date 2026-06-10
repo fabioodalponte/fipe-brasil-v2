@@ -54,7 +54,7 @@ export function SearchAutocomplete({
       onSelect(vehicle)
       return
     }
-    navigate(`/vehicle/${vehicle.id}`)
+    navigate(`/carro/${vehicle.id}`)
   }
 
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {

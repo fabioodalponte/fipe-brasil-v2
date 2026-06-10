@@ -132,7 +132,7 @@ async function buildEntries(): Promise<SitemapEntry[]> {
         lastmod: row.lastmod ?? siteLastmod,
       })),
       ...vehicles.rows.map((row) => ({
-        path: `/vehicle/${row.slug}`,
+        path: `/carro/${row.slug}`,
         changefreq: 'weekly',
         priority: '0.8',
         lastmod: row.lastmod ?? siteLastmod,

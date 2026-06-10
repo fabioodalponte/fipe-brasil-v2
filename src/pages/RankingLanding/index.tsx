@@ -223,7 +223,7 @@ export function RankingLandingPage() {
             {entries.map((entry, index) => (
               <Link
                 key={entry.vehicle.id}
-                to={`/vehicle/${entry.vehicle.id}`}
+                to={`/carro/${entry.vehicle.id}`}
                 className="grid min-w-0 gap-3 px-4 py-4 transition hover:bg-slate-50 md:grid-cols-[44px_1fr_160px_160px] md:items-center"
               >
                 <span className="font-mono text-sm font-bold text-slate-400">

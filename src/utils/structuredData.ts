@@ -38,7 +38,7 @@ export function vehicleProduct(vehicle: Vehicle) {
       '@type': 'Offer',
       price: vehicle.price,
       priceCurrency: 'BRL',
-      url: absoluteUrl(`/vehicle/${vehicle.id}`),
+      url: absoluteUrl(`/carro/${vehicle.id}`),
     },
   }
 }
@@ -91,7 +91,7 @@ export function collectionPage(opts: { name: string; path: string; vehicles: Veh
         '@type': 'ListItem',
         position: index + 1,
         name: `${vehicle.name} ${vehicle.year}`,
-        url: absoluteUrl(`/vehicle/${vehicle.id}`),
+        url: absoluteUrl(`/carro/${vehicle.id}`),
       })),
     },
   }

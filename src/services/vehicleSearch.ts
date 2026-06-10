@@ -69,7 +69,7 @@ type VehicleSearchApiRow = {
 /** Mapeia a linha da API para o formato Vehicle usado pela UI (id = slug). */
 function toVehicle(row: VehicleSearchApiRow): VehicleSearchResult {
   return {
-    id: row.slug, // navega para /vehicle/:slug
+    id: row.slug, // navega para /carro/:slug
     name: `${row.brand} ${row.model}`,
     brand: row.brand,
     model: row.model,

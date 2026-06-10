@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider, useParams } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import { BestSellingPage } from './pages/BestSelling'
 import { BrandPage } from './pages/Brand'
@@ -10,13 +10,21 @@ import { RankingLandingPage } from './pages/RankingLanding'
 import { SegmentBestSellingPage } from './pages/SegmentBestSelling'
 import { VehiclePage } from './pages/Vehicle'
 
+function LegacyVehicleRedirect() {
+  const { slug } = useParams()
+  return <Navigate to={`/carro/${slug}`} replace />
+}
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <AppShell />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'vehicle/:slug', element: <VehiclePage /> },
+      { path: 'carro/:slug', element: <VehiclePage /> },
+      // Rota legada: /vehicle/:slug -> /carro/:slug (o redirect 301 real e feito
+      // no servidor; isto cobre navegacao client-side e dev).
+      { path: 'vehicle/:slug', element: <LegacyVehicleRedirect /> },
       { path: 'marca/:slug', element: <BrandPage /> },
       { path: 'categoria/:slug', element: <CategoryPage /> },
       { path: 'compare', element: <ComparePage /> },

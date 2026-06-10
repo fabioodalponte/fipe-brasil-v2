@@ -18,7 +18,7 @@ export function RankingItem({ entry, position }: RankingItemProps) {
 
   return (
     <Link
-      to={`/vehicle/${vehicle.id}`}
+      to={`/carro/${vehicle.id}`}
       className="grid grid-cols-[28px_1fr_auto] items-center gap-3 px-4 py-3 transition hover:bg-slate-50"
     >
       <span className="font-mono text-sm font-bold text-slate-400">

@@ -144,7 +144,7 @@ type CategoryApiResponse = {
 
 function toVehicle(row: CategoryApiVehicle): Vehicle {
   return {
-    id: row.slug, // card -> /vehicle/:slug
+    id: row.slug, // card -> /carro/:slug
     name: `${row.brand} ${row.model}`,
     brand: row.brand,
     model: row.model,

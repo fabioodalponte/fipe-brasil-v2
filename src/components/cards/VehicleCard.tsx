@@ -10,7 +10,7 @@ type VehicleCardProps = {
 export function VehicleCard({ vehicle }: VehicleCardProps) {
   return (
     <Link
-      to={`/vehicle/${vehicle.id}`}
+      to={`/carro/${vehicle.id}`}
       className="block min-w-0 rounded border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:shadow-sm"
     >
       <div className="flex items-start gap-3">

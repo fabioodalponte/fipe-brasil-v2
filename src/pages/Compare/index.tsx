@@ -325,7 +325,7 @@ function CompareCard({ entry }: { entry: ComparedVehicle }) {
         </Link>
       </div>
       <h2 className="mt-3 text-2xl font-bold text-slate-950">
-        <Link to={`/vehicle/${vehicle.id}`} className="hover:underline">
+        <Link to={`/carro/${vehicle.id}`} className="hover:underline">
           {vehicle.name}
         </Link>
       </h2>

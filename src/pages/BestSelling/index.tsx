@@ -67,7 +67,7 @@ function collectionJsonLd(vehicles: FenabraveBestSellingVehicle[]) {
           '@type': 'ListItem',
           position: index + 1,
           name: `${vehicle.brand_original} ${vehicle.model_original}`,
-          ...(candidate ? { url: absoluteUrl(`/vehicle/${candidate.slug}`) } : {}),
+          ...(candidate ? { url: absoluteUrl(`/carro/${candidate.slug}`) } : {}),
         }
       }),
     },
@@ -215,7 +215,7 @@ export function BestSellingPage() {
                           </p>
                           {candidate ? (
                             <Link
-                              to={`/vehicle/${candidate.slug}`}
+                              to={`/carro/${candidate.slug}`}
                               className="mt-1 inline-flex max-w-lg items-center gap-1 text-xs font-bold text-slate-700 hover:text-slate-950"
                             >
                               <span className="truncate">
