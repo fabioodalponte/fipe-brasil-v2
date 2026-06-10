@@ -79,6 +79,11 @@ export function VehiclePage() {
   if (status === 'notfound') {
     return (
       <div className="rounded border border-slate-200 bg-white p-8 text-center">
+        <SEO
+          title="Veículo não encontrado | FIPE Brasil"
+          description="O veículo procurado não foi localizado na tabela FIPE."
+          noindex
+        />
         <h1 className="text-xl font-bold text-slate-950">Veículo não encontrado</h1>
         <p className="mt-2 text-sm text-slate-500">
           Não localizamos o veículo <span className="font-mono">{slug}</span> na tabela FIPE.

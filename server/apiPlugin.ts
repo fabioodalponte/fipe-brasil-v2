@@ -337,12 +337,30 @@ function attach(server: ViteDevServer | PreviewServer): void {
 
 const DIST_DIR = resolve(process.cwd(), 'dist')
 
+// Espelho das rotas do SPA (src/App.tsx). Paginas estaticas conhecidas e
+// prefixos dinamicos validos; qualquer outro path recebe 404 real em vez do
+// fallback SPA com 200 (soft 404). Manter em sincronia ao criar rotas novas.
+const KNOWN_PAGES = new Set([
+  '',
+  'compare',
+  'index',
+  'mais-vendidos',
+  'suvs-mais-vendidos',
+  'picapes-mais-vendidas',
+  'mais-valorizados',
+  'mais-desvalorizados',
+  'mais-caros',
+  'mais-baratos',
+])
+const KNOWN_DYNAMIC = /^(carro|marca|categoria)\/[^/]+$/
+
 /**
  * Serve o HTML prerenderizado (snapshot estatico gerado por scripts/prerender.ts)
  * para requisicoes de pagina: `GET /carro/<slug>` -> `dist/carro/<slug>/index.html`.
  * Roda apenas no preview/producao, antes do fallback SPA do Vite. Requisicoes de
- * API, assets (qualquer path com extensao) e rotas sem snapshot caem no `next()`,
- * preservando o comportamento estatico/SPA padrao.
+ * API, assets (qualquer path com extensao) e rotas conhecidas sem snapshot caem
+ * no `next()`, preservando o comportamento estatico/SPA padrao; rotas
+ * desconhecidas recebem o shell do SPA com status 404.
  */
 function attachPrerender(server: PreviewServer): void {
   server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: () => void) => {
@@ -382,7 +400,17 @@ function attachPrerender(server: PreviewServer): void {
     const relative = decoded.replace(/^\/+/, '').replace(/\/+$/, '')
     const filePath = resolve(DIST_DIR, relative, 'index.html')
     if (!filePath.startsWith(DIST_DIR) || !existsSync(filePath)) {
-      next()
+      if (KNOWN_PAGES.has(relative) || KNOWN_DYNAMIC.test(relative)) {
+        // Rota valida sem snapshot (ex.: veiculo fora do sitemap): fallback SPA.
+        next()
+        return
+      }
+      // Rota desconhecida: shell do SPA com 404 real (o router renderiza a
+      // pagina NotFound no cliente).
+      const shellPath = resolve(DIST_DIR, 'index.html')
+      res.statusCode = 404
+      res.setHeader('Content-Type', 'text/html; charset=utf-8')
+      res.end(req.method === 'HEAD' || !existsSync(shellPath) ? undefined : readFileSync(shellPath))
       return
     }
 

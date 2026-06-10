@@ -6,6 +6,7 @@ import { CategoryPage } from './pages/Category'
 import { ComparePage } from './pages/Compare'
 import { HomePage } from './pages/Home'
 import { IFBIndexPage } from './pages/Index'
+import { NotFoundPage } from './pages/NotFound'
 import { RankingLandingPage } from './pages/RankingLanding'
 import { SegmentBestSellingPage } from './pages/SegmentBestSelling'
 import { VehiclePage } from './pages/Vehicle'
@@ -36,6 +37,9 @@ const router = createBrowserRouter([
       { path: 'mais-desvalorizados', element: <RankingLandingPage /> },
       { path: 'mais-caros', element: <RankingLandingPage /> },
       { path: 'mais-baratos', element: <RankingLandingPage /> },
+      // Rotas novas tambem precisam entrar em KNOWN_PAGES/KNOWN_DYNAMIC no
+      // server/apiPlugin.ts, senao o middleware responde 404 antes do SPA.
+      { path: '*', element: <NotFoundPage /> },
     ],
   },
 ])
