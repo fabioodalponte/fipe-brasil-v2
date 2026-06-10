@@ -324,11 +324,15 @@ function attach(server: ViteDevServer | PreviewServer): void {
     }
 
     const url = new URL(req.url, 'http://localhost')
-    const rateLimit = checkRateLimit(req, url.pathname)
-    setRateLimitHeaders(res, rateLimit)
-    if (!rateLimit.allowed) {
-      sendJson(res, 429, { error: 'rate_limited' })
-      return
+    // Prerender (scripts/prerender.ts) roda o preview neste mesmo processo e
+    // crawla a API em rajada; o rate limit derrubaria o proprio build.
+    if (process.env.FIPE_DISABLE_RATE_LIMIT !== '1') {
+      const rateLimit = checkRateLimit(req, url.pathname)
+      setRateLimitHeaders(res, rateLimit)
+      if (!rateLimit.allowed) {
+        sendJson(res, 429, { error: 'rate_limited' })
+        return
+      }
     }
 
     void dispatch(req, res)

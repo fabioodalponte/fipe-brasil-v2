@@ -19,12 +19,16 @@ const DIST_DIR = resolve(ROOT, 'dist')
 const SITEMAP_PATH = resolve(DIST_DIR, 'sitemap.xml')
 const PORT = Number(process.env.PRERENDER_PORT ?? 4180)
 const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? 4)
-const NAV_TIMEOUT_MS = 30_000
-const SETTLE_TIMEOUT_MS = 15_000
+const NAV_TIMEOUT_MS = Number(process.env.PRERENDER_NAV_TIMEOUT_MS ?? 30_000)
+const SETTLE_TIMEOUT_MS = Number(process.env.PRERENDER_SETTLE_TIMEOUT_MS ?? 15_000)
 
 // Mais conexoes no pool durante o crawl: cada pagina dispara varias chamadas e a
 // concorrencia esgotaria o pool padrao (max 4), gerando estados de erro.
 if (!process.env.FIPE_DB_POOL_MAX) process.env.FIPE_DB_POOL_MAX = '12'
+// O crawl em rajada (4 paginas x varias chamadas de API) estoura o rate limit
+// da API (120 req/min por IP) e as paginas assentam em estado de erro. O
+// preview roda neste processo, entao a flag vale so durante o prerender.
+process.env.FIPE_DISABLE_RATE_LIMIT = '1'
 
 /**
  * Predicado (avaliado no browser, como string) que define "pagina pronta para
