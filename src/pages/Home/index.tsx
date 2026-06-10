@@ -1,19 +1,26 @@
-import { useMemo, useState } from 'react'
-import { GitCompareArrows, SlidersHorizontal } from 'lucide-react'
+import { useState } from 'react'
+import { GitCompareArrows } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
 import { JsonLd } from '../../components/seo/JsonLd'
 import { SearchAutocomplete } from '../../components/search/SearchAutocomplete'
-import { MetricCard } from '../../components/cards/MetricCard'
 import { RankingList } from '../../components/rankings/RankingList'
 import { VehicleCard } from '../../components/cards/VehicleCard'
-import { VehicleGrid } from '../../components/vehicles/VehicleGrid'
 import { popularComparisons } from '../../services/compareVehicles'
 import { useHomeData } from '../../hooks/useHomeData'
-import { useHomeVehicles } from '../../hooks/useHomeVehicles'
+import { useFenabraveBestSelling } from '../../hooks/useFenabraveBestSelling'
 import { useMarketRankings } from '../../hooks/useMarketRankings'
-import { formatCurrency, numberFormatter } from '../../utils/formatters'
+import type { FenabraveBestSellingVehicle } from '../../services/fenabraveRankings'
+import { numberFormatter } from '../../utils/formatters'
 import { breadcrumbList } from '../../utils/structuredData'
+
+const quickLinks = [
+  { to: '/mais-vendidos', label: 'Mais vendidos' },
+  { to: '/suvs-mais-vendidos', label: 'SUVs mais vendidos' },
+  { to: '/picapes-mais-vendidas', label: 'Picapes mais vendidas' },
+  { to: '/mais-valorizados', label: 'Mais valorizados' },
+  { to: '/compare', label: 'Comparar veiculos' },
+]
 
 const rankingLandingLinks = [
   { to: '/mais-vendidos', label: 'Mais vendidos' },
@@ -25,374 +32,214 @@ const rankingLandingLinks = [
   { to: '/mais-baratos', label: 'Mais baratos' },
 ]
 
-const priceBands = [
-  { value: '', label: 'Todos os precos' },
-  { value: '0-50000', label: 'Ate R$ 50 mil', maxPrice: 50_000 },
-  { value: '50000-100000', label: 'R$ 50 mil a R$ 100 mil', minPrice: 50_000, maxPrice: 100_000 },
-  { value: '100000-200000', label: 'R$ 100 mil a R$ 200 mil', minPrice: 100_000, maxPrice: 200_000 },
-  { value: '200000-', label: 'Acima de R$ 200 mil', minPrice: 200_000 },
-]
+const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro']
 
 function monthLabel(reference: string | null): string {
-  if (!reference) return 'n/d'
+  if (!reference) return ''
   const [year, month] = reference.split('-')
-  return `${month}/${year}`
+  const name = MESES[Number(month) - 1]
+  return name ? `${name} de ${year}` : reference
+}
+
+function BestSellingList({
+  vehicles,
+  loading,
+  error,
+}: {
+  vehicles: FenabraveBestSellingVehicle[]
+  loading: boolean
+  error: boolean
+}) {
+  return (
+    <section className="min-w-0 rounded border border-slate-200 bg-white">
+      <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+        <h2 className="text-base font-bold text-slate-950">Mais vendidos</h2>
+        <span className="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-xs font-bold text-slate-600">
+          Fenabrave
+        </span>
+      </div>
+
+      {loading ? (
+        <div className="divide-y divide-slate-100">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div key={index} className="flex items-center gap-3 px-4 py-3">
+              <span className="h-8 w-full animate-pulse rounded bg-slate-100" />
+            </div>
+          ))}
+        </div>
+      ) : error || vehicles.length === 0 ? (
+        <p className="px-4 py-6 text-sm text-slate-500">Nao foi possivel carregar este ranking.</p>
+      ) : (
+        <div className="divide-y divide-slate-100">
+          {vehicles.map((vehicle, index) => {
+            const name = `${vehicle.brand_original} ${vehicle.model_original}`
+            const registrations =
+              vehicle.registrations_month != null
+                ? `${numberFormatter.format(vehicle.registrations_month)} emplacamentos`
+                : vehicle.category
+            // `vehicle.rank` e o rank dentro da categoria Fenabrave (repete entre
+            // categorias); a posicao exibida e a da lista agregada.
+            const row = (
+              <>
+                <span className="font-mono text-sm font-bold text-slate-400">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold text-slate-900">{name}</span>
+                  <span className="block truncate text-xs text-slate-500">{registrations}</span>
+                </span>
+              </>
+            )
+            const slug = vehicle.best_fipe_candidate?.slug
+            const key = `${vehicle.category}-${vehicle.rank}`
+            return slug ? (
+              <Link
+                key={key}
+                to={`/carro/${slug}`}
+                className="grid grid-cols-[28px_1fr] items-center gap-3 px-4 py-3 transition hover:bg-slate-50"
+              >
+                {row}
+              </Link>
+            ) : (
+              <div key={key} className="grid grid-cols-[28px_1fr] items-center gap-3 px-4 py-3">
+                {row}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {!loading && !error ? (
+        <div className="border-t border-slate-100 px-4 py-3">
+          <Link to="/mais-vendidos" className="text-sm font-bold text-slate-700 hover:text-slate-950">
+            Ver ranking completo →
+          </Link>
+        </div>
+      ) : null}
+    </section>
+  )
 }
 
 export function HomePage() {
-  const [selectedBrand, setSelectedBrand] = useState('')
-  const [selectedSegment, setSelectedSegment] = useState('')
-  const [selectedPriceBand, setSelectedPriceBand] = useState('')
+  const [showAllBrands, setShowAllBrands] = useState(false)
   const { data: homeData, loading: homeLoading, error: homeError } = useHomeData()
   const { rankings, loading, error } = useMarketRankings(5)
-  const useMock = import.meta.env.VITE_USE_MOCK === 'true'
-  const stats = homeData?.marketStats
-  const activePriceBand = priceBands.find((band) => band.value === selectedPriceBand) ?? priceBands[0]
-  const homeVehicleFilters = useMemo(
-    () => ({
-      brand: selectedBrand || undefined,
-      segment: selectedSegment || undefined,
-      minPrice: activePriceBand.minPrice,
-      maxPrice: activePriceBand.maxPrice,
-    }),
-    [selectedBrand, selectedSegment, activePriceBand.minPrice, activePriceBand.maxPrice],
-  )
   const {
-    vehicles: exploreVehicles,
-    loading: exploreLoading,
-    error: exploreError,
-  } = useHomeVehicles(homeVehicleFilters)
-  const hasHomeVehicleFilters = Boolean(selectedBrand || selectedSegment || selectedPriceBand)
-
-  function clearHomeVehicleFilters() {
-    setSelectedBrand('')
-    setSelectedSegment('')
-    setSelectedPriceBand('')
-  }
+    vehicles: bestSelling,
+    loading: bestSellingLoading,
+    error: bestSellingError,
+  } = useFenabraveBestSelling(5)
+  const stats = homeData?.marketStats
+  const brands = homeData?.brands ?? []
 
   return (
-    <div className="min-w-0 space-y-5">
+    <div className="min-w-0 space-y-8">
       <SEO
         title="FIPE Brasil — Inteligencia de mercado automotivo"
         description="Consulte precos FIPE, historico, rankings reais de preco e variacao do mercado automotivo brasileiro."
         canonicalPath="/"
       />
       <JsonLd id="home-breadcrumb" data={breadcrumbList([{ name: 'Home', path: '/' }])} />
-      <section className="grid min-w-0 gap-5 lg:grid-cols-[1.35fr_0.65fr]">
-        <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
-          <div className="mb-5 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase text-emerald-700">Mercado aberto</span>
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-600">
-              {useMock ? 'Mock data | UX lab' : 'Rankings reais FIPE'}
-            </span>
-          </div>
-          <h1 className="max-w-3xl break-words text-2xl font-bold leading-tight text-slate-950 sm:text-3xl md:text-5xl">
-            Inteligencia de mercado para precos FIPE, variacao real e rankings por categoria.
+
+      <section className="min-w-0 rounded border border-slate-200 bg-white px-5 py-10 md:py-14">
+        <div className="mx-auto max-w-3xl text-center">
+          <h1 className="text-3xl font-bold leading-tight text-slate-950 md:text-4xl">
+            Preço FIPE, histórico e rankings do mercado automotivo
           </h1>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-            Explore veiculos, compare historico e acompanhe o IFB em uma interface de leitura rapida inspirada em terminais financeiros.
+          <p className="mt-3 text-base leading-7 text-slate-600">
+            Busque um veículo e veja o preço atual, a valorização e como ele se compara com o mercado.
           </p>
-          <div className="mt-6 flex min-w-0 flex-col gap-3 rounded border border-slate-200 bg-slate-50 p-2 md:flex-row">
-            <SearchAutocomplete
-              className="flex-1"
-              placeholder="Digite Corolla, Civic, Compass ou codigo FIPE"
-            />
-            <button
-              type="button"
-              onClick={() => document.getElementById('explorar-veiculos')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center justify-center gap-2 rounded border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700"
-            >
-              <SlidersHorizontal size={16} />
-              Filtros
-            </button>
+          <div className="mt-7">
+            <SearchAutocomplete placeholder="Digite Corolla, Civic, Compass ou codigo FIPE" />
           </div>
-        </div>
-
-        <div className="min-w-0 rounded border border-slate-200 bg-slate-950 p-5 text-white">
-          <p className="text-[11px] font-bold uppercase text-slate-400">Base FIPE atual</p>
-          <strong className="mt-3 block font-mono text-5xl">
-            {stats ? numberFormatter.format(stats.totalVehicles) : '—'}
-          </strong>
-          <p className="mt-2 font-mono text-sm font-bold text-emerald-300">
-            Referencia {monthLabel(stats?.latestReferenceMonth ?? null)}
+          <p className="mt-4 text-sm text-slate-500">
+            {stats
+              ? `${numberFormatter.format(stats.totalVehicles)} veículos monitorados · referência ${monthLabel(stats.latestReferenceMonth)} · dados da tabela FIPE`
+              : 'Dados da tabela FIPE com histórico mensal real'}
           </p>
-          <div className="mt-8 grid grid-cols-2 gap-3">
-            <div className="rounded border border-white/10 bg-white/5 p-3">
-              <p className="text-xs text-slate-400">Preco medio</p>
-              <p className="mt-1 font-bold">
-                {stats?.averagePrice != null ? formatCurrency(stats.averagePrice) : '—'}
-              </p>
-            </div>
-            <div className="rounded border border-white/10 bg-white/5 p-3">
-              <p className="text-xs text-slate-400">Maior preco</p>
-              <p className="mt-1 font-bold">
-                {stats?.highestPrice != null ? formatCurrency(stats.highestPrice) : '—'}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-4">
-        <MetricCard
-          label="Veiculos monitorados"
-          value={stats ? numberFormatter.format(stats.totalVehicles) : '—'}
-          change={monthLabel(stats?.latestReferenceMonth ?? null)}
-        />
-        <MetricCard
-          label="Preco medio"
-          value={stats?.averagePrice != null ? formatCurrency(stats.averagePrice) : '—'}
-        />
-        <MetricCard
-          label="Maior preco"
-          value={stats?.highestPrice != null ? formatCurrency(stats.highestPrice) : '—'}
-        />
-        <MetricCard
-          label="Menor preco"
-          value={stats?.lowestPrice != null ? formatCurrency(stats.lowestPrice) : '—'}
-        />
-      </section>
-
-      <section id="explorar-veiculos" className="min-w-0 rounded border border-slate-200 bg-white p-5">
-        <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <h2 className="text-lg font-bold text-slate-950">Explorar veiculos</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              Filtros reais por marca, categoria e faixa de preco.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={clearHomeVehicleFilters}
-            disabled={!hasHomeVehicleFilters}
-            className="inline-flex items-center justify-center rounded border border-slate-200 px-3 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Limpar filtros
-          </button>
-        </div>
-
-        <div className="grid min-w-0 gap-3 py-4 md:grid-cols-3">
-          <label className="min-w-0">
-            <span className="mb-1 block text-xs font-bold uppercase text-slate-500">Marca</span>
-            <select
-              value={selectedBrand}
-              onChange={(event) => setSelectedBrand(event.target.value)}
-              className="h-11 w-full rounded border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 outline-none transition focus:border-slate-400"
-            >
-              <option value="">Todas as marcas</option>
-              {homeData?.brands.map((brand) => (
-                <option key={brand.slug} value={brand.slug}>
-                  {brand.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="min-w-0">
-            <span className="mb-1 block text-xs font-bold uppercase text-slate-500">Categoria</span>
-            <select
-              value={selectedSegment}
-              onChange={(event) => setSelectedSegment(event.target.value)}
-              className="h-11 w-full rounded border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 outline-none transition focus:border-slate-400"
-            >
-              <option value="">Todas as categorias</option>
-              {homeData?.categories.map((category) => (
-                <option key={category.slug} value={category.slug}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="min-w-0">
-            <span className="mb-1 block text-xs font-bold uppercase text-slate-500">Faixa de preco</span>
-            <select
-              value={selectedPriceBand}
-              onChange={(event) => setSelectedPriceBand(event.target.value)}
-              className="h-11 w-full rounded border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 outline-none transition focus:border-slate-400"
-            >
-              {priceBands.map((band) => (
-                <option key={band.value || 'all'} value={band.value}>
-                  {band.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        {exploreLoading ? (
-          <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <div key={index} className="h-36 animate-pulse rounded border border-slate-200 bg-slate-100" />
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {quickLinks.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+              >
+                {item.label}
+              </Link>
             ))}
           </div>
-        ) : exploreError ? (
-          <p className="rounded border border-slate-200 bg-white p-4 text-sm text-slate-500">
-            Nao foi possivel carregar os veiculos filtrados.
-          </p>
-        ) : (
-          <VehicleGrid
-            vehicles={exploreVehicles}
-            emptyLabel="Nenhum veiculo encontrado para os filtros selecionados."
-          />
-        )}
+        </div>
       </section>
 
-      <section className="grid min-w-0 gap-5 xl:grid-cols-[1.3fr_0.7fr]">
-        <div className="min-w-0 rounded border border-slate-200 bg-white">
-          <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-            <div>
-              <h2 className="text-base font-bold text-slate-950">Cobertura da base FIPE</h2>
-              <p className="text-sm text-slate-500">Resumo real dos veiculos disponiveis no banco</p>
-            </div>
-            <Link to="/index" className="text-sm font-bold text-slate-700 hover:text-slate-950">Ver indice</Link>
-          </div>
-          <div className="grid gap-3 p-4 md:grid-cols-3">
-            <div className="rounded border border-slate-100 bg-slate-50 p-4">
-              <p className="text-xs font-bold uppercase text-slate-500">Marcas</p>
-              <p className="mt-2 font-mono text-3xl font-bold text-slate-950">
-                {homeData ? numberFormatter.format(homeData.brands.length) : '—'}
-              </p>
-            </div>
-            <div className="rounded border border-slate-100 bg-slate-50 p-4">
-              <p className="text-xs font-bold uppercase text-slate-500">Categorias</p>
-              <p className="mt-2 font-mono text-3xl font-bold text-slate-950">
-                {homeData ? numberFormatter.format(homeData.categories.length) : '—'}
-              </p>
-            </div>
-            <div className="rounded border border-slate-100 bg-slate-50 p-4">
-              <p className="text-xs font-bold uppercase text-slate-500">Destaques</p>
-              <p className="mt-2 font-mono text-3xl font-bold text-slate-950">
-                {homeData ? numberFormatter.format(homeData.featuredVehicles.length) : '—'}
-              </p>
-            </div>
-          </div>
+      <section className="min-w-0">
+        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-lg font-bold text-slate-950">Destaques do mês</h2>
+          <p className="text-sm text-slate-500">
+            {stats?.latestReferenceMonth ? `Referência ${monthLabel(stats.latestReferenceMonth)}` : ''}
+          </p>
         </div>
-
-        <div className="grid min-w-0 gap-5">
+        <div className="grid min-w-0 gap-5 md:grid-cols-2 xl:grid-cols-3">
           <RankingList
-            title="Maior valorizacao"
+            title="Maior valorização"
             badge={{ label: '12 meses', tone: 'positive' }}
             entries={rankings?.topAppreciation ?? []}
             loading={loading}
             error={error}
             emptyLabel="Sem veiculos com valorizacao real em 12 meses."
+            footerLink={{ to: '/mais-valorizados', label: 'Ver ranking completo' }}
           />
           <RankingList
-            title="Maior desvalorizacao"
+            title="Maior desvalorização"
             badge={{ label: '12 meses', tone: 'negative' }}
             entries={rankings?.topDepreciation ?? []}
             loading={loading}
             error={error}
             emptyLabel="Sem veiculos com desvalorizacao real em 12 meses."
+            footerLink={{ to: '/mais-desvalorizados', label: 'Ver ranking completo' }}
+          />
+          <BestSellingList
+            vehicles={bestSelling}
+            loading={bestSellingLoading}
+            error={bestSellingError}
           />
         </div>
       </section>
 
-      <section className="grid min-w-0 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        <RankingList
-          title="Mais caros"
-          badge={{ label: 'preco FIPE' }}
-          entries={rankings?.topExpensive ?? []}
-          loading={loading}
-          error={error}
-        />
-        <RankingList
-          title="Mais baratos"
-          badge={{ label: 'preco FIPE' }}
-          entries={rankings?.topAffordable ?? []}
-          loading={loading}
-          error={error}
-        />
-        <RankingList
-          title="SUVs mais caros"
-          badge={{ label: 'preco FIPE' }}
-          entries={rankings?.suvTopExpensive ?? []}
-          loading={loading}
-          error={error}
-        />
-        <RankingList
-          title="Sedans mais caros"
-          badge={{ label: 'preco FIPE' }}
-          entries={rankings?.sedanTopExpensive ?? []}
-          loading={loading}
-          error={error}
-        />
-        <RankingList
-          title="Hatchs mais baratos"
-          badge={{ label: 'preco FIPE' }}
-          entries={rankings?.hatchTopAffordable ?? []}
-          loading={loading}
-          error={error}
-        />
-        <RankingList
-          title="Picapes mais caras"
-          badge={{ label: 'preco FIPE' }}
-          entries={rankings?.pickupTopExpensive ?? []}
-          loading={loading}
-          error={error}
-        />
-      </section>
-
-      <section className="min-w-0 rounded border border-slate-200 bg-white p-5">
-        <h2 className="text-lg font-bold text-slate-950">Rankings de mercado</h2>
-        <p className="mt-1 text-sm text-slate-500">
-          Paginas com ranking Fenabrave, preco FIPE atual e variacao historica disponivel.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {rankingLandingLinks.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="grid min-w-0 gap-5 md:grid-cols-2">
-        <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
-          <h2 className="text-lg font-bold text-slate-950">Explore por marca</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {homeLoading ? (
-              <span className="text-sm text-slate-500">Carregando marcas...</span>
-            ) : homeError || !homeData || homeData.brands.length === 0 ? (
-              <span className="text-sm text-slate-500">Marcas indisponiveis.</span>
-            ) : homeData.brands.map((brand) => (
-              <Link
-                key={brand.slug}
-                to={`/marca/${brand.slug}`}
-                className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-              >
-                {brand.name}
-              </Link>
+      <section className="min-w-0">
+        <h2 className="mb-3 text-lg font-bold text-slate-950">Explore por categoria</h2>
+        {homeLoading ? (
+          <div className="grid min-w-0 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="h-24 animate-pulse rounded border border-slate-200 bg-slate-100" />
             ))}
           </div>
-        </div>
-        <div className="min-w-0 rounded border border-slate-200 bg-white p-5">
-          <h2 className="text-lg font-bold text-slate-950">Explore por categoria</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {homeLoading ? (
-              <span className="text-sm text-slate-500">Carregando categorias...</span>
-            ) : homeError || !homeData || homeData.categories.length === 0 ? (
-              <span className="text-sm text-slate-500">Categorias indisponiveis.</span>
-            ) : homeData.categories.map((category) => (
+        ) : homeError || !homeData || homeData.categories.length === 0 ? (
+          <p className="rounded border border-slate-200 bg-white p-4 text-sm text-slate-500">
+            Categorias indisponiveis.
+          </p>
+        ) : (
+          <div className="grid min-w-0 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+            {homeData.categories.map((category) => (
               <Link
                 key={category.slug}
                 to={`/categoria/${category.slug}`}
-                className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                className="rounded border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:bg-slate-50"
               >
-                {category.name}
+                <span className="block text-base font-bold capitalize text-slate-950">{category.name}</span>
+                <span className="mt-1 block text-sm text-slate-500">
+                  {numberFormatter.format(category.count)} veículos
+                </span>
               </Link>
             ))}
           </div>
-        </div>
+        )}
       </section>
 
       <section className="min-w-0 rounded border border-slate-200 bg-white p-5">
-        <h2 className="text-lg font-bold text-slate-950">Comparacoes populares</h2>
+        <h2 className="text-lg font-bold text-slate-950">Comparações populares</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Veja lado a lado preço, histórico e variação de dois veículos.
+        </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {popularComparisons.map((item) => (
             <Link
@@ -407,10 +254,8 @@ export function HomePage() {
         </div>
       </section>
 
-      <section>
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-950">Veiculos em destaque</h2>
-        </div>
+      <section className="min-w-0">
+        <h2 className="mb-3 text-lg font-bold text-slate-950">Veículos em destaque</h2>
         {homeLoading ? (
           <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-4">
             {Array.from({ length: 4 }).map((_, index) => (
@@ -427,6 +272,55 @@ export function HomePage() {
               <VehicleCard key={vehicle.id} vehicle={vehicle} />
             ))}
           </div>
+        )}
+      </section>
+
+      <section className="min-w-0 rounded border border-slate-200 bg-white p-5">
+        <h2 className="text-lg font-bold text-slate-950">Navegue pelo FIPE Brasil</h2>
+
+        <h3 className="mt-4 text-sm font-bold uppercase text-slate-500">Rankings</h3>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {rankingLandingLinks.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+
+        <h3 className="mt-5 text-sm font-bold uppercase text-slate-500">Marcas</h3>
+        {homeLoading ? (
+          <p className="mt-2 text-sm text-slate-500">Carregando marcas...</p>
+        ) : homeError || brands.length === 0 ? (
+          <p className="mt-2 text-sm text-slate-500">Marcas indisponiveis.</p>
+        ) : (
+          <>
+            {/* Todas as marcas ficam no DOM (links internos para crawlers no HTML
+                prerenderizado); o recolhimento e so visual, via max-height. */}
+            <div className={`mt-2 flex flex-wrap gap-2 ${showAllBrands ? '' : 'max-h-24 overflow-hidden'}`}>
+              {brands.map((brand) => (
+                <Link
+                  key={brand.slug}
+                  to={`/marca/${brand.slug}`}
+                  className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                >
+                  {brand.name}
+                </Link>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowAllBrands((value) => !value)}
+              className="mt-3 rounded-full border border-slate-300 bg-slate-50 px-3 py-1.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100"
+            >
+              {showAllBrands
+                ? 'Mostrar menos'
+                : `Ver todas as ${numberFormatter.format(brands.length)} marcas`}
+            </button>
+          </>
         )}
       </section>
     </div>

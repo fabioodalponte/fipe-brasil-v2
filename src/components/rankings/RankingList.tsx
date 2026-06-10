@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import type { RankingEntry, RankingTone } from '../../services/marketRankings'
 import { RankingItem } from './RankingItem'
 
@@ -13,6 +14,8 @@ type RankingListProps = {
   loading?: boolean
   error?: boolean
   emptyLabel?: string
+  /** Link "ver mais" no rodape da lista (ex.: landing page do ranking completo). */
+  footerLink?: { to: string; label: string }
 }
 
 const BADGE_CLASS: Record<RankingTone, string> = {
@@ -28,6 +31,7 @@ export function RankingList({
   loading = false,
   error = false,
   emptyLabel = 'Sem dados suficientes',
+  footerLink,
 }: RankingListProps) {
   return (
     <section className="min-w-0 rounded border border-slate-200 bg-white">
@@ -61,6 +65,14 @@ export function RankingList({
           ))}
         </div>
       )}
+
+      {footerLink && !loading && !error ? (
+        <div className="border-t border-slate-100 px-4 py-3">
+          <Link to={footerLink.to} className="text-sm font-bold text-slate-700 hover:text-slate-950">
+            {footerLink.label} →
+          </Link>
+        </div>
+      ) : null}
     </section>
   )
 }
