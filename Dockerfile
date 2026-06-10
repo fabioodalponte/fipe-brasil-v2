@@ -29,7 +29,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
-ENV PORT=4173
+# 8080 casa com a porta ja configurada no Coolify (herdada do nginx do v1).
+ENV PORT=8080
 
 COPY --from=build /app/package.json /app/package-lock.json ./
 COPY --from=build /app/node_modules ./node_modules
@@ -37,6 +38,6 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/server ./server
 COPY --from=build /app/vite.config.ts ./vite.config.ts
 
-EXPOSE 4173
+EXPOSE 8080
 
-CMD ["sh", "-c", "npm run preview -- --host 0.0.0.0 --port ${PORT:-4173}"]
+CMD ["sh", "-c", "npm run preview -- --host 0.0.0.0 --port ${PORT:-8080}"]
