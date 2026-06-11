@@ -6,6 +6,25 @@ export type PricePoint = {
   price: number
 }
 
+/** Consumo oficial Inmetro (PBE Veicular) pareado ao veículo. */
+export type FuelConsumption = {
+  tableYear: number
+  categoria: string | null
+  motor: string | null
+  transmissao: string | null
+  propulsao: string | null
+  kmlEtanolCidade: number | null
+  kmlEtanolEstrada: number | null
+  kmlGasolinaCidade: number | null
+  kmlGasolinaEstrada: number | null
+  kmlEletricoCidade: number | null
+  kmlEletricoEstrada: number | null
+  consumoMjKm: number | null
+  autonomiaEletricaKm: number | null
+  classificacaoPbe: string | null
+  classificacaoGeral: string | null
+}
+
 export type VehicleDetails = {
   vehicleId: number
   slug: string
@@ -22,6 +41,7 @@ export type VehicleDetails = {
   segmentSource: string | null
   segmentConfidence: string | null
   priceHistory: PricePoint[]
+  fuelConsumption: FuelConsumption | null
 }
 
 export interface VehicleDetailsProvider {
@@ -90,6 +110,48 @@ type ApiVehicleDetails = {
   segment_source: string | null
   segment_confidence: string | null
   price_history: ApiPricePoint[]
+  fuel_consumption: ApiFuelConsumption | null
+}
+
+type ApiFuelConsumption = {
+  table_year: number
+  categoria: string | null
+  motor: string | null
+  transmissao: string | null
+  propulsao: string | null
+  kml_etanol_cidade: string | null
+  kml_etanol_estrada: string | null
+  kml_gasolina_cidade: string | null
+  kml_gasolina_estrada: string | null
+  kml_eletrico_cidade: string | null
+  kml_eletrico_estrada: string | null
+  consumo_mj_km: string | null
+  autonomia_eletrica_km: string | null
+  classificacao_pbe: string | null
+  classificacao_geral: string | null
+}
+
+const toNumber = (value: string | null) => (value != null ? Number(value) : null)
+
+function consumptionFromApi(row: ApiFuelConsumption | null): FuelConsumption | null {
+  if (!row) return null
+  return {
+    tableYear: row.table_year,
+    categoria: row.categoria,
+    motor: row.motor,
+    transmissao: row.transmissao,
+    propulsao: row.propulsao,
+    kmlEtanolCidade: toNumber(row.kml_etanol_cidade),
+    kmlEtanolEstrada: toNumber(row.kml_etanol_estrada),
+    kmlGasolinaCidade: toNumber(row.kml_gasolina_cidade),
+    kmlGasolinaEstrada: toNumber(row.kml_gasolina_estrada),
+    kmlEletricoCidade: toNumber(row.kml_eletrico_cidade),
+    kmlEletricoEstrada: toNumber(row.kml_eletrico_estrada),
+    consumoMjKm: toNumber(row.consumo_mj_km),
+    autonomiaEletricaKm: toNumber(row.autonomia_eletrica_km),
+    classificacaoPbe: row.classificacao_pbe,
+    classificacaoGeral: row.classificacao_geral,
+  }
 }
 
 function fromApi(row: ApiVehicleDetails): VehicleDetails {
@@ -112,6 +174,7 @@ function fromApi(row: ApiVehicleDetails): VehicleDetails {
       referenceMonth: p.reference_month,
       price: Number(p.price),
     })),
+    fuelConsumption: consumptionFromApi(row.fuel_consumption),
   }
 }
 
@@ -155,6 +218,7 @@ export class MockVehicleDetailsProvider implements VehicleDetailsProvider {
       segmentSource: 'mock',
       segmentConfidence: 'alta',
       priceHistory: history,
+      fuelConsumption: null,
     }
   }
 }

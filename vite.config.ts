@@ -34,6 +34,8 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), tailwindcss(), vehicleApiPlugin()],
+    // Respeita PORT (ex.: preview do Claude Code / ferramentas que injetam porta).
+    server: process.env.PORT ? { port: Number(process.env.PORT) } : undefined,
     preview: {
       allowedHosts: previewAllowedHosts,
     },

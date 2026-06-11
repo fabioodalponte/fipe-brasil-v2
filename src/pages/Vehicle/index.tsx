@@ -1,4 +1,4 @@
-import { BarChart3, Car, GitCompareArrows, ShieldCheck } from 'lucide-react'
+import { BarChart3, Car, Fuel, GitCompareArrows, ShieldCheck } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { SEO } from '../../components/seo/SEO'
@@ -30,6 +30,36 @@ function yearLabel(details: VehicleDetails): string {
 function toneFor(change: number | null): 'positive' | 'negative' | 'neutral' {
   if (change == null || Math.abs(change) < 0.05) return 'neutral'
   return change > 0 ? 'positive' : 'negative'
+}
+
+type ConsumptionEntry = {
+  label: string
+  city: number | null
+  highway: number | null
+  unit: string
+}
+
+/** Linhas de consumo a exibir, conforme os combustíveis publicados pelo Inmetro. */
+function consumptionEntries(details: VehicleDetails): ConsumptionEntry[] {
+  const c = details.fuelConsumption
+  if (!c) return []
+  const isDiesel = details.fuel.toLowerCase() === 'diesel'
+  const entries: ConsumptionEntry[] = []
+  if (c.kmlEtanolCidade != null || c.kmlEtanolEstrada != null) {
+    entries.push({ label: 'Etanol', city: c.kmlEtanolCidade, highway: c.kmlEtanolEstrada, unit: 'km/l' })
+  }
+  if (c.kmlGasolinaCidade != null || c.kmlGasolinaEstrada != null) {
+    entries.push({
+      label: isDiesel ? 'Diesel' : 'Gasolina',
+      city: c.kmlGasolinaCidade,
+      highway: c.kmlGasolinaEstrada,
+      unit: 'km/l',
+    })
+  }
+  if (c.kmlEletricoCidade != null || c.kmlEletricoEstrada != null) {
+    entries.push({ label: 'Elétrico', city: c.kmlEletricoCidade, highway: c.kmlEletricoEstrada, unit: 'km/le' })
+  }
+  return entries
 }
 
 function toSeed(details: VehicleDetails): Vehicle {
@@ -106,6 +136,15 @@ export function VehiclePage() {
 
   const year = yearLabel(details)
   const refLabel = monthLabel(details.latestReferenceMonth)
+  const consumption = details.fuelConsumption
+  const consumptionRows = consumptionEntries(details)
+  // Consumo de referência pro JSON-LD: combustível fóssil primeiro, senão elétrico.
+  const ldConsumption =
+    consumption?.kmlGasolinaCidade != null
+      ? { city: consumption.kmlGasolinaCidade, highway: consumption.kmlGasolinaEstrada }
+      : consumption?.kmlEletricoCidade != null
+        ? { city: consumption.kmlEletricoCidade, highway: consumption.kmlEletricoEstrada }
+        : null
   const chartData: PriceHistoryDatum[] = details.priceHistory.map((p) => ({
     month: monthLabel(p.referenceMonth),
     price: p.price,
@@ -146,6 +185,8 @@ export function VehiclePage() {
           price: details.latestPrice,
           path: `/carro/${details.slug}`,
           referenceMonth: details.latestReferenceMonth,
+          fuelConsumptionCity: ldConsumption?.city ?? null,
+          fuelConsumptionHighway: ldConsumption?.highway ?? null,
         })}
       />
       <JsonLd
@@ -253,6 +294,69 @@ export function VehiclePage() {
           tone="neutral"
         />
       </section>
+
+      {consumption && consumptionRows.length > 0 ? (
+        <section className="rounded border border-slate-200 bg-white">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 px-4 py-3">
+            <div className="flex items-center gap-2">
+              <Fuel size={18} className="text-slate-600" />
+              <h2 className="text-base font-bold text-slate-950">Consumo oficial Inmetro</h2>
+            </div>
+            <span className="text-xs text-slate-500">
+              Fonte: PBE Veicular {consumption.tableYear}
+              {consumption.motor ? ` | Motor ${consumption.motor}` : ''}
+              {consumption.transmissao ? ` | Câmbio ${consumption.transmissao}` : ''}
+            </span>
+          </div>
+          <div className="grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-4">
+            {consumptionRows.map((entry) => (
+              <div key={entry.label} className="rounded border border-slate-100 bg-slate-50 p-3">
+                <p className="text-[11px] font-bold uppercase text-slate-500">{entry.label}</p>
+                <p className="mt-1 text-sm text-slate-700">
+                  <span className="font-mono text-xl font-bold text-slate-950">
+                    {entry.city != null ? entry.city.toFixed(1) : '—'}
+                  </span>{' '}
+                  {entry.unit} cidade
+                </p>
+                <p className="text-sm text-slate-700">
+                  <span className="font-mono text-xl font-bold text-slate-950">
+                    {entry.highway != null ? entry.highway.toFixed(1) : '—'}
+                  </span>{' '}
+                  {entry.unit} estrada
+                </p>
+              </div>
+            ))}
+            {consumption.autonomiaEletricaKm != null ? (
+              <div className="rounded border border-slate-100 bg-slate-50 p-3">
+                <p className="text-[11px] font-bold uppercase text-slate-500">Autonomia elétrica</p>
+                <p className="mt-1 text-sm text-slate-700">
+                  <span className="font-mono text-xl font-bold text-slate-950">
+                    {consumption.autonomiaEletricaKm.toFixed(0)}
+                  </span>{' '}
+                  km
+                </p>
+              </div>
+            ) : null}
+            {consumption.classificacaoPbe ? (
+              <div className="rounded border border-slate-100 bg-slate-50 p-3">
+                <p className="text-[11px] font-bold uppercase text-slate-500">Classificação PBE</p>
+                <p className="mt-1">
+                  <span className="inline-block rounded bg-emerald-100 px-2 py-0.5 font-mono text-xl font-bold text-emerald-800">
+                    {consumption.classificacaoPbe}
+                  </span>
+                  {consumption.classificacaoGeral ? (
+                    <span className="ml-2 text-xs text-slate-500">geral {consumption.classificacaoGeral}</span>
+                  ) : null}
+                </p>
+              </div>
+            ) : null}
+          </div>
+          <p className="border-t border-slate-100 px-4 py-2 text-xs text-slate-400">
+            Valores medidos em laboratório (ABNT NBR 7024); o consumo real varia conforme o uso. Pareamento
+            automático com a versão mais próxima da tabela Inmetro.
+          </p>
+        </section>
+      ) : null}
 
       <section className="grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
         <div className="rounded border border-slate-200 bg-white">

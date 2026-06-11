@@ -56,6 +56,9 @@ export function vehicleProductFromParts(opts: {
   price?: number | null
   path: string
   referenceMonth?: string | null
+  /** km/l urbano e rodoviário (Inmetro/PBEV), no combustível de referência. */
+  fuelConsumptionCity?: number | null
+  fuelConsumptionHighway?: number | null
 }) {
   const data: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -65,6 +68,14 @@ export function vehicleProductFromParts(opts: {
   }
   if (opts.segment) data.category = opts.segment
   if (opts.year) data.productionDate = String(opts.year)
+  if (opts.fuelConsumptionCity != null) {
+    data.fuelConsumption = {
+      '@type': 'QuantitativeValue',
+      value: opts.fuelConsumptionCity,
+      ...(opts.fuelConsumptionHighway != null ? { maxValue: opts.fuelConsumptionHighway } : {}),
+      unitText: 'km/l',
+    }
+  }
   if (opts.price != null) {
     data.offers = {
       '@type': 'Offer',
