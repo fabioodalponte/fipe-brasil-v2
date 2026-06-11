@@ -10,6 +10,7 @@ import type { Vehicle } from '../../data/mock/market'
 import { useVehicleDetails } from '../../hooks/useVehicleDetails'
 import { useRelatedVehicles } from '../../hooks/useRelatedVehicles'
 import { analyzePriceHistory, type VehicleDetails } from '../../services/vehicleDetails'
+import { categoryLabel } from '../../services/categoryPages'
 import { formatCurrency, formatPercent } from '../../utils/formatters'
 import { slugify } from '../../utils/slug'
 import { breadcrumbList, vehicleProductFromParts } from '../../utils/structuredData'
@@ -159,7 +160,7 @@ export function VehiclePage() {
       : '',
     `Preço FIPE de referência ${refLabel}, com ${details.priceHistory.length} meses de histórico.`,
     details.segment
-      ? `Segmento ${details.segment} (origem: ${details.segmentSource ?? 'n/d'}, confiança ${details.segmentConfidence ?? 'n/d'}).`
+      ? `Segmento ${categoryLabel(details.segment)} (origem: ${details.segmentSource ?? 'n/d'}, confiança ${details.segmentConfidence ?? 'n/d'}).`
       : 'Segmento ainda em revisão.',
   ].filter(Boolean)
 
@@ -168,7 +169,7 @@ export function VehiclePage() {
       <SEO
         title={`${details.brand} ${details.model} ${year}: preço FIPE, histórico e variação | FIPE Brasil`}
         description={`Preço FIPE do ${details.brand} ${details.model} ${year}${
-          details.segment ? ` (${details.segment})` : ''
+          details.segment ? ` (${categoryLabel(details.segment)})` : ''
         }: ${details.latestPrice != null ? formatCurrency(details.latestPrice) : 'indisponível'} em ${refLabel}. Histórico de ${
           details.priceHistory.length
         } meses e variação.`}
@@ -180,7 +181,7 @@ export function VehiclePage() {
         data={vehicleProductFromParts({
           name: `${details.brand} ${details.model} ${year}`,
           brand: details.brand,
-          segment: details.segment,
+          segment: details.segment ? categoryLabel(details.segment) : null,
           year: details.modelYear,
           price: details.latestPrice,
           path: `/carro/${details.slug}`,
@@ -212,7 +213,7 @@ export function VehiclePage() {
                 to={`/categoria/${slugify(details.segment)}`}
                 className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-600 transition hover:bg-slate-200"
               >
-                {details.segment}
+                {categoryLabel(details.segment)}
               </Link>
             ) : null}
             <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase text-emerald-700">

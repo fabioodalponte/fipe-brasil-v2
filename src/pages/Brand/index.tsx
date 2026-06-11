@@ -8,6 +8,7 @@ import { RankingList } from '../../components/rankings/RankingList'
 import { VehicleGrid } from '../../components/vehicles/VehicleGrid'
 import { useBrandPage } from '../../hooks/useBrandPage'
 import { toPriceEntry } from '../../services/marketRankings'
+import { categoryLabel } from '../../services/categoryPages'
 import { formatCurrency } from '../../utils/formatters'
 import { breadcrumbList, collectionPage } from '../../utils/structuredData'
 
@@ -88,7 +89,7 @@ export function BrandPage() {
               key={seg.segment}
               className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700"
             >
-              {seg.segment}
+              {categoryLabel(seg.segment)}
               <span className="rounded-full bg-white px-2 py-0.5 font-mono text-[11px] text-slate-500">
                 {seg.count}
               </span>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useVehicleSearch } from '../../hooks/useVehicleSearch'
 import type { VehicleSearchResult } from '../../services/vehicleSearch'
 import { formatCurrency } from '../../utils/formatters'
+import { categoryLabel } from '../../services/categoryPages'
 
 type SearchAutocompleteProps = {
   placeholder?: string
@@ -136,7 +137,7 @@ export function SearchAutocomplete({
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-bold text-slate-950">{vehicle.name}</span>
                   <span className="block truncate text-xs text-slate-500">
-                    {vehicle.brand} | {vehicle.segment} | FIPE {vehicle.fipeCode}
+                    {vehicle.brand} | {categoryLabel(vehicle.segment)} | FIPE {vehicle.fipeCode}
                   </span>
                 </span>
                 <span className="shrink-0 font-mono text-sm font-bold text-slate-700">

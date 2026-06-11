@@ -4,6 +4,7 @@ import { HistoryChart } from '../../components/charts/HistoryChart'
 import { MetricCard } from '../../components/cards/MetricCard'
 import { marketHistory, segmentTable } from '../../data/mock/market'
 import { formatPercent } from '../../utils/formatters'
+import { categoryLabel } from '../../services/categoryPages'
 
 export function IFBIndexPage() {
   return (
@@ -50,7 +51,7 @@ export function IFBIndexPage() {
             {segmentTable.map((segment) => (
               <div key={segment.segment} className="grid grid-cols-[1fr_auto] gap-3 px-4 py-3">
                 <div>
-                  <p className="font-bold text-slate-950">{segment.segment}</p>
+                  <p className="font-bold text-slate-950">{categoryLabel(segment.segment)}</p>
                   <p className="text-xs text-slate-500">Liquidez {segment.liquidity}/100</p>
                 </div>
                 <div className="text-right">

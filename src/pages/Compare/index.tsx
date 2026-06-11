@@ -19,6 +19,7 @@ import type { VehicleSearchResult } from '../../services/vehicleSearch'
 import { formatCurrency, formatPercent } from '../../utils/formatters'
 import { slugify } from '../../utils/slug'
 import { breadcrumbList } from '../../utils/structuredData'
+import { categoryLabel } from '../../services/categoryPages'
 
 const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
 
@@ -321,7 +322,7 @@ function CompareCard({ entry }: { entry: ComparedVehicle }) {
           to={`/categoria/${slugify(vehicle.segment)}`}
           className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-600 transition hover:bg-slate-200"
         >
-          {vehicle.segment}
+          {categoryLabel(vehicle.segment)}
         </Link>
       </div>
       <h2 className="mt-3 text-2xl font-bold text-slate-950">
@@ -430,7 +431,7 @@ export function ComparePage() {
 
   const rows: Array<[string, string, string]> = [
     ['Marca', base.vehicle.brand, target.vehicle.brand],
-    ['Categoria', base.vehicle.segment, target.vehicle.segment],
+    ['Categoria', categoryLabel(base.vehicle.segment), categoryLabel(target.vehicle.segment)],
     ['Ano', yearLabel(base), yearLabel(target)],
     ['Combustivel', base.vehicle.version, target.vehicle.version],
     ['Preco atual', formatCurrency(base.vehicle.price), formatCurrency(target.vehicle.price)],

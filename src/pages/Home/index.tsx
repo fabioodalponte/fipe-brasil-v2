@@ -13,6 +13,7 @@ import { useMarketRankings } from '../../hooks/useMarketRankings'
 import type { FenabraveBestSellingVehicle } from '../../services/fenabraveRankings'
 import { numberFormatter } from '../../utils/formatters'
 import { breadcrumbList } from '../../utils/structuredData'
+import { categoryLabel } from '../../services/categoryPages'
 
 const quickLinks = [
   { to: '/mais-vendidos', label: 'Mais vendidos' },
@@ -225,7 +226,7 @@ export function HomePage() {
                 to={`/categoria/${category.slug}`}
                 className="rounded border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:bg-slate-50"
               >
-                <span className="block text-base font-bold capitalize text-slate-950">{category.name}</span>
+                <span className="block text-base font-bold text-slate-950">{categoryLabel(category.slug)}</span>
                 <span className="mt-1 block text-sm text-slate-500">
                   {numberFormatter.format(category.count)} veículos
                 </span>

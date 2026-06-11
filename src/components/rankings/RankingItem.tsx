@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import type { RankingEntry } from '../../services/marketRankings'
 import { formatCurrency } from '../../utils/formatters'
+import { categoryLabel } from '../../services/categoryPages'
 
 type RankingItemProps = {
   entry: RankingEntry
@@ -27,7 +28,7 @@ export function RankingItem({ entry, position }: RankingItemProps) {
       <span className="min-w-0">
         <span className="block truncate text-sm font-semibold text-slate-900">{vehicle.name}</span>
         <span className="block truncate text-xs text-slate-500">
-          {vehicle.segment} | {formatCurrency(vehicle.price)}
+          {categoryLabel(vehicle.segment)} | {formatCurrency(vehicle.price)}
         </span>
       </span>
       <span className={`shrink-0 font-mono text-sm font-bold ${TONE_CLASS[tone]}`}>{formatted}</span>

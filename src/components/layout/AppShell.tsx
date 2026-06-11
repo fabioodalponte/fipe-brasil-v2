@@ -1,5 +1,5 @@
 import { BarChart3, GitCompareArrows, Home, LineChart, Menu, Trophy } from 'lucide-react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { SearchAutocomplete } from '../search/SearchAutocomplete'
 
 const navItems = [
@@ -10,6 +10,8 @@ const navItems = [
 ]
 
 export function AppShell() {
+  // Home tem busca própria no hero; esconder a do header evita duplicidade.
+  const isHome = useLocation().pathname === '/'
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950">
       <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -24,7 +26,7 @@ export function AppShell() {
             </span>
           </NavLink>
 
-          <SearchAutocomplete className="hidden flex-1 md:block" />
+          {isHome ? <div className="flex-1" /> : <SearchAutocomplete className="hidden flex-1 md:block" />}
 
           <nav className="ml-auto hidden items-center gap-1 lg:flex">
             {navItems.map((item) => {
